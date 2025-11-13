@@ -1,0 +1,149 @@
+# /docker-compose
+# docker-compose.yml con hot reload optimizado
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  database:
+    image: postgres:15-alpine
+    container_name: project2_database
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: app_database
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: app_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - project2_postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - project2_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app_user -d app_database"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend con Express y Sequelize
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: project2_backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: app_database
+      DB_USER: app_user
+      DB_PASSWORD: app_password
+      JWT_SECRET: palabra #${JWT_SECRET}
+      secretOrPrivateKey: palabra #
+      JWT_EXPIRES_IN: 1h
+    # Example for allowing multiple origins in development via ALLOWED_ORIGINS
+    # ALLOWED_ORIGINS: "http://localhost:3000,https://exchange-backend-3.onrender.com"
+    # CORS_ORIGIN removed: handle CORS at proxy or hosting level if needed
+    ports:
+      - "0.0.0.0:3001:3001" #Antes: "3001:3001"
+      - "9229:9229"  # Puerto para debugging
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - project2_backend_node_modules:/app/node_modules
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - project2_network
+
+  # Frontend con React y Hot Reload
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: project2_frontend
+    restart: unless-stopped
+    environment:
+      - REACT_APP_API_URL=http://localhost:3001/api
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - FAST_REFRESH=true
+      - WDS_SOCKET_HOST=localhost
+      - WDS_SOCKET_PORT=3000
+      - WDS_SOCKET_PATH=/ws
+      - HOST=0.0.0.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - project2_frontend_node_modules:/app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - project2_network
+    stdin_open: true
+    tty: true
+
+  # Nginx como reverse proxy (opcional)
+  nginx:
+    image: nginx:alpine
+    container_name: project2_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - project2_network
+
+  # Redis para cache y sesiones (opcional)
+  redis:
+    image: redis:7-alpine
+    container_name: project2_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - project2_redis_data:/data
+    networks:
+      - project2_network
+    command: redis-server --appendonly yes
+
+  # pgAdmin 4 para administración de PostgreSQL
+  pgadmin:
+    build:
+      context: ./pgadmin
+      dockerfile: Dockerfile
+    container_name: project2_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - project2_pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - database
+    networks:
+      - project2_network
+
+volumes:
+  project2_postgres_data:
+  project2_redis_data:
+  project2_frontend_node_modules:
+  project2_backend_node_modules:
+  project2_pgadmin_data:
+
+networks:
+  project2_network:
+    driver: bridge
