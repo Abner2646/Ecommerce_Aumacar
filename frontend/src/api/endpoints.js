@@ -1,6 +1,12 @@
-// src/api/endpoints.js 
+// src/api/endpoints.js
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
+
 export const ENDPOINTS = {
   // Auth
-  AUTH_GOOGLE: '/auth/google',
-  
+  AUTH: {
+    LOGIN: `${API_URL}/auth/login`,
+    REGISTER: `${API_URL}/auth/register`,
+    PERFIL: `${API_URL}/auth/perfil`,
+    VERIFICAR: `${API_URL}/auth/verificar`,
+  },
 };

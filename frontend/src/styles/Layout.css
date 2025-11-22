@@ -1,0 +1,17 @@
+/* /src/styles/Layout.css */
+
+/**
+ * LAYOUT - Estructura general de la aplicación
+ */
+
+.cns-layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* CRÍTICO: esto hace que ocupe toda la altura */
+}
+
+.cns-layout-main {
+  flex: 1; /* CRÍTICO: esto empuja el footer hacia abajo */
+  width: 100%;
+  background-color: var(--color-white);
+}

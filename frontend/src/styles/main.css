@@ -1,0 +1,65 @@
+/* /src/styles/main.css */
+
+/**
+ * ENTRY POINT - Sistema de Estilos
+ */
+
+/* 1. Design System Tokens */
+@import './tokens.css';
+
+/* 2. Tailwind Base */
+@tailwind base;
+
+/* 3. Tailwind Components */
+@tailwind components;
+
+/* 4. Componentes Custom del Design System */
+@import './components.css';
+
+/* 5. Componentes de Layout */
+@import './Layout.css';
+@import './Navbar.css';
+@import './Footer.css';
+
+/* 6. Estilos Específicos de Páginas */
+@import './pages/SubaruShowcase.css';
+@import './pages/Suzukihome.css';
+
+/* 7. Tailwind Utilities (último) */
+@tailwind utilities;
+
+/* Estilos Base Globales */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-family-system);
+    color: var(--color-gray-800);
+    background-color: var(--color-white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  button {
+    font-family: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
