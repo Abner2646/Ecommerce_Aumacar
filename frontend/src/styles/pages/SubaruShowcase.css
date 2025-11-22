@@ -1,0 +1,584 @@
+/* /src/styles/pages/SubaruShowcase.css */
+
+/**
+ * SUBARU SHOWCASE - Página de demostración del Design System
+ * Demuestra todos los patrones y componentes del sistema
+ */
+
+/* ==================== HERO SECTION ==================== */
+
+.showcase-hero-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.showcase-hero-text {
+  text-align: center;
+  max-width: 800px;
+  animation: fadeInUp 1s ease-out;
+}
+
+.showcase-hero-subtitle {
+  display: block;
+  font-size: var(--font-size-body-mobile);
+  color: var(--color-white);
+  opacity: 0.9;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.showcase-hero-title {
+  margin-bottom: var(--space-lg);
+}
+
+.showcase-hero-description {
+  font-size: var(--font-size-body-desktop);
+  color: var(--color-white);
+  opacity: 0.95;
+  margin-bottom: var(--space-2xl);
+  line-height: var(--line-height-body);
+}
+
+.showcase-hero-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.showcase-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.showcase-btn-secondary-light {
+  background-color: transparent;
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+.showcase-btn-secondary-light:hover {
+  background-color: var(--color-white);
+  color: var(--color-gray-900);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== SECTION HEADERS ==================== */
+
+.showcase-section-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto var(--space-3xl);
+}
+
+.showcase-section-header h2 {
+  margin-bottom: var(--space-md);
+}
+
+/* ==================== FEATURED SECTION ==================== */
+
+.showcase-featured-section {
+  background-color: var(--color-gray-50);
+}
+
+/* ==================== VEHICLE CARDS ==================== */
+
+.showcase-vehicle-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.showcase-card-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16/10;
+  background-color: var(--color-gray-100);
+}
+
+.showcase-card-badge {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  background-color: var(--color-white);
+  color: var(--color-gray-900);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  z-index: 1;
+}
+
+.showcase-card-content {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.showcase-card-content h3 {
+  margin-bottom: var(--space-sm);
+}
+
+.showcase-card-description {
+  margin-bottom: var(--space-lg);
+  flex: 1;
+}
+
+.showcase-card-specs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--color-gray-200);
+  margin-bottom: var(--space-lg);
+}
+
+.showcase-spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.showcase-spec-label {
+  font-size: var(--font-size-small);
+  color: var(--color-gray-600);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.showcase-spec-value {
+  font-size: var(--font-size-body-mobile);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-900);
+}
+
+.showcase-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.showcase-card-price {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.showcase-price-label {
+  font-size: var(--font-size-small);
+  color: var(--color-gray-600);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.showcase-price-value {
+  font-size: 1.5rem;
+  color: var(--color-gray-900);
+}
+
+.showcase-card-btn {
+  flex-shrink: 0;
+}
+
+/* ==================== PARALLAX SECTION ==================== */
+
+.showcase-parallax-section {
+  position: relative;
+  height: 70vh;
+  min-height: 500px;
+  overflow: hidden;
+}
+
+.showcase-parallax-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.showcase-parallax-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.1);
+}
+
+.showcase-parallax-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.showcase-parallax-text {
+  max-width: 700px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.showcase-parallax-text h2 {
+  margin-bottom: var(--space-lg);
+}
+
+.showcase-parallax-description {
+  font-size: var(--font-size-body-desktop);
+  color: var(--color-white);
+  opacity: 0.95;
+  line-height: var(--line-height-body);
+}
+
+/* ==================== FEATURES GRID ==================== */
+
+.showcase-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-2xl);
+}
+
+.showcase-feature-card {
+  text-align: center;
+  padding: var(--space-xl);
+  transition: transform var(--transition-base);
+}
+
+.showcase-feature-card:hover {
+  transform: translateY(-8px);
+}
+
+.showcase-feature-icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-lg);
+  line-height: 1;
+}
+
+.showcase-feature-card h3 {
+  margin-bottom: var(--space-md);
+}
+
+.showcase-feature-card p {
+  line-height: var(--line-height-body);
+}
+
+/* ==================== ALL MODELS SECTION ==================== */
+
+.showcase-all-models-section {
+  background-color: var(--color-gray-50);
+}
+
+/* Tabs */
+.showcase-tabs {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  margin-bottom: var(--space-2xl);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.showcase-tab {
+  padding: var(--space-md) var(--space-lg);
+  background: transparent;
+  border: none;
+  font-size: var(--font-size-body-mobile);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-600);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-base);
+  margin-bottom: -1px;
+}
+
+.showcase-tab:hover {
+  color: var(--color-gray-900);
+}
+
+.showcase-tab.active {
+  color: var(--color-gray-900);
+  border-bottom-color: var(--color-gray-900);
+}
+
+/* Models List */
+.showcase-models-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.showcase-model-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 300px 200px;
+  gap: var(--space-xl);
+  align-items: center;
+  background-color: var(--color-white);
+  padding: var(--space-lg);
+  transition: transform var(--transition-base);
+}
+
+.showcase-model-row:hover {
+  transform: translateX(8px);
+}
+
+.showcase-model-image {
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background-color: var(--color-gray-100);
+}
+
+.showcase-model-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.showcase-model-row:hover .showcase-model-image img {
+  transform: scale(1.1);
+}
+
+.showcase-model-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.showcase-model-info h3 {
+  margin-bottom: var(--space-xs);
+}
+
+.showcase-model-category {
+  display: inline-block;
+  font-size: var(--font-size-small);
+  color: var(--color-gray-600);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.showcase-model-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.showcase-model-spec {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.showcase-model-action {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: flex-end;
+}
+
+.showcase-model-price {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  align-items: flex-end;
+}
+
+/* Gallery */
+.showcase-gallery-item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+}
+
+.showcase-gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-lg);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.showcase-gallery-item:hover .showcase-gallery-overlay {
+  opacity: 1;
+}
+
+.showcase-gallery-item:hover .cns-card-image {
+  transform: scale(1.1);
+}
+
+/* ==================== CTA SECTION ==================== */
+
+.showcase-cta-section {
+  background-color: var(--color-gray-900);
+  padding: var(--space-5xl) 0;
+}
+
+.showcase-cta-content {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.showcase-cta-title {
+  margin-bottom: var(--space-lg);
+}
+
+.showcase-cta-description {
+  font-size: var(--font-size-body-desktop);
+  color: var(--color-white);
+  opacity: 0.9;
+  line-height: var(--line-height-body);
+  margin-bottom: var(--space-2xl);
+}
+
+.showcase-cta-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.showcase-cta-btn {
+  background-color: var(--color-white);
+  color: var(--color-gray-900);
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 1024px) {
+  .showcase-model-row {
+    grid-template-columns: 1fr;
+  }
+
+  .showcase-model-action {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .showcase-model-price {
+    align-items: flex-start;
+  }
+
+  .showcase-model-specs-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .showcase-hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .showcase-hero-actions button {
+    width: 100%;
+  }
+
+  .showcase-card-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .showcase-card-price {
+    align-items: flex-start;
+  }
+
+  .showcase-model-specs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .showcase-cta-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .showcase-cta-actions button {
+    width: 100%;
+  }
+}
+
+/* /src/styles/pages/SubaruShowcase.css */
+
+/* Agregar border-radius a elementos específicos de la página */
+
+.showcase-card-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16/10;
+  background-color: var(--color-gray-100);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0; /* Solo arriba */
+}
+
+.showcase-card-badge {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  background-color: var(--color-white);
+  color: var(--color-gray-900);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-sm); /* ← AGREGADO */
+  z-index: 1;
+}
+
+.showcase-model-image {
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background-color: var(--color-gray-100);
+  border-radius: var(--radius-md); /* ← AGREGADO */
+}
+
+.showcase-gallery-item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+  border-radius: var(--radius-lg); /* ← AGREGADO */
+}
+
+.showcase-model-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 300px 200px;
+  gap: var(--space-xl);
+  align-items: center;
+  background-color: var(--color-white);
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg); /* ← AGREGADO */
+  transition: transform var(--transition-base);
+}
+
+.showcase-feature-card {
+  text-align: center;
+  padding: var(--space-xl);
+  background-color: var(--color-white); /* ← AGREGADO */
+  border-radius: var(--radius-lg); /* ← AGREGADO */
+  transition: transform var(--transition-base);
+}

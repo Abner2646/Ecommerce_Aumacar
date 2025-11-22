@@ -1,62 +1,68 @@
-// src/context/AuthContext.jsx (front web)
-import { createContext, useContext, useState, useEffect } from 'react';
-import authService from '../services/authService';
+// src/context/AuthContext.jsx
+import { createContext, useState, useEffect } from 'react';
+import { authApi } from '../api/auth.api';
 
-const AuthContext = createContext(); 
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth debe estar dentro de AuthProvider');
-  return context;
-};
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [token, setToken] = useState(localStorage.getItem('token'));
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    // Verificar token al cargar
     if (token) {
-      try {
-        // ⭐ getCurrentUser es SINCRÓNICO ahora
-        const userData = authService.getCurrentUser();
-        console.log('👤 User Data en Context:', userData); // Debug
-        setUser(userData);
-      } catch (error) {
-        console.error('❌ Token inválido:', error);
-        localStorage.removeItem('token');
-      }
+      verifyToken();
+    } else {
+      setIsLoading(false);
     }
-    setLoading(false);
-  }, []);
+  }, [token]);
 
-  const login = (userData, token) => {
-    if (token) localStorage.setItem('token', token);
-    setUser(userData);
+  const verifyToken = async () => {
+    try {
+      const data = await authApi.verificarToken(token);
+      setUser(data.usuario);
+    } catch (error) {
+      console.error('Error verificando token:', error);
+      logout();
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const logout = async () => {
-    await authService.logout();
+  const login = async (email, password) => {
+    try {
+      const data = await authApi.login({ email, password });
+      const tokenWithBearer = `Bearer ${data.token}`;
+      
+      setToken(tokenWithBearer);
+      setUser(data.usuario);
+      localStorage.setItem('token', tokenWithBearer);
+      
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  const logout = () => {
+    setToken(null);
     setUser(null);
-  };
-
-  // ⭐ Función para actualizar el user (útil después de verificar email)
-  const updateUser = (updatedData) => {
-    setUser((prev) => ({ ...prev, ...updatedData }));
+    localStorage.removeItem('token');
   };
 
   const value = {
+    token,
     user,
+    isAuthenticated: !!token,
+    isLoading,
     login,
-    logout,
-    updateUser, // ⭐ Nueva función
-    loginWithGoogle: authService.loginWithGoogle,
-    isAuthenticated: !!user,
+    logout
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

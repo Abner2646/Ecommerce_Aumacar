@@ -1,0 +1,221 @@
+/* /src/styles/Navbar.css */
+
+/**
+ * NAVBAR - Barra de navegación superior
+ * Prefijo: cns-navbar-
+ */
+
+.cns-navbar {
+  background-color: var(--color-gray-900);
+  border-bottom: 1px solid var(--color-gray-800);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  width: 100%;
+}
+
+.cns-navbar-container {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+/* Logo */
+.cns-navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  text-decoration: none;
+  color: var(--color-white);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-h1);
+  transition: opacity var(--transition-base);
+}
+
+.cns-navbar-logo:hover {
+  opacity: var(--hover-opacity);
+}
+
+.cns-logo-icon {
+  width: 32px;
+  height: 32px;
+  stroke-width: 1.5;
+}
+
+.cns-logo-text {
+  font-family: var(--font-family-system);
+}
+
+/* Hamburger Toggle */
+.cns-navbar-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs);
+  color: var(--color-white);
+  transition: opacity var(--transition-base);
+}
+
+.cns-navbar-toggle:hover {
+  opacity: 0.7;
+}
+
+.cns-toggle-icon {
+  width: 28px;
+  height: 28px;
+}
+
+/* Navigation Menu */
+.cns-navbar-menu {
+  display: flex;
+  align-items: center;
+}
+
+.cns-navbar-nav {
+  display: flex;
+  list-style: none;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.cns-nav-item {
+  position: relative;
+}
+
+.cns-nav-link {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  color: var(--color-gray-400);
+  text-decoration: none;
+  font-size: var(--font-size-body-mobile);
+  font-weight: var(--font-weight-medium);
+  transition: color var(--transition-base);
+  position: relative;
+}
+
+.cns-nav-link:hover {
+  color: var(--color-white);
+}
+
+.cns-nav-link.active {
+  color: var(--color-white);
+}
+
+.cns-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background-color: var(--color-white);
+}
+
+/* Admin Link (CTA) */
+.cns-nav-item-cta .cns-nav-link-admin {
+  background-color: var(--color-white);
+  color: var(--color-gray-900);
+  padding: var(--space-sm) var(--space-md);
+  font-weight: var(--font-weight-semibold);
+  margin-left: var(--space-sm);
+  transition: opacity var(--transition-base);
+}
+
+.cns-nav-item-cta .cns-nav-link-admin:hover {
+  opacity: var(--hover-opacity);
+}
+
+.cns-nav-item-cta .cns-nav-link-admin.active::after {
+  display: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cns-navbar-container {
+    padding: 0 var(--space-sm);
+    height: 70px;
+  }
+
+  .cns-navbar-toggle {
+    display: block;
+  }
+
+  .cns-navbar-menu {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background-color: var(--color-gray-900);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-slow);
+    border-bottom: 1px solid var(--color-gray-800);
+  }
+
+  .cns-navbar-menu.active {
+    max-height: 400px;
+  }
+
+  .cns-navbar-nav {
+    flex-direction: column;
+    gap: 0;
+    padding: var(--space-sm) 0;
+    width: 100%;
+  }
+
+  .cns-nav-item {
+    width: 100%;
+  }
+
+  .cns-nav-link {
+    padding: var(--space-md) var(--space-md);
+    width: 100%;
+  }
+
+  .cns-nav-link.active::after {
+    display: none;
+  }
+
+  .cns-nav-item-cta .cns-nav-link-admin {
+    margin: var(--space-sm) var(--space-md);
+    width: calc(100% - var(--space-lg));
+    text-align: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cns-navbar-container {
+    padding: 0 var(--space-xl);
+  }
+}
+
+.cns-nav-link {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  color: var(--color-gray-400);
+  text-decoration: none;
+  font-size: var(--font-size-body-mobile);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-sm); /* ← AGREGADO */
+  transition: color var(--transition-base);
+  position: relative;
+}
+
+.cns-nav-item-cta .cns-nav-link-admin {
+  background-color: var(--color-white);
+  color: var(--color-gray-900);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md); /* ← AGREGADO */
+  font-weight: var(--font-weight-semibold);
+  margin-left: var(--space-sm);
+  transition: opacity var(--transition-base);
+}
