@@ -1,47 +1,38 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const session = require('express-session');
-//const passport = require('passport');
 require('dotenv').config();
 
 // Validaciones de entorno
 if (!process.env.JWT_SECRET) {
   throw new Error('JWT_SECRET no configurado');
 }
+if (!process.env.SESSION_SECRET) {
+  throw new Error('SESSION_SECRET no configurado');
+}
 
 const { sequelize } = require('./models');
-//const configurePassport = require('./config/passport.config');
 const apiRoutes = require('./routes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// 🔧 CORS Configuration
+// ==================== CORS ====================
 const rawAllowed = process.env.ALLOWED_ORIGINS || process.env.FRONTEND_URL || '';
-const allowedOrigins = rawAllowed
-  .split(',')
-  .map(s => s.trim())
-  .filter(Boolean);
+const allowedOrigins = rawAllowed.split(',').map(s => s.trim()).filter(Boolean);
 
-//  En desarrollo, permitir TODO (para mobile)
-if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV !== 'production') {
-  allowedOrigins.push('*'); // Permite cualquier origen en desarrollo
+if (process.env.NODE_ENV !== 'production') {
   console.log('🔓 CORS: Modo desarrollo - Aceptando todos los orígenes');
 }
 
-console.log('CORS allowed origins:', allowedOrigins.length ? allowedOrigins.join(',') : '[none]');
-
-// CORS SIMPLIFICADO para desarrollo mobile
 app.use(cors({
   origin: function(origin, callback) {
-    // En desarrollo, permitir todo
     if (process.env.NODE_ENV !== 'production') {
       return callback(null, true);
     }
-    
-    // En producción, validar
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes('*')) return callback(null, true);
     if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
@@ -55,71 +46,103 @@ app.use(cors({
   optionsSuccessStatus: 204
 }));
 
-// Helmet DESPUÉS de CORS
+// ==================== Helmet ====================
 app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" }
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  contentSecurityPolicy: process.env.NODE_ENV === 'production' ? {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    }
+  } : false,
+  hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  noSniff: true,
+  xssFilter: true,
+  hidePoweredBy: true
 }));
 
-// Body parsers
+// ==================== Body Parsers ====================
 app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Session
+// ==================== Session ====================
 app.use(session({
   secret: process.env.SESSION_SECRET,
+  name: 'sessionId',
   resave: false,
   saveUninitialized: false,
   cookie: { 
     secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    httpOnly: true,
+    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+    maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
-// Passport
-/*
-app.use(passport.initialize());
-app.use(passport.session());
-configurePassport();
-*/
 
-// ⭐ LOG de requests (útil para debug mobile)
-app.use((req, res, next) => {
-  console.log(`📱 ${req.method} ${req.path} - Origin: ${req.headers.origin || 'none'}`);
-  next();
-});
-
-// Rutas
-app.use('/api', apiRoutes);
-
-// Logging
-if (process.env.NODE_ENV !== 'test') {
-  app.use(morgan('combined'));
+// ==================== Logging ====================
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined', { skip: (req, res) => res.statusCode < 400 }));
+} else {
+  app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+      console.log(`📱 ${req.method} ${req.path} - ${res.statusCode} - ${Date.now() - start}ms`);
+    });
+    next();
+  });
 }
 
-// Health check
-app.get('/health', (req, res) => {
-  res.status(200).json({
+// ==================== Trust Proxy ====================
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
+// ==================== Routes ====================
+app.use('/api', apiRoutes);
+
+// ==================== Health Check ====================
+app.get('/health', async (req, res) => {
+  const health = {
     status: 'OK',
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  });
+    uptime: process.uptime(),
+    database: 'unknown'
+  };
+
+  try {
+    await sequelize.authenticate();
+    health.database = 'connected';
+  } catch (error) {
+    health.database = 'disconnected';
+    health.status = 'DEGRADED';
+  }
+
+  res.status(health.status === 'OK' ? 200 : 503).json(health);
 });
 
-// Error handling
+// ==================== Error Handling ====================
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err.stack);
-  res.status(500).json({
-    error: 'Something went wrong!',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
+  console.error('❌ Error:', err.message);
+  res.status(err.status || 500).json({
+    error: process.env.NODE_ENV === 'production' ? 'Error interno del servidor' : err.message
   });
 });
 
-// 404
+// ==================== 404 ====================
 app.use('*', (req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+  res.status(404).json({ error: 'Ruta no encontrada' });
 });
 
-// Escuchar en 0.0.0.0 para aceptar conexiones de red local
+// ==================== Start ====================
 async function startServer() {
   try {
     await sequelize.authenticate();
@@ -130,36 +153,29 @@ async function startServer() {
       console.log('✅ Database synchronized');
     }
     
-    // ⭐ CLAVE: Escuchar en 0.0.0.0 en lugar de localhost
     app.listen(PORT, '0.0.0.0', () => {
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       console.log(`🚀 Server running on port ${PORT}`);
       console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`🔐 Security: Rate limiting, Token rotation, Brute force protection`);
       console.log(`🌍 Frontend URL: ${process.env.FRONTEND_URL || 'not set'}`);
-      console.log(`📱 Mobile access: Use your PC IP + :${PORT}`);
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     });
 
-    //Inicializar todos los jobs
-    //const JobManager = require('./jobs');
-    //await JobManager.startAll();
   } catch (error) {
-    console.error('❌ Server error:', error);
+    console.error('❌ Server startup error:', error);
     process.exit(1);
   }
 }
 
 startServer();
 
-// Graceful shutdown
-process.on('SIGTERM', async () => {
-  console.log('SIGTERM received, shutting down gracefully');
+// ==================== Graceful Shutdown ====================
+const gracefulShutdown = async (signal) => {
+  console.log(`\n${signal} received, shutting down...`);
   await sequelize.close();
   process.exit(0);
-});
+};
 
-process.on('SIGINT', async () => {
-  console.log('SIGINT received, shutting down gracefully');
-  await sequelize.close();
-  process.exit(0);
-});
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));

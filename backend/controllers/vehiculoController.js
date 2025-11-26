@@ -1,3 +1,5 @@
+// controllers/vehiculoController.js
+
 const db = require('../models');
 const { Op } = require('sequelize');
 const { subirImagen, subirVideo, eliminarArchivo } = require('../utils/cloudinary');
@@ -63,6 +65,15 @@ const obtenerVehiculoPorId = async (req, res) => {
         {
           model: db.ImagenVehiculo,
           as: 'imagenes',
+          include: [{
+            model: db.ColorVehiculo,
+            as: 'colorVehiculo',
+            include: [{
+              model: db.Color,
+              as: 'color',
+              attributes: ['id', 'nombre', 'codigoHex']
+            }]
+          }],
           order: [['orden', 'ASC']]
         },
         {
@@ -78,6 +89,17 @@ const obtenerVehiculoPorId = async (req, res) => {
           through: { attributes: [] },
           where: { activa: true },
           required: false
+        },
+        // ========== INCLUIR COLORES ==========
+        {
+          model: db.ColorVehiculo,
+          as: 'coloresVehiculo',
+          include: [{
+            model: db.Color,
+            as: 'color',
+            attributes: ['id', 'nombre', 'codigoHex']
+          }],
+          order: [['orden', 'ASC']]
         }
       ]
     });
@@ -88,7 +110,18 @@ const obtenerVehiculoPorId = async (req, res) => {
       });
     }
 
-    res.json({ vehiculo });
+    // Formatear respuesta con colores
+    const respuesta = vehiculo.toJSON();
+    respuesta.colores = respuesta.coloresVehiculo?.map(cv => ({
+      colorVehiculoId: cv.id,
+      colorId: cv.color.id,
+      nombre: cv.color.nombre,
+      codigoHex: cv.color.codigoHex,
+      orden: cv.orden
+    })) || [];
+    delete respuesta.coloresVehiculo;
+
+    res.json({ vehiculo: respuesta });
 
   } catch (error) {
     console.error('Error al obtener vehículo:', error);
@@ -116,6 +149,15 @@ const obtenerVehiculoPorSlug = async (req, res) => {
         {
           model: db.ImagenVehiculo,
           as: 'imagenes',
+          include: [{
+            model: db.ColorVehiculo,
+            as: 'colorVehiculo',
+            include: [{
+              model: db.Color,
+              as: 'color',
+              attributes: ['id', 'nombre', 'codigoHex']
+            }]
+          }],
           order: [['orden', 'ASC']]
         },
         {
@@ -131,6 +173,17 @@ const obtenerVehiculoPorSlug = async (req, res) => {
           through: { attributes: [] },
           where: { activa: true },
           required: false
+        },
+        // ========== INCLUIR COLORES ==========
+        {
+          model: db.ColorVehiculo,
+          as: 'coloresVehiculo',
+          include: [{
+            model: db.Color,
+            as: 'color',
+            attributes: ['id', 'nombre', 'codigoHex']
+          }],
+          order: [['orden', 'ASC']]
         }
       ]
     });
@@ -141,7 +194,18 @@ const obtenerVehiculoPorSlug = async (req, res) => {
       });
     }
 
-    res.json({ vehiculo });
+    // Formatear respuesta con colores
+    const respuesta = vehiculo.toJSON();
+    respuesta.colores = respuesta.coloresVehiculo?.map(cv => ({
+      colorVehiculoId: cv.id,
+      colorId: cv.color.id,
+      nombre: cv.color.nombre,
+      codigoHex: cv.color.codigoHex,
+      orden: cv.orden
+    })) || [];
+    delete respuesta.coloresVehiculo;
+
+    res.json({ vehiculo: respuesta });
 
   } catch (error) {
     console.error('Error al obtener vehículo:', error);
@@ -300,11 +364,12 @@ const eliminarVehiculo = async (req, res) => {
 
 /**
  * Agregar imágenes a un vehículo
+ * ========== MODIFICADO para soportar colorVehiculoId ==========
  */
 const agregarImagenes = async (req, res) => {
   try {
     const { id } = req.params;
-    const { esPrincipal, orden } = req.body;
+    const { esPrincipal, orden, colorVehiculoId } = req.body;
 
     const vehiculo = await db.Vehiculo.findByPk(id);
 
@@ -318,6 +383,23 @@ const agregarImagenes = async (req, res) => {
       return res.status(400).json({
         error: 'No se proporcionaron imágenes'
       });
+    }
+
+    // Validar colorVehiculoId si se proporciona
+    let colorVehiculoValido = null;
+    if (colorVehiculoId) {
+      colorVehiculoValido = await db.ColorVehiculo.findOne({
+        where: { 
+          id: colorVehiculoId,
+          vehiculoId: id // Asegurar que el color pertenece a este vehículo
+        }
+      });
+
+      if (!colorVehiculoValido) {
+        return res.status(400).json({
+          error: 'El color especificado no está asignado a este vehículo'
+        });
+      }
     }
 
     // Si se marca como principal, desmarcar las demás
@@ -338,6 +420,7 @@ const agregarImagenes = async (req, res) => {
       
       const imagen = await db.ImagenVehiculo.create({
         vehiculoId: id,
+        colorVehiculoId: colorVehiculoValido ? colorVehiculoValido.id : null,
         url: resultado.secure_url,
         alt: `${vehiculo.modelo} ${vehiculo.version || ''} - Imagen ${i + 1}`,
         orden: orden ? parseInt(orden) + i : i,
@@ -356,6 +439,74 @@ const agregarImagenes = async (req, res) => {
     console.error('Error al agregar imágenes:', error);
     res.status(500).json({
       error: 'Error al agregar imágenes'
+    });
+  }
+};
+
+/**
+ * Actualizar imagen (cambiar color, orden, etc.)
+ * ========== NUEVO ENDPOINT ==========
+ */
+const actualizarImagen = async (req, res) => {
+  try {
+    const { imagenId } = req.params;
+    const { colorVehiculoId, orden, esPrincipal, alt } = req.body;
+
+    const imagen = await db.ImagenVehiculo.findByPk(imagenId);
+
+    if (!imagen) {
+      return res.status(404).json({
+        error: 'Imagen no encontrada'
+      });
+    }
+
+    // Validar colorVehiculoId si se proporciona
+    if (colorVehiculoId !== undefined) {
+      if (colorVehiculoId === null || colorVehiculoId === '') {
+        // Permitir quitar el color (imagen genérica)
+        imagen.colorVehiculoId = null;
+      } else {
+        const colorVehiculo = await db.ColorVehiculo.findOne({
+          where: { 
+            id: colorVehiculoId,
+            vehiculoId: imagen.vehiculoId
+          }
+        });
+
+        if (!colorVehiculo) {
+          return res.status(400).json({
+            error: 'El color especificado no está asignado a este vehículo'
+          });
+        }
+        imagen.colorVehiculoId = colorVehiculoId;
+      }
+    }
+
+    // Si se marca como principal, desmarcar las demás
+    if (esPrincipal === true || esPrincipal === 'true') {
+      await db.ImagenVehiculo.update(
+        { esPrincipal: false },
+        { where: { vehiculoId: imagen.vehiculoId } }
+      );
+      imagen.esPrincipal = true;
+    } else if (esPrincipal === false || esPrincipal === 'false') {
+      imagen.esPrincipal = false;
+    }
+
+    if (orden !== undefined) imagen.orden = parseInt(orden);
+    if (alt !== undefined) imagen.alt = alt;
+
+    await imagen.save();
+
+    res.json({
+      mensaje: 'Imagen actualizada exitosamente',
+      imagen
+    });
+
+  } catch (error) {
+    console.error('Error al actualizar imagen:', error);
+    res.status(500).json({
+      error: 'Error al actualizar imagen'
     });
   }
 };
@@ -391,6 +542,67 @@ const eliminarImagen = async (req, res) => {
     console.error('Error al eliminar imagen:', error);
     res.status(500).json({
       error: 'Error al eliminar imagen'
+    });
+  }
+};
+
+/**
+ * Obtener imágenes por color
+ * ========== NUEVO ENDPOINT ==========
+ */
+const obtenerImagenesPorColor = async (req, res) => {
+  try {
+    const { id, colorVehiculoId } = req.params;
+    const { incluirGenericas } = req.query;
+
+    const vehiculo = await db.Vehiculo.findByPk(id);
+    if (!vehiculo) {
+      return res.status(404).json({
+        error: 'Vehículo no encontrado'
+      });
+    }
+
+    // Construir condición de búsqueda
+    const whereCondition = { vehiculoId: id };
+    
+    if (incluirGenericas === 'true') {
+      // Imágenes del color específico + genéricas (null)
+      whereCondition[Op.or] = [
+        { colorVehiculoId: colorVehiculoId },
+        { colorVehiculoId: null }
+      ];
+    } else {
+      whereCondition.colorVehiculoId = colorVehiculoId;
+    }
+
+    const imagenes = await db.ImagenVehiculo.findAll({
+      where: whereCondition,
+      include: [{
+        model: db.ColorVehiculo,
+        as: 'colorVehiculo',
+        include: [{
+          model: db.Color,
+          as: 'color',
+          attributes: ['id', 'nombre', 'codigoHex']
+        }]
+      }],
+      order: [
+        ['colorVehiculoId', 'ASC NULLS FIRST'], // Genéricas primero
+        ['orden', 'ASC']
+      ]
+    });
+
+    res.json({
+      vehiculoId: parseInt(id),
+      colorVehiculoId: parseInt(colorVehiculoId),
+      imagenes,
+      total: imagenes.length
+    });
+
+  } catch (error) {
+    console.error('Error al obtener imágenes por color:', error);
+    res.status(500).json({
+      error: 'Error al obtener imágenes por color'
     });
   }
 };
@@ -556,7 +768,9 @@ module.exports = {
   actualizarVehiculo,
   eliminarVehiculo,
   agregarImagenes,
+  actualizarImagen,      // NUEVO
   eliminarImagen,
+  obtenerImagenesPorColor, // NUEVO
   agregarVideo,
   eliminarVideo,
   asignarCaracteristicas

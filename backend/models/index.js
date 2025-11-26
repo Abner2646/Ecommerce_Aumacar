@@ -1,3 +1,4 @@
+// models/index.js
 const { Sequelize } = require('sequelize');
 const config = require('../config/database');
 
@@ -20,7 +21,7 @@ const sequelize = new Sequelize(
 
 const db = {};
 
-// Importar modelos
+// Modelos existentes 
 db.Marca = require('./Marca')(sequelize);
 db.Vehiculo = require('./Vehiculo')(sequelize);
 db.ImagenVehiculo = require('./ImagenVehiculo')(sequelize);
@@ -29,7 +30,12 @@ db.VehiculoCaracteristica = require('./VehiculoCaracteristica')(sequelize);
 db.VideoVehiculo = require('./VideoVehiculo')(sequelize);
 db.Usuario = require('./Usuario')(sequelize);
 
-// Definir asociaciones
+// ========== NUEVOS MODELOS ==========
+db.Color = require('./Color')(sequelize);
+db.ColorVehiculo = require('./ColorVehiculo')(sequelize);
+
+
+// Asociaciones
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

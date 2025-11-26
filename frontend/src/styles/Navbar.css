@@ -1,195 +1,44 @@
 /* /src/styles/Navbar.css */
 
-/**
- * NAVBAR - Barra de navegación superior
- * Prefijo: cns-navbar-
- */
+/* ============================================================
+   NAVBAR - Concesionaria Aumacar
+   Prefijo: cns- (common/concesionario)
+   ============================================================ */
 
+/* ----- Base ----- */
 .cns-navbar {
-  background-color: var(--color-gray-900);
-  border-bottom: 1px solid var(--color-gray-800);
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: var(--z-sticky);
-  width: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: var(--space-sm) 0;
+  transition: 
+    background-color 300ms ease,
+    box-shadow 300ms ease;
 }
 
+/* Estado transparente (sobre hero) */
+.cns-navbar:not(.cns-navbar--scrolled) {
+  background-color: transparent;
+  color: var(--color-white);
+}
+
+/* Estado sólido (scrolleado) */
+.cns-navbar--scrolled {
+  background-color: var(--color-white);
+  color: var(--color-gray-800);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* ----- Container ----- */
 .cns-navbar-container {
-  max-width: var(--max-width-content);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--max-width-content, 1440px);
   margin: 0 auto;
   padding: 0 var(--space-md);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 80px;
-}
-
-/* Logo */
-.cns-navbar-logo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  text-decoration: none;
-  color: var(--color-white);
-  font-size: 1.5rem;
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: var(--letter-spacing-h1);
-  transition: opacity var(--transition-base);
-}
-
-.cns-navbar-logo:hover {
-  opacity: var(--hover-opacity);
-}
-
-.cns-logo-icon {
-  width: 32px;
-  height: 32px;
-  stroke-width: 1.5;
-}
-
-.cns-logo-text {
-  font-family: var(--font-family-system);
-}
-
-/* Hamburger Toggle */
-.cns-navbar-toggle {
-  display: none;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: var(--space-xs);
-  color: var(--color-white);
-  transition: opacity var(--transition-base);
-}
-
-.cns-navbar-toggle:hover {
-  opacity: 0.7;
-}
-
-.cns-toggle-icon {
-  width: 28px;
-  height: 28px;
-}
-
-/* Navigation Menu */
-.cns-navbar-menu {
-  display: flex;
-  align-items: center;
-}
-
-.cns-navbar-nav {
-  display: flex;
-  list-style: none;
-  gap: var(--space-xs);
-  margin: 0;
-  padding: 0;
-  align-items: center;
-}
-
-.cns-nav-item {
-  position: relative;
-}
-
-.cns-nav-link {
-  display: block;
-  padding: var(--space-sm) var(--space-md);
-  color: var(--color-gray-400);
-  text-decoration: none;
-  font-size: var(--font-size-body-mobile);
-  font-weight: var(--font-weight-medium);
-  transition: color var(--transition-base);
-  position: relative;
-}
-
-.cns-nav-link:hover {
-  color: var(--color-white);
-}
-
-.cns-nav-link.active {
-  color: var(--color-white);
-}
-
-.cns-nav-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 1px;
-  background-color: var(--color-white);
-}
-
-/* Admin Link (CTA) */
-.cns-nav-item-cta .cns-nav-link-admin {
-  background-color: var(--color-white);
-  color: var(--color-gray-900);
-  padding: var(--space-sm) var(--space-md);
-  font-weight: var(--font-weight-semibold);
-  margin-left: var(--space-sm);
-  transition: opacity var(--transition-base);
-}
-
-.cns-nav-item-cta .cns-nav-link-admin:hover {
-  opacity: var(--hover-opacity);
-}
-
-.cns-nav-item-cta .cns-nav-link-admin.active::after {
-  display: none;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .cns-navbar-container {
-    padding: 0 var(--space-sm);
-    height: 70px;
-  }
-
-  .cns-navbar-toggle {
-    display: block;
-  }
-
-  .cns-navbar-menu {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    background-color: var(--color-gray-900);
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height var(--transition-slow);
-    border-bottom: 1px solid var(--color-gray-800);
-  }
-
-  .cns-navbar-menu.active {
-    max-height: 400px;
-  }
-
-  .cns-navbar-nav {
-    flex-direction: column;
-    gap: 0;
-    padding: var(--space-sm) 0;
-    width: 100%;
-  }
-
-  .cns-nav-item {
-    width: 100%;
-  }
-
-  .cns-nav-link {
-    padding: var(--space-md) var(--space-md);
-    width: 100%;
-  }
-
-  .cns-nav-link.active::after {
-    display: none;
-  }
-
-  .cns-nav-item-cta .cns-nav-link-admin {
-    margin: var(--space-sm) var(--space-md);
-    width: calc(100% - var(--space-lg));
-    text-align: center;
-  }
 }
 
 @media (min-width: 1024px) {
@@ -198,24 +47,392 @@
   }
 }
 
-.cns-nav-link {
-  display: block;
-  padding: var(--space-sm) var(--space-md);
-  color: var(--color-gray-400);
+/* ----- Logo ----- */
+.cns-navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
   text-decoration: none;
-  font-size: var(--font-size-body-mobile);
-  font-weight: var(--font-weight-medium);
-  border-radius: var(--radius-sm); /* ← AGREGADO */
-  transition: color var(--transition-base);
+  transition: opacity 150ms ease;
+}
+
+.cns-navbar-logo:hover {
+  opacity: 0.8;
+}
+
+.cns-navbar-logo-symbol {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 1024px) {
+  .cns-navbar-logo-symbol {
+    height: 40px;
+  }
+}
+
+.cns-navbar-logo-text {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: inherit;
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .cns-navbar-logo-text {
+    font-size: 1.25rem;
+  }
+}
+
+/* ----- Navegación Desktop ----- */
+.cns-navbar-nav {
+  display: none;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 1024px) {
+  .cns-navbar-nav {
+    display: flex;
+  }
+}
+
+/* ----- Links ----- */
+.cns-navbar-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-xs) 0;
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 150ms ease;
+}
+
+.cns-navbar-link:hover {
+  opacity: 0.6;
+}
+
+/* Underline para link activo */
+.cns-navbar-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms ease;
+}
+
+.cns-navbar-link--active::after {
+  transform: scaleX(1);
+}
+
+/* Evitar opacity en hover cuando está activo */
+.cns-navbar-link--active:hover {
+  opacity: 1;
+}
+
+/* ----- Dropdown Desktop ----- */
+.cns-navbar-dropdown {
   position: relative;
 }
 
-.cns-nav-item-cta .cns-nav-link-admin {
+.cns-navbar-dropdown-trigger {
+  font-family: inherit;
+}
+
+.cns-navbar-dropdown-arrow {
+  transition: transform 200ms ease;
+}
+
+.cns-navbar-dropdown-arrow--open {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.cns-navbar-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  min-width: 180px;
+  padding: var(--space-xs);
   background-color: var(--color-white);
-  color: var(--color-gray-900);
+  border-radius: var(--radius-md);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  visibility: hidden;
+  transition: 
+    opacity 150ms ease,
+    transform 150ms ease,
+    visibility 150ms ease;
+  pointer-events: none;
+}
+
+.cns-navbar-dropdown-menu--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+/* Zona puente invisible para evitar cierre al mover mouse */
+.cns-navbar-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 12px;
+}
+
+/* Dropdown Items */
+.cns-navbar-dropdown-item {
+  display: block;
   padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-md); /* ← AGREGADO */
-  font-weight: var(--font-weight-semibold);
-  margin-left: var(--space-sm);
-  transition: opacity var(--transition-base);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-gray-800);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: background-color 150ms ease;
+}
+
+.cns-navbar-dropdown-item:hover {
+  background-color: var(--color-gray-50);
+}
+
+.cns-navbar-dropdown-item--active {
+  background-color: var(--color-gray-100);
+}
+
+/* ----- Hamburger Button (Mobile) ----- */
+.cns-navbar-hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  gap: 5px;
+}
+
+@media (min-width: 1024px) {
+  .cns-navbar-hamburger {
+    display: none;
+  }
+}
+
+.cns-navbar-hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: currentColor;
+  border-radius: 1px;
+  transition: 
+    transform 250ms ease,
+    opacity 250ms ease;
+}
+
+/* Animación a X cuando está abierto */
+.cns-navbar-hamburger--open .cns-navbar-hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.cns-navbar-hamburger--open .cns-navbar-hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.cns-navbar-hamburger--open .cns-navbar-hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ----- Mobile Menu ----- */
+.cns-navbar-mobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  padding-top: 72px; /* Altura del navbar + padding */
+  background-color: var(--color-white);
+  opacity: 0;
+  visibility: hidden;
+  transition: 
+    opacity 250ms ease,
+    visibility 250ms ease;
+}
+
+.cns-navbar-mobile--open {
+  opacity: 1;
+  visibility: visible;
+  z-index: 999;
+}
+
+@media (min-width: 1024px) {
+  .cns-navbar-mobile {
+    display: none;
+  }
+}
+
+.cns-navbar-mobile-content {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md);
+  border-top: 1px solid var(--color-gray-200);
+}
+
+/* ----- Mobile Links ----- */
+.cns-navbar-mobile-item {
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.cns-navbar-mobile-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-md) 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--color-gray-800);
+  text-decoration: none;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--color-gray-100);
+  cursor: pointer;
+  text-align: left;
+}
+
+.cns-navbar-mobile-item .cns-navbar-mobile-link {
+  border-bottom: none;
+}
+
+/* Indicador activo mobile (punto) */
+.cns-navbar-mobile-link--active::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-gray-800);
+  border-radius: 50%;
+}
+
+/* Ajustar posición del punto cuando hay flecha */
+.cns-navbar-mobile-accordion-trigger.cns-navbar-mobile-link--active::before {
+  right: 32px;
+}
+
+/* ----- Mobile Accordion ----- */
+.cns-navbar-mobile-accordion-trigger {
+  font-family: inherit;
+}
+
+.cns-navbar-mobile-accordion-arrow {
+  transition: transform 250ms ease;
+}
+
+.cns-navbar-mobile-accordion-arrow--open {
+  transform: rotate(180deg);
+}
+
+.cns-navbar-mobile-accordion {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 250ms ease;
+}
+
+.cns-navbar-mobile-accordion--open {
+  grid-template-rows: 1fr;
+}
+
+.cns-navbar-mobile-accordion > * {
+  overflow: hidden;
+}
+
+.cns-navbar-mobile-sublink {
+  position: relative;
+  display: block;
+  padding: var(--space-sm) 0 var(--space-sm) var(--space-md);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-gray-600);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.cns-navbar-mobile-sublink:hover {
+  color: var(--color-gray-800);
+}
+
+.cns-navbar-mobile-sublink--active {
+  color: var(--color-gray-800);
+  font-weight: 500;
+}
+
+/* Indicador activo en sublink */
+.cns-navbar-mobile-sublink--active::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-gray-800);
+  border-radius: 50%;
+}
+
+/* Línea vertical conectora estilo árbol */
+.cns-navbar-mobile-accordion > div {
+  position: relative;
+}
+
+.cns-navbar-mobile-accordion > div::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0;
+  bottom: var(--space-sm);
+  width: 1px;
+  background-color: var(--color-gray-200);
+}
+
+/* ----- Focus Visible (Accesibilidad) ----- */
+.cns-navbar-link:focus-visible,
+.cns-navbar-dropdown-item:focus-visible,
+.cns-navbar-hamburger:focus-visible,
+.cns-navbar-mobile-link:focus-visible,
+.cns-navbar-mobile-sublink:focus-visible {
+  outline: 2px solid var(--color-gray-800);
+  outline-offset: 2px;
+}
+
+/* En estado transparente, outline claro */
+.cns-navbar:not(.cns-navbar--scrolled) .cns-navbar-link:focus-visible,
+.cns-navbar:not(.cns-navbar--scrolled) .cns-navbar-hamburger:focus-visible {
+  outline-color: var(--color-white);
 }

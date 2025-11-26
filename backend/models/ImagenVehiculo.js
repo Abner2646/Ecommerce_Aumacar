@@ -1,3 +1,4 @@
+// models/ImagenVehiculo.js
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
@@ -12,6 +13,15 @@ module.exports = (sequelize) => {
       allowNull: false,
       references: {
         model: 'vehiculos',
+        key: 'id'
+      }
+    },
+    // ========== NUEVO CAMPO ==========
+    colorVehiculoId: {
+      type: DataTypes.INTEGER,
+      allowNull: true, // Nullable para imágenes genéricas (interior, detalles, etc.)
+      references: {
+        model: 'color_vehiculo',
         key: 'id'
       }
     },
@@ -46,6 +56,12 @@ module.exports = (sequelize) => {
     ImagenVehiculo.belongsTo(models.Vehiculo, {
       foreignKey: 'vehiculoId',
       as: 'vehiculo'
+    });
+
+    // ========== NUEVA ASOCIACIÓN ==========
+    ImagenVehiculo.belongsTo(models.ColorVehiculo, {
+      foreignKey: 'colorVehiculoId',
+      as: 'colorVehiculo'
     });
   };
 

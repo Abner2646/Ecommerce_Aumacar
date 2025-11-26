@@ -1,3 +1,4 @@
+// models/Vehiculo.js
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
@@ -132,6 +133,15 @@ module.exports = (sequelize) => {
     metaDescription: {
       type: DataTypes.STRING(300),
       allowNull: true
+    },
+    // ========== NUEVO CAMPO ==========
+    plantilla: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+      validate: {
+        min: 1
+      }
     }
   }, {
     tableName: 'vehiculos',
@@ -161,6 +171,19 @@ module.exports = (sequelize) => {
       foreignKey: 'vehiculoId',
       otherKey: 'caracteristicaId',
       as: 'caracteristicas'
+    });
+
+    // ========== NUEVAS ASOCIACIONES ==========
+    Vehiculo.belongsToMany(models.Color, {
+      through: models.ColorVehiculo,
+      foreignKey: 'vehiculoId',
+      otherKey: 'colorId',
+      as: 'colores'
+    });
+
+    Vehiculo.hasMany(models.ColorVehiculo, {
+      foreignKey: 'vehiculoId',
+      as: 'coloresVehiculo'
     });
   };
 

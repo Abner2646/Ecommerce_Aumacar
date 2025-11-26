@@ -1,20 +1,34 @@
 // src/App.jsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
+
+// Context
 import { AuthProvider } from './context/AuthContext.jsx';
+
+// Layouts
 import Layout from './components/layout/Layout.jsx';
+import AdminLayout from './components/layout/AdminLayout.jsx';
+
+// Styles
+import './globals.css';
+import './styles/main.css';
 
 // Páginas públicas
 import Login from './pages/public/Login.jsx';
 import SubaruShowcase from './pages/public/SubaruShowcase.jsx';
 import SuzukiHomeConAPI from './pages/public/SuzukiHome.jsx';
 
-import './globals.css';
-import './styles/main.css';
+// Páginas admin
+import Dashboard from './pages/admin/Dashboard';
+import VehiculosManage from './pages/admin/VehiculosManage';
+import VehiculoCreate from './pages/admin/VehiculoCreate';
+import VehiculoEdit from './pages/admin/VehiculoEdit';
+import MarcasManage from './pages/admin/MarcasManage.jsx';
+import CaracteristicasManage from './pages/admin/CaracteristicasManage.jsx';
 
-// Configurar QueryClient
+// Query Client Configuration
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -32,23 +46,41 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            {/* Rutas con Layout (Navbar + Footer) */}
+            {/* ══════════════════════════════════════════════════════════
+                RUTAS PÚBLICAS (con Layout principal)
+            ══════════════════════════════════════════════════════════ */}
             <Route element={<Layout />}>
-              <Route path="/" element={<div className="cns-section"><div className="cns-container"><h1>Home</h1></div></div>} />
-              <Route path="/showcase" element={<SubaruShowcase />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/prueba" element={<SuzukiHomeConAPI />} />
-              {/* Agregar más rutas públicas aquí */}
+              <Route path="showcase" element={<SubaruShowcase />} />
+              <Route path="prueba" element={<SuzukiHomeConAPI />} />
+              <Route path="login" element={<Login />} />
             </Route>
 
-            {/* Rutas Admin sin Layout (si es necesario) */}
-            {/* O crear AdminLayout separado */}
+            {/* ══════════════════════════════════════════════════════════
+                RUTAS ADMIN (con AdminLayout)
+                Todas las rutas hijas heredan el prefijo /admin
+            ══════════════════════════════════════════════════════════ */}
+            <Route path="admin" element={<AdminLayout />}>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              
+              {/* Vehículos */}
+              <Route path="vehiculos">
+                <Route index element={<VehiculosManage />} />
+                <Route path="nuevo" element={<VehiculoCreate />} />
+                <Route path="editar/:id" element={<VehiculoEdit />} />
+              </Route>
 
-            {/* 404 - Redirect a Home */}
+              {/* Catálogos */}
+              <Route path="marcas" element={<MarcasManage />} />
+              <Route path="caracteristicas" element={<CaracteristicasManage />} />
+            </Route>
+
+            {/* ══════════════════════════════════════════════════════════
+                404 - Fallback
+            ══════════════════════════════════════════════════════════ */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
 
-          {/* Toast Notifications */}
           <Toaster
             position="top-right"
             toastOptions={{
@@ -76,7 +108,6 @@ function App() {
         </BrowserRouter>
       </AuthProvider>
 
-      {/* React Query Devtools */}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
