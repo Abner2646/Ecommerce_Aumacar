@@ -1,3 +1,4 @@
+// models/Usuario.js
 const { DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
@@ -44,40 +45,38 @@ module.exports = (sequelize) => {
     },
     ultimoAcceso: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      field: 'ultimo_acceso'
     }
   }, {
     tableName: 'usuarios',
     timestamps: true,
+    underscored: true,
     hooks: {
       beforeCreate: async (usuario) => {
         if (usuario.password) {
-          const salt = await bcrypt.genSalt(10);
+          const salt = await bcrypt.genSalt(12);
           usuario.password = await bcrypt.hash(usuario.password, salt);
         }
       },
       beforeUpdate: async (usuario) => {
         if (usuario.changed('password')) {
-          const salt = await bcrypt.genSalt(10);
+          const salt = await bcrypt.genSalt(12);
           usuario.password = await bcrypt.hash(usuario.password, salt);
         }
       }
     }
   });
 
-  // Método de instancia para verificar password
   Usuario.prototype.verificarPassword = async function(password) {
     return await bcrypt.compare(password, this.password);
   };
 
-  // No excluir el password en el JSON por defecto
   Usuario.prototype.toJSON = function() {
     const values = Object.assign({}, this.get());
     delete values.password;
     return values;
   };
-
-  Usuario.associate = () => {};
 
   return Usuario;
 };

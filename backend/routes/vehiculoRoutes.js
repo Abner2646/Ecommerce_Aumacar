@@ -390,4 +390,47 @@ router.post(
   vehiculoController.asignarCaracteristicas
 );
 
+// ==========================================
+// AGREGAR estas rutas a tu archivo routes/vehiculoRoutes.js existente
+// ==========================================
+
+// 1. Agregar este import arriba del archivo:
+const colorController = require('../controllers/colorController');
+
+// 2. Agregar estas rutas (después de las rutas de imágenes existentes):
+
+// ==========================================
+// Rutas de colores del vehículo
+// ==========================================
+
+// GET /api/vehiculos/:vehiculoId/colores - Obtener colores del vehículo
+router.get('/:vehiculoId/colores', colorController.obtenerColoresVehiculo);
+
+// POST /api/vehiculos/:vehiculoId/colores - Asignar colores al vehículo (admin)
+router.post('/:vehiculoId/colores', verificarToken, colorController.asignarColoresVehiculo);
+
+// DELETE /api/vehiculos/:vehiculoId/colores/:colorId - Quitar un color del vehículo (admin)
+router.delete('/:vehiculoId/colores/:colorId', verificarToken, colorController.quitarColorVehiculo);
+
+// ==========================================
+// Rutas de imágenes por color
+// ==========================================
+
+// GET /api/vehiculos/:id/colores/:colorVehiculoId/imagenes - Obtener imágenes de un color específico
+// Query params: incluirGenericas=true para incluir imágenes sin color asignado
+router.get('/:id/colores/:colorVehiculoId/imagenes', vehiculoController.obtenerImagenesPorColor);
+
+// ==========================================
+// Actualizar imagen (para cambiar color, orden, etc.)
+// ==========================================
+
+// PUT /api/vehiculos/imagenes/:imagenId - Actualizar imagen (admin)
+router.put('/imagenes/:imagenId', verificarToken, vehiculoController.actualizarImagen);
+
+// ==========================================
+// NOTA: La ruta POST de agregarImagenes ya existente ahora acepta
+// un campo opcional 'colorVehiculoId' en el body para asociar 
+// las imágenes a un color específico del vehículo.
+// ==========================================
+
 module.exports = router;

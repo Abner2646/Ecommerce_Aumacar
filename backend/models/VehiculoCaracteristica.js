@@ -1,3 +1,4 @@
+// models/VehiculoCaracteristicas
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {

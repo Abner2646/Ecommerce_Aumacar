@@ -1063,3 +1063,6 @@ He creado el archivo Markdown completo con toda la documentación actualizada de
 ✅ Border radius y sistema modular
 ✅ Instrucciones para agregar nuevas páginas y marcas
 ✅ Checklist de calidad
+
+# Aclaraciones:
+A cada archivo que crees, en el primer renglón añadile un comentario con la dirección en donde debería ir. Ej: "// /pages/public/home.jsx

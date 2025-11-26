@@ -21,9 +21,11 @@
 @import './Navbar.css';
 @import './Footer.css';
 
-/* 6. Estilos Específicos de Páginas */
+/* 6. Estilos Específicos de Páginas  <----------*/
 @import './pages/SubaruShowcase.css';
 @import './pages/Suzukihome.css';
+@import './pages/Admin.css';
+
 
 /* 7. Tailwind Utilities (último) */
 @tailwind utilities;

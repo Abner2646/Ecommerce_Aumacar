@@ -1,3 +1,5 @@
+// utils/helpers.js
+
 /**
  * Genera un slug a partir de un texto
  * @param {String} text - Texto a convertir en slug
