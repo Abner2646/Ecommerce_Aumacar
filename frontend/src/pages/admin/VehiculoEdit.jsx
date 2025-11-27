@@ -11,38 +11,49 @@ import {
   useDeleteVideo,
   useAssignCaracteristicas 
 } from '../../hooks/useVehiculos';
+import { useAssignColoresVehiculo } from '../../hooks/useColores';
 import StepIndicator from '../../components/admin/StepIndicator';
 import Step1Info from '../../components/admin/VehiculoForm/Step1Info';
-import Step2Images from '../../components/admin/VehiculoForm/Step2Images';
-import Step3Videos from '../../components/admin/VehiculoForm/Step3Videos';
-import Step4Caracteristicas from '../../components/admin/VehiculoForm/Step4Caracteristicas';
+import Step2Colores from '../../components/admin/VehiculoForm/Step2Colores';
+import Step3Images from '../../components/admin/VehiculoForm/Step3Images';
+import Step4Videos from '../../components/admin/VehiculoForm/Step4Videos';
+import Step5Final from '../../components/admin/VehiculoForm/Step5Final';
 import toast from 'react-hot-toast';
 
 const STEPS = [
   { id: 'info', label: 'Información', description: 'Datos básicos' },
+  { id: 'colores', label: 'Colores', description: 'Colores disponibles' },
   { id: 'images', label: 'Imágenes', description: 'Fotos del vehículo' },
   { id: 'videos', label: 'Videos', description: 'Videos (opcional)' },
-  { id: 'caracteristicas', label: 'Características', description: 'Features incluidas' }
+  { id: 'final', label: 'Finalizar', description: 'Características y plantilla' }
 ];
 
 const VehiculoEdit = () => {
   const { id } = useParams();
+  console.log('ID del vehículo:', id);
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
 
-  // Cargar datos del vehículo
-  const { data: vehiculoData, isLoading } = useVehiculo(id);
+  // Cargar vehículo
+  const { data: vehiculoData, isLoading, refetch } = useVehiculo(id);
   const vehiculo = vehiculoData?.vehiculo;
 
+  console.log('ID:', id);
+  console.log('isLoading:', isLoading);
+  console.log('vehiculoData:', vehiculoData);
+  console.log('vehiculo:', vehiculo);
+
+  // Mutations
   const updateVehiculo = useUpdateVehiculo();
+  const assignColores = useAssignColoresVehiculo();
   const addImages = useAddImages();
   const addVideo = useAddVideo();
   const deleteImage = useDeleteImage();
   const deleteVideo = useDeleteVideo();
   const assignCaracteristicas = useAssignCaracteristicas();
 
-  // Cargar datos iniciales cuando se obtiene el vehículo
+  // Cargar datos iniciales
   useEffect(() => {
     if (vehiculo) {
       setFormData({
@@ -75,7 +86,7 @@ const VehiculoEdit = () => {
     }
   }, [vehiculo]);
 
-  // Step 1: Actualizar info y avanzar
+  // Step 1: Actualizar info
   const handleStep1Next = async (data) => {
     try {
       await updateVehiculo.mutateAsync({ id, data });
@@ -86,70 +97,108 @@ const VehiculoEdit = () => {
     }
   };
 
-  // Step 2: Manejar imágenes
+  // Step 2: Actualizar colores
   const handleStep2Next = async (data) => {
     try {
-      // Subir nuevas imágenes si hay
-      if (data.images?.length > 0) {
-        const imagesToUpload = data.images.map(img => img.file);
-        await addImages.mutateAsync({
+      if (data.colorIds) {
+        await assignColores.mutateAsync({
           vehiculoId: id,
-          images: imagesToUpload,
-          options: { esPrincipal: false, orden: 0 }
+          colorIds: data.colorIds
         });
+        await refetch(); // Recargar para obtener los colorVehiculoId actualizados
       }
-      
       setFormData(prev => ({ ...prev, step2: data }));
       setCurrentStep(3);
+    } catch (error) {
+      console.error('Error actualizando colores:', error);
+    }
+  };
+
+  // Step 3: Subir nuevas imágenes
+  const handleStep3Next = async (data) => {
+    try {
+      if (data.images?.length > 0) {
+        // Agrupar imágenes por colorVehiculoId
+        const imagesByColor = data.images.reduce((acc, img) => {
+          const key = img.colorVehiculoId || 'generic';
+          if (!acc[key]) acc[key] = [];
+          acc[key].push(img);
+          return acc;
+        }, {});
+
+        for (const [colorKey, images] of Object.entries(imagesByColor)) {
+          const files = images.map(img => img.file);
+          const options = {
+            esPrincipal: images.some(img => img.esPrincipal),
+            orden: 0
+          };
+          
+          if (colorKey !== 'generic') {
+            options.colorVehiculoId = colorKey;
+          }
+
+          await addImages.mutateAsync({
+            vehiculoId: id,
+            images: files,
+            options
+          });
+        }
+      }
+      setFormData(prev => ({ ...prev, step3: data }));
+      setCurrentStep(4);
     } catch (error) {
       console.error('Error subiendo imágenes:', error);
     }
   };
 
   const handleDeleteImage = async (imagenId) => {
+    if (!window.confirm('¿Eliminar esta imagen?')) return;
     try {
       await deleteImage.mutateAsync(imagenId);
-      toast.success('Imagen eliminada');
+      await refetch();
     } catch (error) {
       console.error('Error eliminando imagen:', error);
     }
   };
 
-  // Step 3: Manejar videos
-  const handleStep3Next = async (data) => {
+  // Step 4: Subir nuevos videos
+  const handleStep4Next = async (data) => {
     try {
-      // Subir nuevos videos si hay
       if (data.videos?.length > 0) {
-        for (const videoData of data.videos) {
-          if (videoData.status === 'pending') {
+        for (const video of data.videos) {
+          if (video.status === 'pending') {
             await addVideo.mutateAsync({
               vehiculoId: id,
-              video: videoData.file,
-              metadata: videoData.metadata
+              video: video.file,
+              metadata: {
+                titulo: video.titulo,
+                descripcion: video.descripcion
+              }
             });
           }
         }
       }
-      
-      setFormData(prev => ({ ...prev, step3: data }));
-      setCurrentStep(4);
+      setFormData(prev => ({ ...prev, step4: data }));
+      setCurrentStep(5);
     } catch (error) {
       console.error('Error subiendo videos:', error);
     }
   };
 
   const handleDeleteVideo = async (videoId) => {
+    if (!window.confirm('¿Eliminar este video?')) return;
     try {
       await deleteVideo.mutateAsync(videoId);
-      toast.success('Video eliminado');
+      await refetch();
     } catch (error) {
       console.error('Error eliminando video:', error);
     }
   };
 
-  // Step 4: Actualizar características
+  // Step 5: Características y plantilla
   const handleFinalSubmit = async (data) => {
     try {
+      // Asignar características
       if (data.caracteristicasIds) {
         await assignCaracteristicas.mutateAsync({
           vehiculoId: id,
@@ -157,51 +206,56 @@ const VehiculoEdit = () => {
         });
       }
 
+      // Actualizar plantilla
+      if (data.plantilla) {
+        await updateVehiculo.mutateAsync({
+          id,
+          data: { plantilla: data.plantilla }
+        });
+      }
+
       toast.success('¡Vehículo actualizado exitosamente!');
       navigate('/admin/vehiculos');
-      
     } catch (error) {
-      console.error('Error actualizando características:', error);
+      console.error('Error finalizando:', error);
       toast.error('Error al actualizar el vehículo');
     }
   };
 
-  // Navegación
-  const handleBack = () => {
-    setCurrentStep(prev => Math.max(1, prev - 1));
-  };
+  // Navigation
+  const handleBack = () => setCurrentStep(prev => Math.max(1, prev - 1));
 
   const handleCancel = () => {
-    if (window.confirm('¿Estás seguro de cancelar? Los cambios no guardados se perderán.')) {
+    if (window.confirm('¿Cancelar? Los cambios no guardados se perderán.')) {
       navigate('/admin/vehiculos');
     }
   };
 
   const isSubmitting = 
-    updateVehiculo.isLoading || 
-    addImages.isLoading || 
-    addVideo.isLoading || 
-    deleteImage.isLoading ||
-    deleteVideo.isLoading ||
-    assignCaracteristicas.isLoading;
+    updateVehiculo.isPending || 
+    assignColores.isPending ||
+    addImages.isPending || 
+    addVideo.isPending || 
+    deleteImage.isPending ||
+    deleteVideo.isPending ||
+    assignCaracteristicas.isPending;
 
   if (isLoading) {
     return (
-      <div className="adm-table-loading">
-        <i className="fa-solid fa-spinner fa-spin text-4xl text-gray-400"></i>
-        <p className="text-gray-600 mt-4">Cargando vehículo...</p>
+      <div className="flex items-center justify-center py-24">
+        <i className="fa-solid fa-spinner fa-spin text-3xl text-gray-400"></i>
       </div>
     );
   }
 
   if (!vehiculo) {
     return (
-      <div className="adm-table-empty">
-        <i className="fa-solid fa-exclamation-triangle text-6xl text-red-400"></i>
-        <p className="text-gray-600 mt-4">Vehículo no encontrado</p>
+      <div className="text-center py-24">
+        <i className="fa-solid fa-exclamation-triangle text-5xl text-red-400 mb-4"></i>
+        <p className="text-gray-600 mb-4">Vehículo no encontrado</p>
         <button
           onClick={() => navigate('/admin/vehiculos')}
-          className="adm-btn adm-btn-primary mt-4"
+          className="px-4 py-2 bg-gray-900 text-white rounded-lg"
         >
           Volver a vehículos
         </button>
@@ -209,65 +263,77 @@ const VehiculoEdit = () => {
     );
   }
 
+  // Preparar colores existentes
+  const existingColores = vehiculo.colores || [];
+
   return (
-    <div>
+    <div className="max-w-5xl mx-auto">
       {/* Header */}
-      <div className="adm-page-header">
-        <div>
-          <h1 className="adm-page-title">Editar Vehículo</h1>
-          <p className="text-gray-600 mt-2">
-            {vehiculo.marca?.nombre} {vehiculo.modelo} {vehiculo.version} ({vehiculo.año})
-          </p>
-        </div>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Editar Vehículo</h1>
+        <p className="text-gray-600 mt-1">
+          {vehiculo.marca?.nombre} {vehiculo.modelo} {vehiculo.version} ({vehiculo.año})
+        </p>
       </div>
 
       {/* Step Indicator */}
-      <div className="mb-8">
+      <div className="mb-8 bg-white rounded-lg shadow-sm p-4">
         <StepIndicator currentStep={currentStep} steps={STEPS} />
       </div>
 
-      {/* Form Container */}
-      <div className="adm-form-container">
-        {currentStep === 1 && (
-          <Step1Info
-            data={formData.step1}
-            onNext={handleStep1Next}
-            onCancel={handleCancel}
-          />
-        )}
+      {/* Form Steps */}
+      {currentStep === 1 && (
+        <Step1Info
+          data={formData.step1}
+          onNext={handleStep1Next}
+          onCancel={handleCancel}
+          isSubmitting={updateVehiculo.isPending}
+        />
+      )}
 
-        {currentStep === 2 && (
-          <Step2Images
-            data={formData.step2}
-            onNext={handleStep2Next}
-            onBack={handleBack}
-            vehiculoId={id}
-            existingImages={vehiculo.imagenes || []}
-            onDeleteExisting={handleDeleteImage}
-          />
-        )}
+      {currentStep === 2 && (
+        <Step2Colores
+          data={formData.step2}
+          onNext={handleStep2Next}
+          onBack={handleBack}
+          existingColores={existingColores}
+          isSubmitting={assignColores.isPending}
+        />
+      )}
 
-        {currentStep === 3 && (
-          <Step3Videos
-            data={formData.step3}
-            onNext={handleStep3Next}
-            onBack={handleBack}
-            vehiculoId={id}
-            existingVideos={vehiculo.videos || []}
-            onDeleteExisting={handleDeleteVideo}
-          />
-        )}
+      {currentStep === 3 && (
+        <Step3Images
+          data={formData.step3}
+          onNext={handleStep3Next}
+          onBack={handleBack}
+          selectedColores={existingColores}
+          existingImages={vehiculo.imagenes || []}
+          onDeleteExisting={handleDeleteImage}
+          isSubmitting={addImages.isPending}
+        />
+      )}
 
-        {currentStep === 4 && (
-          <Step4Caracteristicas
-            data={formData.step4}
-            onSubmit={handleFinalSubmit}
-            onBack={handleBack}
-            existingCaracteristicas={vehiculo.caracteristicas || []}
-            isSubmitting={isSubmitting}
-          />
-        )}
-      </div>
+      {currentStep === 4 && (
+        <Step4Videos
+          data={formData.step4}
+          onNext={handleStep4Next}
+          onBack={handleBack}
+          existingVideos={vehiculo.videos || []}
+          onDeleteExisting={handleDeleteVideo}
+          isSubmitting={addVideo.isPending}
+        />
+      )}
+
+      {currentStep === 5 && (
+        <Step5Final
+          data={formData.step5}
+          onSubmit={handleFinalSubmit}
+          onBack={handleBack}
+          existingCaracteristicas={vehiculo.caracteristicas || []}
+          currentPlantilla={vehiculo.plantilla}
+          isSubmitting={isSubmitting}
+        />
+      )}
     </div>
   );
 };

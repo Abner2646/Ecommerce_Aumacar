@@ -32,6 +32,11 @@ const Sidebar = () => {
       path: '/admin/caracteristicas',
       icon: 'fa-list-check',
       label: 'Características'
+    },
+    {
+      path: '/admin/colores',
+      icon: 'fa-palette',
+      label: 'Colores'
     }
   ];
 
@@ -40,7 +45,7 @@ const Sidebar = () => {
       {/* Header del Sidebar */}
       <div className="adm-sidebar-header">
         <h1 className="adm-sidebar-title">
-          Concesionaria Admin
+          Aumacar Admin
         </h1>
       </div>
 

@@ -1,4 +1,4 @@
-// src/components/common/Modal.jsx
+// src/components/common/Modal.jsx 
 
 const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
   if (!isOpen) return null;

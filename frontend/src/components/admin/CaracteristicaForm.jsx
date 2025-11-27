@@ -24,21 +24,21 @@ const TIPOS_CARACTERISTICA = [
 ];
 
 const ICONOS_COMUNES = [
-  { value: 'fa-shield-alt', label: 'Escudo (Seguridad)', preview: 'fa-shield-alt' },
-  { value: 'fa-snowflake', label: 'Aire Acondicionado', preview: 'fa-snowflake' },
-  { value: 'fa-gauge-high', label: 'Velocímetro', preview: 'fa-gauge-high' },
-  { value: 'fa-wifi', label: 'WiFi/Conectividad', preview: 'fa-wifi' },
-  { value: 'fa-bluetooth', label: 'Bluetooth', preview: 'fa-bluetooth' },
-  { value: 'fa-camera', label: 'Cámara', preview: 'fa-camera' },
-  { value: 'fa-volume-high', label: 'Audio/Sonido', preview: 'fa-volume-high' },
-  { value: 'fa-sun', label: 'Techo Solar', preview: 'fa-sun' },
-  { value: 'fa-car-side', label: 'Auto (Lateral)', preview: 'fa-car-side' },
-  { value: 'fa-bolt', label: 'Potencia/Eléctrico', preview: 'fa-bolt' },
-  { value: 'fa-mountain', label: 'Todo Terreno', preview: 'fa-mountain' },
-  { value: 'fa-award', label: 'Premio/Destacado', preview: 'fa-award' },
-  { value: 'fa-steering-wheel', label: 'Volante', preview: 'fa-steering-wheel' },
-  { value: 'fa-key', label: 'Llave/Encendido', preview: 'fa-key' },
-  { value: 'fa-gears', label: 'Engranajes/Mecánica', preview: 'fa-gears' }
+  { value: 'fa-shield-alt', label: 'Escudo (Seguridad)' },
+  { value: 'fa-snowflake', label: 'Aire Acondicionado' },
+  { value: 'fa-gauge-high', label: 'Velocímetro' },
+  { value: 'fa-wifi', label: 'WiFi/Conectividad' },
+  { value: 'fa-bluetooth', label: 'Bluetooth' },
+  { value: 'fa-camera', label: 'Cámara' },
+  { value: 'fa-volume-high', label: 'Audio/Sonido' },
+  { value: 'fa-sun', label: 'Techo Solar' },
+  { value: 'fa-car-side', label: 'Auto (Lateral)' },
+  { value: 'fa-bolt', label: 'Potencia/Eléctrico' },
+  { value: 'fa-mountain', label: 'Todo Terreno' },
+  { value: 'fa-award', label: 'Premio/Destacado' },
+  { value: 'fa-steering-wheel', label: 'Volante' },
+  { value: 'fa-key', label: 'Llave/Encendido' },
+  { value: 'fa-gears', label: 'Engranajes/Mecánica' }
 ];
 
 const CaracteristicaForm = ({ caracteristica, onSuccess }) => {
@@ -51,7 +51,8 @@ const CaracteristicaForm = ({ caracteristica, onSuccess }) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    watch
+    watch,
+    setValue
   } = useForm({
     resolver: zodResolver(caracteristicaSchema),
     defaultValues: caracteristica || {
@@ -62,7 +63,14 @@ const CaracteristicaForm = ({ caracteristica, onSuccess }) => {
     }
   });
 
-  const iconoSeleccionado = watch('icono');
+  const iconoActual = watch('icono');
+
+  // Verificar si el icono actual está en la lista de comunes
+  const iconoEnLista = ICONOS_COMUNES.some(i => i.value === iconoActual);
+
+  const handleSelectIcono = (e) => {
+    setValue('icono', e.target.value, { shouldValidate: true });
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -123,15 +131,19 @@ const CaracteristicaForm = ({ caracteristica, onSuccess }) => {
         
         {/* Preview del icono seleccionado */}
         <div className="adm-icon-preview mb-4">
-          <i className={`fa-solid ${iconoSeleccionado} text-4xl`}></i>
-          <span className="text-sm text-gray-600 ml-4">{iconoSeleccionado}</span>
+          <i className={`fa-solid ${iconoActual} text-4xl`}></i>
+          <span className="text-sm text-gray-600 ml-4">{iconoActual}</span>
         </div>
 
-        {/* Select de iconos */}
+        {/* Select de iconos - NO registrado, usa setValue */}
         <select
-          {...register('icono')}
-          className={`adm-form-input ${errors.icono ? 'adm-form-input-error' : ''}`}
+          value={iconoEnLista ? iconoActual : ''}
+          onChange={handleSelectIcono}
+          className="adm-form-input"
         >
+          <option value="" disabled>
+            {iconoEnLista ? 'Seleccionar icono común...' : `Personalizado: ${iconoActual}`}
+          </option>
           {ICONOS_COMUNES.map((icono) => (
             <option key={icono.value} value={icono.value}>
               {icono.label}
@@ -139,12 +151,12 @@ const CaracteristicaForm = ({ caracteristica, onSuccess }) => {
           ))}
         </select>
 
-        {/* Input manual (por si quieren otro icono) */}
+        {/* Input manual - este SÍ está registrado */}
         <div className="mt-2">
           <input
             type="text"
             {...register('icono')}
-            className="adm-form-input"
+            className={`adm-form-input ${errors.icono ? 'adm-form-input-error' : ''}`}
             placeholder="O ingresa manualmente: fa-car, fa-shield, etc."
           />
         </div>

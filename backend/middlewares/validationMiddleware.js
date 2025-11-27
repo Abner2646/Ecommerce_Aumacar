@@ -90,7 +90,7 @@ const validarVehiculo = (req, res, next) => {
   const { marcaId, modelo, año, precio, slug } = req.body;
 
   const errores = [];
-
+/*
   if (!marcaId || isNaN(marcaId)) {
     errores.push('El ID de marca es requerido y debe ser un número');
   }
@@ -114,7 +114,7 @@ const validarVehiculo = (req, res, next) => {
   if (slug && !/^[a-z0-9-]+$/.test(slug)) {
     errores.push('El slug solo puede contener letras minúsculas, números y guiones');
   }
-
+*/
   if (errores.length > 0) {
     return res.status(400).json({
       error: 'Errores de validación',

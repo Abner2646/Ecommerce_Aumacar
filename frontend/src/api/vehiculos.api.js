@@ -1,11 +1,20 @@
-// /src/api/vehiculos.api.js
+// /src/api/vehiculos.api.js 
 
 import { apiClient, apiClientFormData } from '../api/cliente';
 
 export const vehiculosApi = {
   // GET /api/vehiculos (con filtros)
-  getAll: async (filters = {}) => {
+  /*getAll: async (filters = {}) => {
     const queryString = new URLSearchParams(filters).toString();
+    return apiClient(`/vehiculos${queryString ? `?${queryString}` : ''}`);
+  },*/
+  getAll: async (filters = {}) => {
+    // Filtrar parámetros vacíos
+    const cleanFilters = Object.fromEntries(
+      Object.entries(filters).filter(([_, value]) => value !== '' && value !== null && value !== undefined)
+    );
+    
+    const queryString = new URLSearchParams(cleanFilters).toString();
     return apiClient(`/vehiculos${queryString ? `?${queryString}` : ''}`);
   },
 
@@ -91,5 +100,12 @@ export const vehiculosApi = {
       method: 'POST',
       body: JSON.stringify({ caracteristicasIds })
     });
-  }
+  },
+
+  updatePartial: async (id, data) => {
+  return apiClient(`/vehiculos/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data)
+  });
+}
 };

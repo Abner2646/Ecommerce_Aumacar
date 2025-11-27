@@ -27,6 +27,7 @@ import VehiculoCreate from './pages/admin/VehiculoCreate';
 import VehiculoEdit from './pages/admin/VehiculoEdit';
 import MarcasManage from './pages/admin/MarcasManage.jsx';
 import CaracteristicasManage from './pages/admin/CaracteristicasManage.jsx';
+import ColoresManage from './pages/admin/ColoresManage.jsx'
 
 // Query Client Configuration
 const queryClient = new QueryClient({
@@ -62,6 +63,7 @@ function App() {
             <Route path="admin" element={<AdminLayout />}>
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
+              <Route path="colores" element={<ColoresManage />} />
               
               {/* Vehículos */}
               <Route path="vehiculos">

@@ -1,4 +1,4 @@
-// /src/api/caracteristicas.api.js
+// /src/api/caracteristicas.api.js 
 
 import { apiClient } from '../api/cliente';
 
