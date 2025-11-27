@@ -1,4 +1,4 @@
-// /src/hooks/useCaracteristicas.js 
+// /src/hooks/useCaracteristicas.js  
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { caracteristicasApi } from '../api/caracteristicas.api';

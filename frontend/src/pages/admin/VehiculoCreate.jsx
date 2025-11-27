@@ -6,20 +6,25 @@ import {
   useCreateVehiculo, 
   useAddImages, 
   useAddVideo,
-  useAssignCaracteristicas 
+  useAssignCaracteristicas,
+  useUpdateVehiculo,
+  useUpdateVehiculoPartial
 } from '../../hooks/useVehiculos';
+import { useAssignColoresVehiculo } from '../../hooks/useColores';
 import StepIndicator from '../../components/admin/StepIndicator';
 import Step1Info from '../../components/admin/VehiculoForm/Step1Info';
-import Step2Images from '../../components/admin/VehiculoForm/Step2Images';
-import Step3Videos from '../../components/admin/VehiculoForm/Step3Videos';
-import Step4Caracteristicas from '../../components/admin/VehiculoForm/Step4Caracteristicas';
+import Step2Colores from '../../components/admin/VehiculoForm/Step2Colores';
+import Step3Images from '../../components/admin/VehiculoForm/Step3Images';
+import Step4Videos from '../../components/admin/VehiculoForm/Step4Videos';
+import Step5Final from '../../components/admin/VehiculoForm/Step5Final';
 import toast from 'react-hot-toast';
 
 const STEPS = [
   { id: 'info', label: 'Información', description: 'Datos básicos' },
+  { id: 'colores', label: 'Colores', description: 'Colores disponibles' },
   { id: 'images', label: 'Imágenes', description: 'Fotos del vehículo' },
   { id: 'videos', label: 'Videos', description: 'Videos (opcional)' },
-  { id: 'caracteristicas', label: 'Características', description: 'Features incluidas' }
+  { id: 'final', label: 'Finalizar', description: 'Características y plantilla' }
 ];
 
 const VehiculoCreate = () => {
@@ -27,153 +32,211 @@ const VehiculoCreate = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
   const [createdVehiculoId, setCreatedVehiculoId] = useState(null);
+  const [assignedColores, setAssignedColores] = useState([]);
 
+  // Mutations
   const createVehiculo = useCreateVehiculo();
+  const updateVehiculo = useUpdateVehiculoPartial();
+  const assignColores = useAssignColoresVehiculo();
   const addImages = useAddImages();
   const addVideo = useAddVideo();
   const assignCaracteristicas = useAssignCaracteristicas();
 
-  // Step 1: Guardar info y avanzar
-  const handleStep1Next = (data) => {
-    setFormData(prev => ({ ...prev, step1: data }));
-    setCurrentStep(2);
-  };
-
-  // Step 2: Guardar imágenes y avanzar
-  const handleStep2Next = (data) => {
-    setFormData(prev => ({ ...prev, step2: data }));
-    setCurrentStep(3);
-  };
-
-  // Step 3: Guardar videos y avanzar
-  const handleStep3Next = (data) => {
-    setFormData(prev => ({ ...prev, step3: data }));
-    setCurrentStep(4);
-  };
-
-  // Step 4: Submit final
-  const handleFinalSubmit = async (data) => {
+  // Step 1: Crear vehículo con info básica
+  const handleStep1Next = async (data) => { // <-----------
     try {
-      // 1. Crear el vehículo con la info básica
-      const vehiculoResponse = await createVehiculo.mutateAsync(formData.step1);
-      const vehiculoId = vehiculoResponse.vehiculo.id;
-      
-      setCreatedVehiculoId(vehiculoId);
+      const response = await createVehiculo.mutateAsync(data);
+      setCreatedVehiculoId(response.vehiculo.id);
+      setFormData(prev => ({ ...prev, step1: data }));
+      setCurrentStep(2);
+    } catch (error) {
+      console.error('Error creando vehículo:', error);
+    }
+  };
 
-      // 2. Subir imágenes si hay
-      if (formData.step2?.images?.length > 0) {
-        const imagesToUpload = formData.step2.images.map(img => img.file);
-        const esPrincipal = true; // La primera será principal
-        
-        await addImages.mutateAsync({
-          vehiculoId,
-          images: imagesToUpload,
-          options: { esPrincipal, orden: 0 }
+  // Step 2: Asignar colores
+  const handleStep2Next = async (data) => {
+    try {
+      if (data.colorIds?.length > 0 && createdVehiculoId) {
+        const response = await assignColores.mutateAsync({
+          vehiculoId: createdVehiculoId,
+          colorIds: data.colorIds
         });
+        // Guardar los colores asignados con sus colorVehiculoId
+        setAssignedColores(response.colores || []);
       }
+      setFormData(prev => ({ ...prev, step2: data }));
+      setCurrentStep(3);
+    } catch (error) {
+      console.error('Error asignando colores:', error);
+    }
+  };
 
-      // 3. Subir videos si hay
-      if (formData.step3?.videos?.length > 0) {
-        for (const videoData of formData.step3.videos) {
-          if (videoData.status === 'pending') {
+  // Step 3: Subir imágenes
+  const handleStep3Next = async (data) => {
+    try {
+      if (data.images?.length > 0 && createdVehiculoId) {
+        // Agrupar imágenes por colorVehiculoId
+        const imagesByColor = data.images.reduce((acc, img) => {
+          const key = img.colorVehiculoId || 'generic';
+          if (!acc[key]) acc[key] = [];
+          acc[key].push(img);
+          return acc;
+        }, {});
+
+        // Subir cada grupo
+        for (const [colorKey, images] of Object.entries(imagesByColor)) {
+          const files = images.map(img => img.file);
+          const options = {
+            esPrincipal: images.some(img => img.esPrincipal),
+            orden: 0
+          };
+          
+          if (colorKey !== 'generic') {
+            options.colorVehiculoId = colorKey;
+          }
+
+          await addImages.mutateAsync({
+            vehiculoId: createdVehiculoId,
+            images: files,
+            options
+          });
+        }
+      }
+      setFormData(prev => ({ ...prev, step3: data }));
+      setCurrentStep(4);
+    } catch (error) {
+      console.error('Error subiendo imágenes:', error);
+    }
+  };
+
+  // Step 4: Subir videos
+  const handleStep4Next = async (data) => {
+    try {
+      if (data.videos?.length > 0 && createdVehiculoId) {
+        for (const video of data.videos) {
+          if (video.status === 'pending') {
             await addVideo.mutateAsync({
-              vehiculoId,
-              video: videoData.file,
-              metadata: videoData.metadata
+              vehiculoId: createdVehiculoId,
+              video: video.file,
+              metadata: {
+                titulo: video.titulo,
+                descripcion: video.descripcion
+              }
             });
           }
         }
       }
+      setFormData(prev => ({ ...prev, step4: data }));
+      setCurrentStep(5);
+    } catch (error) {
+      console.error('Error subiendo videos:', error);
+    }
+  };
 
-      // 4. Asignar características si hay
-      if (data.caracteristicasIds?.length > 0) {
+  // Step 5: Características y plantilla
+  const handleFinalSubmit = async (data) => {
+    try {
+      // Asignar características
+      if (data.caracteristicasIds?.length > 0 && createdVehiculoId) {
         await assignCaracteristicas.mutateAsync({
-          vehiculoId,
+          vehiculoId: createdVehiculoId,
           caracteristicasIds: data.caracteristicasIds
         });
       }
 
-      // Éxito total
+      // Actualizar plantilla
+      if (data.plantilla && createdVehiculoId) {
+       await updateVehiculo.mutateAsync({
+         id: createdVehiculoId,
+         data: { plantilla: data.plantilla }
+       });
+     }
+
       toast.success('¡Vehículo creado exitosamente!');
       navigate('/admin/vehiculos');
-      
     } catch (error) {
-      console.error('Error creando vehículo:', error);
-      toast.error('Error al crear el vehículo. Por favor intenta nuevamente.');
+      console.error('Error finalizando:', error);
+      toast.error('Error al guardar el vehículo');
     }
   };
 
-  // Navegación
-  const handleBack = () => {
-    setCurrentStep(prev => Math.max(1, prev - 1));
-  };
+  // Navigation
+  const handleBack = () => setCurrentStep(prev => Math.max(1, prev - 1));
 
   const handleCancel = () => {
-    if (window.confirm('¿Estás seguro de cancelar? Se perderán todos los datos ingresados.')) {
+    if (window.confirm('¿Cancelar? Se perderán los datos no guardados.')) {
       navigate('/admin/vehiculos');
     }
   };
 
   const isSubmitting = 
-    createVehiculo.isLoading || 
-    addImages.isLoading || 
-    addVideo.isLoading || 
-    assignCaracteristicas.isLoading;
+    createVehiculo.isPending || 
+    assignColores.isPending ||
+    addImages.isPending || 
+    addVideo.isPending || 
+    assignCaracteristicas.isPending ||
+    updateVehiculo.isPending;
 
   return (
-    <div>
+    <div className="max-w-5xl mx-auto">
       {/* Header */}
-      <div className="adm-page-header">
-        <div>
-          <h1 className="adm-page-title">Crear Nuevo Vehículo</h1>
-          <p className="text-gray-600 mt-2">
-            Completa el proceso en 4 pasos simples
-          </p>
-        </div>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Crear Nuevo Vehículo</h1>
+        <p className="text-gray-600 mt-1">Completa el proceso en 5 pasos</p>
       </div>
 
       {/* Step Indicator */}
-      <div className="mb-8">
+      <div className="mb-8 bg-white rounded-lg shadow-sm p-4">
         <StepIndicator currentStep={currentStep} steps={STEPS} />
       </div>
 
-      {/* Form Container */}
-      <div className="adm-form-container">
-        {currentStep === 1 && (
-          <Step1Info
-            data={formData.step1}
-            onNext={handleStep1Next}
-            onCancel={handleCancel}
-          />
-        )}
+      {/* Form Steps */}
+      {currentStep === 1 && (
+        <Step1Info
+          data={formData.step1}
+          onNext={handleStep1Next}
+          onCancel={handleCancel}
+          isSubmitting={createVehiculo.isPending}
+        />
+      )}
 
-        {currentStep === 2 && (
-          <Step2Images
-            data={formData.step2}
-            onNext={handleStep2Next}
-            onBack={handleBack}
-            vehiculoId={createdVehiculoId}
-          />
-        )}
+      {currentStep === 2 && (
+        <Step2Colores
+          data={formData.step2}
+          onNext={handleStep2Next}
+          onBack={handleBack}
+          isSubmitting={assignColores.isPending}
+        />
+      )}
 
-        {currentStep === 3 && (
-          <Step3Videos
-            data={formData.step3}
-            onNext={handleStep3Next}
-            onBack={handleBack}
-            vehiculoId={createdVehiculoId}
-          />
-        )}
+      {currentStep === 3 && (
+        <Step3Images
+          data={formData.step3}
+          onNext={handleStep3Next}
+          onBack={handleBack}
+          selectedColores={assignedColores}
+          isSubmitting={addImages.isPending}
+        />
+      )}
 
-        {currentStep === 4 && (
-          <Step4Caracteristicas
-            data={formData.step4}
-            onSubmit={handleFinalSubmit}
-            onBack={handleBack}
-            isSubmitting={isSubmitting}
-          />
-        )}
-      </div>
+      {currentStep === 4 && (
+        <Step4Videos
+          data={formData.step4}
+          onNext={handleStep4Next}
+          onBack={handleBack}
+          isSubmitting={addVideo.isPending}
+        />
+      )}
+
+      {currentStep === 5 && (
+        <Step5Final
+          data={formData.step5}
+          onSubmit={handleFinalSubmit}
+          onBack={handleBack}
+          isSubmitting={isSubmitting}
+        />
+      )}
     </div>
   );
 };

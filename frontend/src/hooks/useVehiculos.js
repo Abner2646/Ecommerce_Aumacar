@@ -1,8 +1,12 @@
-// /src/hooks/useVehiculos.js 
+// /src/hooks/useVehiculos.js
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { vehiculosApi } from '../api/vehiculos.api';
 import toast from 'react-hot-toast';
+
+// ==========================================
+// Queries
+// ==========================================
 
 export const useVehiculos = (filters = {}) => {
   return useQuery({
@@ -26,6 +30,10 @@ export const useVehiculoBySlug = (slug) => {
     enabled: !!slug
   });
 };
+
+// ==========================================
+// Mutations - CRUD Vehículo
+// ==========================================
 
 export const useCreateVehiculo = () => {
   const queryClient = useQueryClient();
@@ -73,6 +81,25 @@ export const useDeleteVehiculo = () => {
   });
 };
 
+export const useUpdateVehiculoPartial = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }) => vehiculosApi.updatePartial(id, data),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries(['vehiculos']);
+      queryClient.invalidateQueries(['vehiculo', variables.id]);
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Error al actualizar');
+    }
+  });
+};
+
+// ==========================================
+// Mutations - Imágenes
+// ==========================================
+
 export const useAddImages = () => {
   const queryClient = useQueryClient();
 
@@ -85,6 +112,22 @@ export const useAddImages = () => {
     },
     onError: (error) => {
       toast.error(error.message || 'Error al agregar imágenes');
+    }
+  });
+};
+
+export const useUpdateImage = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ imagenId, data }) => 
+      vehiculosApi.updateImage(imagenId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['vehiculo']);
+      toast.success('Imagen actualizada exitosamente');
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Error al actualizar imagen');
     }
   });
 };
@@ -103,6 +146,10 @@ export const useDeleteImage = () => {
     }
   });
 };
+
+// ==========================================
+// Mutations - Videos
+// ==========================================
 
 export const useAddVideo = () => {
   const queryClient = useQueryClient();
@@ -134,6 +181,10 @@ export const useDeleteVideo = () => {
     }
   });
 };
+
+// ==========================================
+// Mutations - Características
+// ==========================================
 
 export const useAssignCaracteristicas = () => {
   const queryClient = useQueryClient();

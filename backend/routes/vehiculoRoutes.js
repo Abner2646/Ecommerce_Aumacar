@@ -232,6 +232,19 @@ router.put(
 );
 
 /**
+ * @route   PATCH /api/vehiculos/:id
+ * @desc    Actualización parcial de vehículo (sin validación completa)
+ * @access  Privado
+ */
+router.patch(
+  '/:id',
+  verificarToken,
+  validarId,
+  // Sin validarVehiculo - permite actualizaciones parciales
+  vehiculoController.actualizarVehiculo
+);
+
+/**
  * @route   DELETE /api/vehiculos/:id
  * @desc    Eliminar vehículo (también elimina imágenes y videos de Cloudinary)
  * @access  Privado

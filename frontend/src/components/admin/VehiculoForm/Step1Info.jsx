@@ -1,17 +1,16 @@
-// /src/components/admin/VehiculoForm/Step1Info.jsx 
+// /src/components/admin/VehiculoForm/Step1Info.jsx
 
+import { useEffect } from 'react'; // <--- Importación agregada
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMarcas } from '../../../hooks/useMarcas';
 
 const step1Schema = z.object({
-  marcaId: z.number().min(1, 'Marca es requerida'),
+  marcaId: z.number({ required_error: 'Marca es requerida' }).min(1, 'Marca es requerida'),
   modelo: z.string().min(2, 'Modelo debe tener al menos 2 caracteres'),
   version: z.string().min(2, 'Versión debe tener al menos 2 caracteres'),
-  año: z.number()
-    .min(1990, 'Año debe ser mayor a 1990')
-    .max(new Date().getFullYear() + 1, 'Año inválido'),
+  año: z.number().min(1990, 'Año debe ser mayor a 1990').max(new Date().getFullYear() + 1, 'Año inválido'),
   precio: z.number().min(0, 'Precio debe ser mayor a 0'),
   categoria: z.enum(['sedan', 'suv', 'pickup', 'hatchback', 'coupe', 'minivan', 'deportivo', 'otro']),
   stock: z.number().min(0, 'Stock debe ser 0 o mayor'),
@@ -65,7 +64,7 @@ const TRACCIONES = [
   { value: 'awd', label: 'AWD' }
 ];
 
-const Step1Info = ({ data, onNext, onCancel }) => {
+const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
   const { data: marcasData, isLoading: marcasLoading } = useMarcas({ activa: true });
   const marcas = marcasData?.marcas || [];
 
@@ -74,7 +73,8 @@ const Step1Info = ({ data, onNext, onCancel }) => {
     handleSubmit,
     formState: { errors },
     watch,
-    setValue
+    setValue,
+    reset
   } = useForm({
     resolver: zodResolver(step1Schema),
     defaultValues: data || {
@@ -104,29 +104,19 @@ const Step1Info = ({ data, onNext, onCancel }) => {
     }
   });
 
-  // Auto-generar slug
+  // --- NUEVO CODIGO AÑADIDO ---
+  // Resetear formulario cuando llegan los datos (especialmente útil en edición asíncrona)
+  useEffect(() => {
+    if (data && Object.keys(data).length > 0) {
+      reset(data);
+    }
+  }, [data, reset]);
+  // ----------------------------
+
   const modelo = watch('modelo');
   const version = watch('version');
   const año = watch('año');
   const marcaId = watch('marcaId');
-
-  const handleModeloChange = (e) => {
-    const value = e.target.value;
-    setValue('modelo', value);
-    generarSlug();
-  };
-
-  const handleVersionChange = (e) => {
-    const value = e.target.value;
-    setValue('version', value);
-    generarSlug();
-  };
-
-  const handleAñoChange = (e) => {
-    const value = parseInt(e.target.value);
-    setValue('año', value);
-    generarSlug();
-  };
 
   const generarSlug = () => {
     if (!modelo || !version || !año || !marcaId) return;
@@ -147,437 +137,255 @@ const Step1Info = ({ data, onNext, onCancel }) => {
   };
 
   const onSubmit = (formData) => {
-    // Convertir marcaId a número
     formData.marcaId = parseInt(formData.marcaId);
     onNext(formData);
   };
 
   if (marcasLoading) {
-    return <div className="adm-table-loading">Cargando marcas...</div>;
+    return (
+      <div className="flex items-center justify-center py-12">
+        <i className="fa-solid fa-spinner fa-spin text-2xl text-gray-400"></i>
+      </div>
+    );
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="adm-step-form">
-      <div className="adm-step-header">
-        <h3 className="adm-step-title">Paso 1: Información Básica</h3>
-        <p className="adm-step-description">
-          Completa los datos principales del vehículo
-        </p>
+    <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-sm">
+      {/* Header */}
+      <div className="px-6 py-4 border-b border-gray-200">
+        <h3 className="text-lg font-semibold text-gray-900">Información Básica</h3>
+        <p className="text-sm text-gray-500 mt-1">Completa los datos principales del vehículo</p>
       </div>
 
-      <div className="adm-step-body">
-        {/* Grid 2 columnas */}
+      <div className="p-6 space-y-6">
+        {/* Grid principal */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Marca */}
           <div>
-            <label className="adm-form-label">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Marca <span className="text-red-500">*</span>
             </label>
             <select
               {...register('marcaId', { valueAsNumber: true })}
-              className={`adm-form-input ${errors.marcaId ? 'adm-form-input-error' : ''}`}
               onChange={(e) => {
                 setValue('marcaId', parseInt(e.target.value));
                 generarSlug();
               }}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.marcaId ? 'border-red-500' : 'border-gray-300'}`}
             >
               <option value="">Selecciona una marca</option>
               {marcas.map(marca => (
-                <option key={marca.id} value={marca.id}>
-                  {marca.nombre}
-                </option>
+                <option key={marca.id} value={marca.id}>{marca.nombre}</option>
               ))}
             </select>
-            {errors.marcaId && (
-              <p className="adm-form-error">{errors.marcaId.message}</p>
-            )}
+            {errors.marcaId && <p className="text-red-500 text-sm mt-1">{errors.marcaId.message}</p>}
           </div>
 
           {/* Modelo */}
           <div>
-            <label className="adm-form-label">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Modelo <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               {...register('modelo')}
-              onChange={handleModeloChange}
-              className={`adm-form-input ${errors.modelo ? 'adm-form-input-error' : ''}`}
+              onChange={(e) => { setValue('modelo', e.target.value); generarSlug(); }}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.modelo ? 'border-red-500' : 'border-gray-300'}`}
               placeholder="Ej: Corolla, Outback"
             />
-            {errors.modelo && (
-              <p className="adm-form-error">{errors.modelo.message}</p>
-            )}
+            {errors.modelo && <p className="text-red-500 text-sm mt-1">{errors.modelo.message}</p>}
           </div>
 
           {/* Versión */}
           <div>
-            <label className="adm-form-label">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Versión <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               {...register('version')}
-              onChange={handleVersionChange}
-              className={`adm-form-input ${errors.version ? 'adm-form-input-error' : ''}`}
+              onChange={(e) => { setValue('version', e.target.value); generarSlug(); }}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.version ? 'border-red-500' : 'border-gray-300'}`}
               placeholder="Ej: XEI 2.0, Premium"
             />
-            {errors.version && (
-              <p className="adm-form-error">{errors.version.message}</p>
-            )}
+            {errors.version && <p className="text-red-500 text-sm mt-1">{errors.version.message}</p>}
           </div>
 
           {/* Año */}
           <div>
-            <label className="adm-form-label">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Año <span className="text-red-500">*</span>
             </label>
             <input
               type="number"
               {...register('año', { valueAsNumber: true })}
-              onChange={handleAñoChange}
-              className={`adm-form-input ${errors.año ? 'adm-form-input-error' : ''}`}
+              onChange={(e) => { setValue('año', parseInt(e.target.value)); generarSlug(); }}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.año ? 'border-red-500' : 'border-gray-300'}`}
             />
-            {errors.año && (
-              <p className="adm-form-error">{errors.año.message}</p>
-            )}
+            {errors.año && <p className="text-red-500 text-sm mt-1">{errors.año.message}</p>}
           </div>
 
           {/* Precio */}
           <div>
-            <label className="adm-form-label">
-              Precio (ARS) <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Precio (USD) <span className="text-red-500">*</span>
             </label>
             <input
               type="number"
               step="0.01"
               {...register('precio', { valueAsNumber: true })}
-              className={`adm-form-input ${errors.precio ? 'adm-form-input-error' : ''}`}
-              placeholder="25000000.00"
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.precio ? 'border-red-500' : 'border-gray-300'}`}
             />
-            {errors.precio && (
-              <p className="adm-form-error">{errors.precio.message}</p>
-            )}
+            {errors.precio && <p className="text-red-500 text-sm mt-1">{errors.precio.message}</p>}
           </div>
 
           {/* Categoría */}
           <div>
-            <label className="adm-form-label">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Categoría <span className="text-red-500">*</span>
             </label>
             <select
               {...register('categoria')}
-              className={`adm-form-input ${errors.categoria ? 'adm-form-input-error' : ''}`}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
             >
               {CATEGORIAS.map(cat => (
-                <option key={cat.value} value={cat.value}>
-                  {cat.label}
-                </option>
+                <option key={cat.value} value={cat.value}>{cat.label}</option>
               ))}
             </select>
-            {errors.categoria && (
-              <p className="adm-form-error">{errors.categoria.message}</p>
-            )}
           </div>
 
           {/* Stock */}
           <div>
-            <label className="adm-form-label">
-              Stock <span className="text-red-500">*</span>
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Stock</label>
             <input
               type="number"
               {...register('stock', { valueAsNumber: true })}
-              className={`adm-form-input ${errors.stock ? 'adm-form-input-error' : ''}`}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
             />
-            {errors.stock && (
-              <p className="adm-form-error">{errors.stock.message}</p>
-            )}
           </div>
 
           {/* Checkboxes */}
-          <div className="flex gap-6">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                {...register('disponible')}
-                className="adm-form-checkbox"
-                id="disponible"
-              />
-              <label htmlFor="disponible" className="ml-2 text-gray-700">
-                Disponible
-              </label>
-            </div>
-
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                {...register('destacado')}
-                className="adm-form-checkbox"
-                id="destacado"
-              />
-              <label htmlFor="destacado" className="ml-2 text-gray-700">
-                Destacado
-              </label>
-            </div>
+          <div className="flex gap-6 items-center">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" {...register('disponible')} className="w-4 h-4 rounded" />
+              <span className="text-sm text-gray-700">Disponible</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" {...register('destacado')} className="w-4 h-4 rounded" />
+              <span className="text-sm text-gray-700">Destacado</span>
+            </label>
           </div>
         </div>
 
-        {/* Separador */}
-        <div className="adm-section-divider">
-          <span>Especificaciones Técnicas</span>
+        {/* Separator */}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
+          <div className="relative flex justify-center"><span className="bg-white px-3 text-sm text-gray-500">Especificaciones Técnicas</span></div>
         </div>
 
-        {/* Grid 3 columnas para specs */}
+        {/* Specs Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Motor */}
           <div>
-            <label className="adm-form-label">
-              Motor <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              {...register('motor')}
-              className={`adm-form-input ${errors.motor ? 'adm-form-input-error' : ''}`}
-              placeholder="Ej: 2.0L, 1.6L Turbo"
-            />
-            {errors.motor && (
-              <p className="adm-form-error">{errors.motor.message}</p>
-            )}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Motor <span className="text-red-500">*</span></label>
+            <input type="text" {...register('motor')} placeholder="Ej: 2.0L Turbo" className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.motor ? 'border-red-500' : 'border-gray-300'}`} />
+            {errors.motor && <p className="text-red-500 text-sm mt-1">{errors.motor.message}</p>}
           </div>
 
-          {/* Combustible */}
           <div>
-            <label className="adm-form-label">
-              Combustible <span className="text-red-500">*</span>
-            </label>
-            <select
-              {...register('combustible')}
-              className="adm-form-input"
-            >
-              {COMBUSTIBLES.map(comb => (
-                <option key={comb.value} value={comb.value}>
-                  {comb.label}
-                </option>
-              ))}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Combustible</label>
+            <select {...register('combustible')} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent">
+              {COMBUSTIBLES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
             </select>
           </div>
 
-          {/* Transmisión */}
           <div>
-            <label className="adm-form-label">
-              Transmisión <span className="text-red-500">*</span>
-            </label>
-            <select
-              {...register('transmision')}
-              className="adm-form-input"
-            >
-              {TRANSMISIONES.map(trans => (
-                <option key={trans.value} value={trans.value}>
-                  {trans.label}
-                </option>
-              ))}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Transmisión</label>
+            <select {...register('transmision')} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent">
+              {TRANSMISIONES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
             </select>
           </div>
 
-          {/* Tracción */}
           <div>
-            <label className="adm-form-label">
-              Tracción <span className="text-red-500">*</span>
-            </label>
-            <select
-              {...register('traccion')}
-              className="adm-form-input"
-            >
-              {TRACCIONES.map(tracc => (
-                <option key={tracc.value} value={tracc.value}>
-                  {tracc.label}
-                </option>
-              ))}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Tracción</label>
+            <select {...register('traccion')} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent">
+              {TRACCIONES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
             </select>
           </div>
 
-          {/* Puertas */}
           <div>
-            <label className="adm-form-label">
-              Puertas <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="number"
-              {...register('puertas', { valueAsNumber: true })}
-              className={`adm-form-input ${errors.puertas ? 'adm-form-input-error' : ''}`}
-              min="2"
-              max="5"
-            />
-            {errors.puertas && (
-              <p className="adm-form-error">{errors.puertas.message}</p>
-            )}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Puertas</label>
+            <input type="number" {...register('puertas', { valueAsNumber: true })} min="2" max="5" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
           </div>
 
-          {/* Pasajeros */}
           <div>
-            <label className="adm-form-label">
-              Pasajeros <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="number"
-              {...register('pasajeros', { valueAsNumber: true })}
-              className={`adm-form-input ${errors.pasajeros ? 'adm-form-input-error' : ''}`}
-              min="2"
-              max="9"
-            />
-            {errors.pasajeros && (
-              <p className="adm-form-error">{errors.pasajeros.message}</p>
-            )}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Pasajeros</label>
+            <input type="number" {...register('pasajeros', { valueAsNumber: true })} min="2" max="9" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
           </div>
 
-          {/* Cilindrada */}
           <div>
-            <label className="adm-form-label">Cilindrada</label>
-            <input
-              type="text"
-              {...register('cilindrada')}
-              className="adm-form-input"
-              placeholder="Ej: 2000cc"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Cilindrada</label>
+            <input type="text" {...register('cilindrada')} placeholder="Ej: 2000cc" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
           </div>
 
-          {/* Potencia */}
           <div>
-            <label className="adm-form-label">Potencia</label>
-            <input
-              type="text"
-              {...register('potencia')}
-              className="adm-form-input"
-              placeholder="Ej: 170 CV"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Potencia</label>
+            <input type="text" {...register('potencia')} placeholder="Ej: 170 CV" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
           </div>
 
-          {/* Torque */}
           <div>
-            <label className="adm-form-label">Torque</label>
-            <input
-              type="text"
-              {...register('torque')}
-              className="adm-form-input"
-              placeholder="Ej: 210 Nm"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Torque</label>
+            <input type="text" {...register('torque')} placeholder="Ej: 210 Nm" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
           </div>
         </div>
 
-        {/* Separador */}
-        <div className="adm-section-divider">
-          <span>Descripciones</span>
+        {/* Separator */}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
+          <div className="relative flex justify-center"><span className="bg-white px-3 text-sm text-gray-500">Descripciones y SEO</span></div>
         </div>
 
         {/* Descripciones */}
-        <div className="space-y-6">
-          {/* Descripción Corta */}
+        <div className="space-y-4">
           <div>
-            <label className="adm-form-label">
-              Descripción Corta <span className="text-red-500">*</span>
-            </label>
-            <textarea
-              {...register('descripcionCorta')}
-              rows={2}
-              className={`adm-form-input ${errors.descripcionCorta ? 'adm-form-input-error' : ''}`}
-              placeholder="Descripción breve para cards y listados (máx 150 caracteres)"
-              maxLength={150}
-            />
-            {errors.descripcionCorta && (
-              <p className="adm-form-error">{errors.descripcionCorta.message}</p>
-            )}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Descripción Corta <span className="text-red-500">*</span></label>
+            <textarea {...register('descripcionCorta')} rows={2} maxLength={150} placeholder="Descripción breve para cards" className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.descripcionCorta ? 'border-red-500' : 'border-gray-300'}`} />
+            {errors.descripcionCorta && <p className="text-red-500 text-sm mt-1">{errors.descripcionCorta.message}</p>}
           </div>
 
-          {/* Descripción Completa */}
           <div>
-            <label className="adm-form-label">
-              Descripción Completa <span className="text-red-500">*</span>
-            </label>
-            <textarea
-              {...register('descripcionCompleta')}
-              rows={6}
-              className={`adm-form-input ${errors.descripcionCompleta ? 'adm-form-input-error' : ''}`}
-              placeholder="Descripción detallada del vehículo para la página de detalle"
-            />
-            {errors.descripcionCompleta && (
-              <p className="adm-form-error">{errors.descripcionCompleta.message}</p>
-            )}
-          </div>
-        </div>
-
-        {/* Separador */}
-        <div className="adm-section-divider">
-          <span>SEO</span>
-        </div>
-
-        {/* SEO */}
-        <div className="space-y-6">
-          {/* Slug */}
-          <div>
-            <label className="adm-form-label">
-              Slug (URL) <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              {...register('slug')}
-              className={`adm-form-input ${errors.slug ? 'adm-form-input-error' : ''}`}
-              placeholder="toyota-corolla-xei-2024"
-            />
-            {errors.slug && (
-              <p className="adm-form-error">{errors.slug.message}</p>
-            )}
-            <p className="text-xs text-gray-500 mt-2">
-              URL: /vehiculos/{watch('slug') || 'slug-del-vehiculo'}
-            </p>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Descripción Completa <span className="text-red-500">*</span></label>
+            <textarea {...register('descripcionCompleta')} rows={4} placeholder="Descripción detallada del vehículo" className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.descripcionCompleta ? 'border-red-500' : 'border-gray-300'}`} />
+            {errors.descripcionCompleta && <p className="text-red-500 text-sm mt-1">{errors.descripcionCompleta.message}</p>}
           </div>
 
-          {/* Meta Title */}
           <div>
-            <label className="adm-form-label">Meta Title (SEO)</label>
-            <input
-              type="text"
-              {...register('metaTitle')}
-              className="adm-form-input"
-              placeholder="Título para buscadores (opcional)"
-              maxLength={60}
-            />
-            <p className="text-xs text-gray-500 mt-2">
-              Recomendado: 50-60 caracteres
-            </p>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Slug (URL) <span className="text-red-500">*</span></label>
+            <input type="text" {...register('slug')} placeholder="toyota-corolla-xei-2024" className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.slug ? 'border-red-500' : 'border-gray-300'}`} />
+            {errors.slug && <p className="text-red-500 text-sm mt-1">{errors.slug.message}</p>}
+            <p className="text-xs text-gray-500 mt-1">URL: /vehiculos/{watch('slug') || 'slug-del-vehiculo'}</p>
           </div>
 
-          {/* Meta Description */}
-          <div>
-            <label className="adm-form-label">Meta Description (SEO)</label>
-            <textarea
-              {...register('metaDescription')}
-              rows={2}
-              className="adm-form-input"
-              placeholder="Descripción para buscadores (opcional)"
-              maxLength={160}
-            />
-            <p className="text-xs text-gray-500 mt-2">
-              Recomendado: 150-160 caracteres
-            </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title (SEO)</label>
+              <input type="text" {...register('metaTitle')} maxLength={60} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Meta Description (SEO)</label>
+              <input type="text" {...register('metaDescription')} maxLength={160} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Footer con botones */}
-      <div className="adm-step-footer">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="adm-btn adm-btn-secondary"
-        >
+      {/* Footer */}
+      <div className="px-6 py-4 border-t border-gray-200 flex justify-between">
+        <button type="button" onClick={onCancel} className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
           Cancelar
         </button>
-        <button
-          type="submit"
-          className="adm-btn adm-btn-primary"
-        >
-          Siguiente: Imágenes
+        <button type="submit" disabled={isSubmitting} className="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2">
+          {isSubmitting ? <i className="fa-solid fa-spinner fa-spin"></i> : null}
+          Siguiente: Colores
           <i className="fa-solid fa-arrow-right"></i>
         </button>
       </div>

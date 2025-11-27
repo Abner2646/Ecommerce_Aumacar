@@ -20,7 +20,6 @@ const TIPO_LABELS = {
 
 const CaracteristicasManage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCaracteristica, setSelectedCaracteristica] = useState(null);
   const [filtroTipo, setFiltroTipo] = useState('');
   const [filtroActiva, setFiltroActiva] = useState('');
 
@@ -35,12 +34,6 @@ const CaracteristicasManage = () => {
   const caracteristicas = data?.caracteristicas || [];
 
   const handleCreate = () => {
-    setSelectedCaracteristica(null);
-    setIsModalOpen(true);
-  };
-
-  const handleEdit = (caracteristica) => {
-    setSelectedCaracteristica(caracteristica);
     setIsModalOpen(true);
   };
 
@@ -52,7 +45,6 @@ const CaracteristicasManage = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedCaracteristica(null);
   };
 
   // Configuración de columnas
@@ -175,25 +167,23 @@ const CaracteristicasManage = () => {
         </div>
       </div>
 
-      {/* Tabla */}
+      {/* Tabla - sin onEdit */}
       <DataTable
         data={caracteristicas}
         columns={columns}
-        onEdit={handleEdit}
         onDelete={handleDelete}
         isLoading={isLoading}
         emptyMessage="No hay características creadas"
       />
 
-      {/* Modal */}
+      {/* Modal - siempre para crear */}
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        title={selectedCaracteristica ? 'Editar Característica' : 'Nueva Característica'}
+        title="Nueva Característica"
         size="md"
       >
         <CaracteristicaForm
-          caracteristica={selectedCaracteristica}
           onSuccess={handleCloseModal}
         />
       </Modal>

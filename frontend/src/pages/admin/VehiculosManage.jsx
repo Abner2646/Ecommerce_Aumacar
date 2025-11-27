@@ -41,6 +41,9 @@ const VehiculosManage = () => {
   // Queries
   const { data: marcasData } = useMarcas({ activa: true });
   const { data: vehiculosData, isLoading } = useVehiculos(filtros);
+  console.log('filtros:', filtros);
+console.log('vehiculosData:', vehiculosData);
+console.log('isLoading:', isLoading);
   const deleteVehiculo = useDeleteVehiculo();
   const createVehiculo = useCreateVehiculo();
 
@@ -385,12 +388,12 @@ const VehiculosManage = () => {
       />
 
       {/* Botón flotante de preview */}
-      {vehiculosFiltrados.length > 0 && (
+      {/*{vehiculosFiltrados.length > 0 && (
         <div className="adm-preview-hint">
           <i className="fa-solid fa-lightbulb text-blue-500 mr-2"></i>
           Haz clic en cualquier fila para ver la vista previa del vehículo
         </div>
-      )}
+      )}*/}
 
       {/* ConfirmDialog */}
       <ConfirmDialog
