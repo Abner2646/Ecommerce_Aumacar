@@ -1,6 +1,20 @@
 // /src/components/admin/StepIndicator.jsx
 
-const StepIndicator = ({ currentStep, steps }) => {
+const StepIndicator = ({ 
+  currentStep, 
+  steps, 
+  onStepClick,
+  canNavigate = false,  // true = permite navegar clickeando
+  disabledSteps = []    // array de steps deshabilitados (ej: [1])
+}) => {
+  
+  const handleClick = (stepNumber) => {
+    if (!canNavigate || !onStepClick) return;
+    if (stepNumber === currentStep) return;
+    if (disabledSteps.includes(stepNumber)) return;
+    onStepClick(stepNumber);
+  };
+
   return (
     <div className="w-full py-4">
       <div className="flex items-center justify-between">
@@ -9,13 +23,17 @@ const StepIndicator = ({ currentStep, steps }) => {
           const isActive = stepNumber === currentStep;
           const isCompleted = stepNumber < currentStep;
           const isLast = index === steps.length - 1;
+          const isClickable = canNavigate && onStepClick && stepNumber !== currentStep && !disabledSteps.includes(stepNumber);
 
           return (
             <div key={step.id} className="flex items-center flex-1">
               {/* Step Circle + Label */}
               <div className="flex flex-col items-center">
                 {/* Circle */}
-                <div
+                <button
+                  type="button"
+                  onClick={() => handleClick(stepNumber)}
+                  disabled={!isClickable}
                   className={`
                     w-10 h-10 rounded-full flex items-center justify-center
                     font-semibold text-sm transition-all duration-300
@@ -25,6 +43,10 @@ const StepIndicator = ({ currentStep, steps }) => {
                         ? 'bg-gray-900 text-white ring-4 ring-gray-200' 
                         : 'bg-gray-200 text-gray-500'
                     }
+                    ${isClickable 
+                      ? 'cursor-pointer hover:ring-4 hover:ring-gray-300 hover:scale-110' 
+                      : 'cursor-default'
+                    }
                   `}
                 >
                   {isCompleted ? (
@@ -32,14 +54,18 @@ const StepIndicator = ({ currentStep, steps }) => {
                   ) : (
                     <span>{stepNumber}</span>
                   )}
-                </div>
+                </button>
                 
                 {/* Label */}
                 <div className="mt-2 text-center">
-                  <p className={`
-                    text-sm font-medium
-                    ${isActive ? 'text-gray-900' : 'text-gray-500'}
-                  `}>
+                  <p 
+                    className={`
+                      text-sm font-medium
+                      ${isActive ? 'text-gray-900' : 'text-gray-500'}
+                      ${isClickable ? 'cursor-pointer hover:text-gray-900' : ''}
+                    `}
+                    onClick={() => handleClick(stepNumber)}
+                  >
                     {step.label}
                   </p>
                   {step.description && (

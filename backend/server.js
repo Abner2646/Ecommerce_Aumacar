@@ -18,7 +18,7 @@ const { sequelize } = require('./models');
 const apiRoutes = require('./routes');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = /*process.env.PORT || */3001;
 
 // ==================== CORS ====================
 const rawAllowed = process.env.ALLOWED_ORIGINS || process.env.FRONTEND_URL || '';

@@ -1,6 +1,6 @@
 // /src/components/admin/VehiculoForm/Step1Info.jsx
 
-import { useEffect } from 'react'; // <--- Importación agregada
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -27,9 +27,7 @@ const step1Schema = z.object({
   torque: z.string().optional(),
   descripcionCorta: z.string().min(10, 'Descripción corta debe tener al menos 10 caracteres'),
   descripcionCompleta: z.string().min(50, 'Descripción completa debe tener al menos 50 caracteres'),
-  slug: z.string().min(2, 'Slug es requerido').regex(/^[a-z0-9-]+$/, 'Solo minúsculas, números y guiones'),
-  metaTitle: z.string().optional(),
-  metaDescription: z.string().optional()
+  slug: z.string().min(2, 'Slug es requerido').regex(/^[a-z0-9-]+$/, 'Solo minúsculas, números y guiones')
 });
 
 const CATEGORIAS = [
@@ -98,20 +96,16 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
       torque: '',
       descripcionCorta: '',
       descripcionCompleta: '',
-      slug: '',
-      metaTitle: '',
-      metaDescription: ''
+      slug: ''
     }
   });
 
-  // --- NUEVO CODIGO AÑADIDO ---
-  // Resetear formulario cuando llegan los datos (especialmente útil en edición asíncrona)
+  // Resetear formulario cuando llegan los datos (para edición)
   useEffect(() => {
     if (data && Object.keys(data).length > 0) {
       reset(data);
     }
   }, [data, reset]);
-  // ----------------------------
 
   const modelo = watch('modelo');
   const version = watch('version');
@@ -228,7 +222,7 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
           {/* Precio */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Precio (USD) <span className="text-red-500">*</span>
+              Precio (ARS) <span className="text-red-500">*</span>
             </label>
             <input
               type="number"
@@ -341,7 +335,7 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
         {/* Separator */}
         <div className="relative">
           <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
-          <div className="relative flex justify-center"><span className="bg-white px-3 text-sm text-gray-500">Descripciones y SEO</span></div>
+          <div className="relative flex justify-center"><span className="bg-white px-3 text-sm text-gray-500">Descripciones</span></div>
         </div>
 
         {/* Descripciones */}
@@ -363,17 +357,6 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
             <input type="text" {...register('slug')} placeholder="toyota-corolla-xei-2024" className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.slug ? 'border-red-500' : 'border-gray-300'}`} />
             {errors.slug && <p className="text-red-500 text-sm mt-1">{errors.slug.message}</p>}
             <p className="text-xs text-gray-500 mt-1">URL: /vehiculos/{watch('slug') || 'slug-del-vehiculo'}</p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title (SEO)</label>
-              <input type="text" {...register('metaTitle')} maxLength={60} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Meta Description (SEO)</label>
-              <input type="text" {...register('metaDescription')} maxLength={160} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
-            </div>
           </div>
         </div>
       </div>
