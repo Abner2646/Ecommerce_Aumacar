@@ -7,7 +7,6 @@ import {
   useAddImages, 
   useAddVideo,
   useAssignCaracteristicas,
-  useUpdateVehiculo,
   useUpdateVehiculoPartial
 } from '../../hooks/useVehiculos';
 import { useAssignColoresVehiculo } from '../../hooks/useColores';
@@ -42,10 +41,22 @@ const VehiculoCreate = () => {
   const addVideo = useAddVideo();
   const assignCaracteristicas = useAssignCaracteristicas();
 
+  // Navegación por StepIndicator - solo permitir steps 2-5 después del Step 1
+  const handleStepClick = (stepNumber) => {
+    // Solo permitir si ya se creó el vehículo (después del step 1)
+    if (!createdVehiculoId) return;
+    // No permitir volver al step 1 (crearía otro vehículo)
+    if (stepNumber === 1) return;
+    setCurrentStep(stepNumber);
+  };
+
   // Step 1: Crear vehículo con info básica
-  const handleStep1Next = async (data) => { // <-----------
+  const handleStep1Next = async (data) => {
     try {
-      const response = await createVehiculo.mutateAsync(data);
+      const response = await createVehiculo.mutateAsync({
+        ...data,
+        plantilla: 1 // Valor por defecto
+      });
       setCreatedVehiculoId(response.vehiculo.id);
       setFormData(prev => ({ ...prev, step1: data }));
       setCurrentStep(2);
@@ -147,11 +158,11 @@ const VehiculoCreate = () => {
 
       // Actualizar plantilla
       if (data.plantilla && createdVehiculoId) {
-       await updateVehiculo.mutateAsync({
-         id: createdVehiculoId,
-         data: { plantilla: data.plantilla }
-       });
-     }
+        await updateVehiculo.mutateAsync({
+          id: createdVehiculoId,
+          data: { plantilla: data.plantilla }
+        });
+      }
 
       toast.success('¡Vehículo creado exitosamente!');
       navigate('/admin/vehiculos');
@@ -188,7 +199,13 @@ const VehiculoCreate = () => {
 
       {/* Step Indicator */}
       <div className="mb-8 bg-white rounded-lg shadow-sm p-4">
-        <StepIndicator currentStep={currentStep} steps={STEPS} />
+        <StepIndicator 
+          currentStep={currentStep} 
+          steps={STEPS}
+          canNavigate={!!createdVehiculoId}
+          onStepClick={handleStepClick}
+          disabledSteps={[1]}
+        />
       </div>
 
       {/* Form Steps */}
@@ -207,6 +224,7 @@ const VehiculoCreate = () => {
           onNext={handleStep2Next}
           onBack={handleBack}
           isSubmitting={assignColores.isPending}
+          showBack={false}
         />
       )}
 

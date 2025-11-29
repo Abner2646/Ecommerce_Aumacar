@@ -1,6 +1,6 @@
 // /src/components/admin/VehiculoForm/Step2Colores.jsx
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useColores } from '../../../hooks/useColores';
 
 const Step2Colores = ({ 
@@ -8,7 +8,8 @@ const Step2Colores = ({
   onNext, 
   onBack, 
   existingColores = [],
-  isSubmitting = false 
+  isSubmitting = false,
+  showBack = true  // false en creación para ocultar botón Anterior
 }) => {
   const { data: coloresData, isLoading } = useColores({ activo: true });
   const colores = coloresData?.colores || [];
@@ -140,15 +141,17 @@ const Step2Colores = ({
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-4 border-t border-gray-200 flex justify-between">
-        <button
-          type="button"
-          onClick={onBack}
-          className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
-        >
-          <i className="fa-solid fa-arrow-left"></i>
-          Anterior
-        </button>
+      <div className={`px-6 py-4 border-t border-gray-200 flex ${showBack ? 'justify-between' : 'justify-end'}`}>
+        {showBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+          >
+            <i className="fa-solid fa-arrow-left"></i>
+            Anterior
+          </button>
+        )}
         <button
           type="button"
           onClick={handleNext}

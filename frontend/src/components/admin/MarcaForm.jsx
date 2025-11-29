@@ -134,14 +134,14 @@ const MarcaForm = ({ marca, onSuccess }) => {
               alt="Preview logo" 
               className="adm-logo-preview-img"
             />
-            <button
+            {/*<button
               type="button"
               onClick={handleRemoveLogo}
               className="adm-logo-preview-remove"
               title="Remover logo"
             >
               <i className="fa-solid fa-xmark"></i>
-            </button>
+            </button>*/}
           </div>
         )}
 

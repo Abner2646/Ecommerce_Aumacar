@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { 
   useVehiculo,
   useUpdateVehiculo, 
+  useUpdateVehiculoPartial,
   useAddImages, 
   useAddVideo,
   useDeleteImage,
@@ -30,7 +31,6 @@ const STEPS = [
 
 const VehiculoEdit = () => {
   const { id } = useParams();
-  console.log('ID del vehículo:', id);
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
@@ -39,13 +39,9 @@ const VehiculoEdit = () => {
   const { data: vehiculoData, isLoading, refetch } = useVehiculo(id);
   const vehiculo = vehiculoData?.vehiculo;
 
-  console.log('ID:', id);
-  console.log('isLoading:', isLoading);
-  console.log('vehiculoData:', vehiculoData);
-  console.log('vehiculo:', vehiculo);
-
   // Mutations
   const updateVehiculo = useUpdateVehiculo();
+  const updateVehiculoPartial = useUpdateVehiculoPartial();
   const assignColores = useAssignColoresVehiculo();
   const addImages = useAddImages();
   const addVideo = useAddVideo();
@@ -78,13 +74,16 @@ const VehiculoEdit = () => {
           torque: vehiculo.torque || '',
           descripcionCorta: vehiculo.descripcionCorta,
           descripcionCompleta: vehiculo.descripcionCompleta,
-          slug: vehiculo.slug,
-          metaTitle: vehiculo.metaTitle || '',
-          metaDescription: vehiculo.metaDescription || ''
+          slug: vehiculo.slug
         }
       });
     }
   }, [vehiculo]);
+
+  // Navegación libre por StepIndicator (siempre permitida en edición)
+  const handleStepClick = (stepNumber) => {
+    setCurrentStep(stepNumber);
+  };
 
   // Step 1: Actualizar info
   const handleStep1Next = async (data) => {
@@ -208,7 +207,7 @@ const VehiculoEdit = () => {
 
       // Actualizar plantilla
       if (data.plantilla) {
-        await updateVehiculo.mutateAsync({
+        await updateVehiculoPartial.mutateAsync({
           id,
           data: { plantilla: data.plantilla }
         });
@@ -233,6 +232,7 @@ const VehiculoEdit = () => {
 
   const isSubmitting = 
     updateVehiculo.isPending || 
+    updateVehiculoPartial.isPending ||
     assignColores.isPending ||
     addImages.isPending || 
     addVideo.isPending || 
@@ -276,9 +276,14 @@ const VehiculoEdit = () => {
         </p>
       </div>
 
-      {/* Step Indicator */}
+      {/* Step Indicator - siempre navegable en edición */}
       <div className="mb-8 bg-white rounded-lg shadow-sm p-4">
-        <StepIndicator currentStep={currentStep} steps={STEPS} />
+        <StepIndicator 
+          currentStep={currentStep} 
+          steps={STEPS}
+          canNavigate={true}
+          onStepClick={handleStepClick}
+        />
       </div>
 
       {/* Form Steps */}
