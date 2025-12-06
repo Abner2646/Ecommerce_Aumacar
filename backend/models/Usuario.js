@@ -45,13 +45,12 @@ module.exports = (sequelize) => {
     },
     ultimoAcceso: {
       type: DataTypes.DATE,
-      allowNull: true,
-      field: 'ultimo_acceso'
+      allowNull: true
     }
   }, {
     tableName: 'usuarios',
     timestamps: true,
-    underscored: true,
+    underscored: false,
     hooks: {
       beforeCreate: async (usuario) => {
         if (usuario.password) {

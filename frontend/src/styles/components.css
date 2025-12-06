@@ -124,7 +124,7 @@
 }
 
 .cns-vehicle-card:hover {
-  transform: scale(1.1);
+  transform: scale(1.01);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
@@ -299,8 +299,7 @@
 
 .cns-feature-card:hover {
   box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
-  /* transform removed so only icon grows */
-  transform: translateY(-8px);
+  transform: scale(1.07);
 }
 
 /* Icon Container */
@@ -428,11 +427,11 @@ html {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: none;
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -442,15 +441,37 @@ html {
 
 
 
+
 .lnd-brand-card {
-  flex: 1;
-  min-height: 340px; /* 400px - 15% = 340px */
+  min-height: 340px;
   position: relative;
   overflow: hidden;
-  border-radius: var(--radius-xl); /* ← AGREGADO */
+  border-radius: var(--radius-xl);
   cursor: pointer;
-  /* transition: none; */
-   padding-bottom: 300px;
+}
+
+/* Overlay de la card: transición de opacidad en hover */
+.lnd-brand-card .card-overlay {
+  transition: opacity 0.3s;
+  opacity: 1;
+  z-index: 20;
+}
+.lnd-brand-card:hover .card-overlay {
+  opacity: 0.45;
+}
+
+/* Video Suzuki: oculto por defecto, visible en hover y por encima del overlay */
+.lnd-brand-card .suzuki-video {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 30;
+  position: absolute;
+  inset: 0;
+}
+.lnd-brand-card:hover .suzuki-video {
+  opacity: 1 !important;
+  pointer-events: auto;
 }
 
 

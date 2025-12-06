@@ -46,7 +46,7 @@ const Home = () => {
               className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
             >
               {/* Lupa Lucide */}
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:scale-130 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
@@ -60,7 +60,7 @@ const Home = () => {
               rel="noopener noreferrer" 
               className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
             >
-              <MessageCircle size={24} />
+              <MessageCircle size={24} className="group-hover:scale-130 transition-transform" />
                             {/* Solo el ícono crece en hover */}
               <div className="flex flex-col items-start">
                 <span className="text-sm font-medium">WhatsApp</span>
@@ -158,6 +158,7 @@ const Home = () => {
             <Link
               to="/suzuki"
               className="lnd-brand-card"
+              onClick={() => window.scrollTo(0, 0)}
               onMouseEnter={e => {
                 const suzuki = e.currentTarget.querySelector('.suzuki-video');
                 const img = e.currentTarget.querySelector('.suzuki-img');
@@ -187,7 +188,7 @@ const Home = () => {
                   src={require('../../assets/images/Captura de pantalla 2025-12-03 200137.png')}
                   alt="Suzuki"
                   className="w-full h-full object-cover suzuki-img"
-                  style={{ filter: 'saturate(1.1)', display: 'block', position: 'absolute', inset: 0 }}
+                  style={{ filter: 'saturate(1.1)', display: 'block', position: 'absolute', inset: 0, zIndex: 1 }}
                 />
                 <video
                   ref={el => {
@@ -208,12 +209,12 @@ const Home = () => {
                   muted
                   playsInline
                   className="w-full h-full object-cover suzuki-video"
-                  style={{ filter: 'saturate(1.1)', position: 'absolute', inset: 0 }}
+                  style={{ filter: 'saturate(1.1)', position: 'absolute', inset: 0, zIndex: 1, transform: 'scale(1.3)', transformOrigin: 'center center' }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/20"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/20" style={{ zIndex: 2 }}></div>
               </div>
               
-              <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12">
+              <div className="relative h-full flex flex-col justify-end p-8 md:p-12" style={{ zIndex: 20 }}>
                 <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">
                   Suzuki
                 </h3>
@@ -336,13 +337,13 @@ const Home = () => {
                   className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-104 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto justify-center"
                 >
                   <span>Explorar Catálogo</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 group-hover:scale-[2] transition-transform" />
                 </a>
                 <a 
                   href="tel:02914517000" 
                   className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg transition-all duration-300 w-full sm:w-auto justify-center hover:scale-104"
                 >
-                  <Phone className="w-5 h-5" />
+                  <Phone className="w-5 h-5 group-hover:scale-150 transition-transform" />
                   <span>(0291) 451-7000</span>
                 </a>
               </div>
@@ -356,7 +357,7 @@ const Home = () => {
                   rel="noopener noreferrer"
                   className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
                 >
-                  <MessageCircle className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+                  <MessageCircle className="w-6 h-6 text-white group-hover:scale-180 transition-transform" />
                   <div className="text-left">
                     <div className="text-sm text-white/60 font-medium">WhatsApp</div>
                     <div className="text-white font-semibold">Consulta rápida</div>
@@ -370,7 +371,7 @@ const Home = () => {
                   rel="noopener noreferrer"
                   className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
                 >
-                  <MapPin className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+                  <MapPin className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
                   <div className="text-left">
                     <div className="text-sm text-white/60 font-medium">Visitanos</div>
                     <div className="text-white font-semibold">Bahía Blanca</div>
@@ -382,7 +383,7 @@ const Home = () => {
                   href="mailto:info@aumacar.com.ar" 
                   className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
                 >
-                  <Mail className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+                  <Mail className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
                   <div className="text-left">
                     <div className="text-sm text-white/60 font-medium">Email</div>
                     <div className="text-white font-semibold">Escríbenos</div>

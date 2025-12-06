@@ -1,5 +1,8 @@
 // /src/pages/public/SuzukiHome.jsx
 import React, { useState } from 'react';
+import { MessageCircle } from 'lucide-react';
+import { Users, ArrowRight, Phone, MapPin, Mail } from 'react-feather';
+import suzukiParallax from '../../assets/images/Captura de pantalla 2025-12-03 200137.png';
 
 const SuzukiHome = () => {
   const [activeTab, setActiveTab] = useState('all');
@@ -116,9 +119,25 @@ const SuzukiHome = () => {
       {/* ==================== HERO SECTION PREMIUM ==================== */}
       <section className="relative min-h-[600px] md:min-h-[700px] flex items-center">
         <div className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1920&q=80"
-            alt="Suzuki Hero"
+          <video
+            ref={el => {
+              if (el) {
+                el.onloadedmetadata = () => {
+                  el.currentTime = 31;
+                  el.play();
+                };
+                el.ontimeupdate = () => {
+                  if (el.currentTime >= 37) {
+                    el.currentTime = 31;
+                  }
+                };
+              }
+            }}
+            src={require('../../assets/videos/16-19-41 (1).mp4')}
+            muted
+            loop
+            playsInline
+            autoPlay
             className="w-full h-full object-cover"
             style={{ filter: 'brightness(0.8) contrast(1.1)' }}
           />
@@ -135,12 +154,32 @@ const SuzukiHome = () => {
               Innovación japonesa que se adapta a tu estilo de vida
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="cns-btn-primary px-8 py-4">
-                Explorar Modelos
-              </button>
-              <button className="cns-btn-secondary bg-transparent border-2 border-white text-white px-8 py-4 hover:bg-white hover:text-gray-900">
-                Agendar Test Drive
-              </button>
+              <a
+                href="#modelos"
+                className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
+              >
+                {/* Lupa Lucide */}
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:scale-130 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <div className="flex flex-col items-start">
+                  <span className="text-sm font-medium">Explorar Modelos</span>
+                </div>
+              </a>
+              <a 
+                href="https://wa.me/5492914044550" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
+              >
+                <MessageCircle size={24} className="group-hover:scale-130 transition-transform" />
+                {/* Solo el ícono crece en hover */}
+                <div className="flex flex-col items-start">
+                  <span className="text-sm font-medium">WhatsApp</span>
+                  <span className="text-sm font-normal">Consulta rápida</span>
+                </div>
+              </a>
             </div>
           </div>
         </div>
@@ -151,7 +190,7 @@ const SuzukiHome = () => {
         <div className="cns-container">
           <div className="text-center mb-16 lg:mb-20 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Nuestra Línea 2024
+              Nuestra Línea 2025
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
               Descubre vehículos diseñados para cada aventura, desde la ciudad hasta el off-road
@@ -406,31 +445,90 @@ const SuzukiHome = () => {
         </div>
       </section>
 
-      {/* ==================== CTA FINAL PREMIUM ==================== */}
-      <section className="cns-section bg-gray-900">
-        <div className="cns-container">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
-              Agenda tu Test Drive
-            </h2>
-            
-            <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto">
-              Experimenta la diferencia Suzuki. Visita nuestro concesionario y descubre 
-              por qué millones de conductores confían en nosotros.
-            </p>
+      {/* CTA Section Premium */}
+      <section className="relative cns-section min-h-[600px] md:min-h-[700px] flex items-center overflow-hidden">
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"></div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="cns-btn-primary bg-white text-gray-900 px-8 py-4 hover:bg-gray-100">
-                Agendar Ahora
-              </button>
-              <button className="cns-btn-secondary bg-transparent border-2 border-white text-white px-8 py-4 hover:bg-white hover:text-gray-900">
-                Contactar Asesor
-              </button>
+        <div className="cns-container relative z-10">
+          <div className="max-w-5xl mx-auto">
+            {/* Content */}
+            <div className="text-center mb-12 md:mb-16">
+              {/* Heading y descripción nuevos */}
+              <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
+                Agenda tu Test Drive
+              </h2>
+              <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto">
+                Experimenta la diferencia Suzuki. Visita nuestro concesionario y descubre 
+                por qué millones de conductores confían en nosotros.
+              </p>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+                <a 
+                  href="#marcas" 
+                  className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-104 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto justify-center"
+                >
+                  <span>Agendar ahora</span>
+                  <ArrowRight className="w-5 h-5 group-hover:scale-[2] transition-transform" />
+                </a>
+                <a 
+                  href="tel:02914517000" 
+                  className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg transition-all duration-300 w-full sm:w-auto justify-center hover:scale-104"
+                >
+                  <Phone className="w-5 h-5 group-hover:scale-150 transition-transform" />
+                  <span>(0291) 451-7000</span>
+                </a>
+              </div>
+
+              {/* Contact Options */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto pt-12 border-t border-white/20">
+                {/* WhatsApp */}
+                <a 
+                  href="https://wa.me/5492914277849" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                >
+                  <MessageCircle className="w-6 h-6 text-white group-hover:scale-180 transition-transform" />
+                  <div className="text-left">
+                    <div className="text-sm text-white/60 font-medium">WhatsApp</div>
+                    <div className="text-white font-semibold">Consulta rápida</div>
+                  </div>
+                </a>
+
+                {/* Dirección */}
+                <a 
+                  href="https://maps.google.com" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                >
+                  <MapPin className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
+                  <div className="text-left">
+                    <div className="text-sm text-white/60 font-medium">Visitanos</div>
+                    <div className="text-white font-semibold">Bahía Blanca</div>
+                  </div>
+                </a>
+
+                {/* Email */}
+                <a 
+                  href="mailto:info@aumacar.com.ar" 
+                  className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                >
+                  <Mail className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
+                  <div className="text-left">
+                    <div className="text-sm text-white/60 font-medium">Email</div>
+                    <div className="text-white font-semibold">Escríbenos</div>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
-
     </main>
   );
 };

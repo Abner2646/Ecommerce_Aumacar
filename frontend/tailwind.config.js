@@ -336,7 +336,7 @@ export default {
           cursor: 'pointer',
           transition: `transform ${designSystem.effects.transitions.base} ${designSystem.effects.easing.default}`,
           '&:hover': {
-            transform: 'translateY(-8px)',
+            transform: 'none',
           },
           '&:hover img': {
             transform: `scale(${designSystem.effects.hover.imageScale})`,
