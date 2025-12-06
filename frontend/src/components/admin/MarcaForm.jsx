@@ -58,8 +58,8 @@ const MarcaForm = ({ marca, onSuccess }) => {
         .toLowerCase()
         .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Quitar acentos
         .replace(/\s+/g, '-')
-        .replace(/[^\w\-]+/g, '')
-        .replace(/\-\-+/g, '-')
+        .replace(/[^\w-]+/g, '')
+        .replace(/--+/g, '-')
         .replace(/^-+/, '')
         .replace(/-+$/, '');
       setValue('slug', slug);

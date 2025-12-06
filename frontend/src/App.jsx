@@ -52,7 +52,7 @@ function App() {
                 RUTAS PÚBLICAS (con Layout principal)
             ══════════════════════════════════════════════════════════ */}
             <Route element={<Layout />}>
-              <Route index element={<SubaruShowcase />} />
+              <Route index element={<Home />} />
               <Route path="subaru" element={<SubaruShowcase />} />
               <Route path="suzuki" element={<SuzukiHomeConAPI />} />
               <Route path="login" element={<Login />} />

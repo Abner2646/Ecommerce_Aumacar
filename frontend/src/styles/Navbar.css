@@ -232,7 +232,7 @@
 .cns-navbar-dropdown-menu--open {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(8px);
+  transform: none;
   pointer-events: auto;
 }
 
@@ -313,7 +313,7 @@
 
 /* Animación a X cuando está abierto */
 .cns-navbar-hamburger--open .cns-navbar-hamburger-line:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .cns-navbar-hamburger--open .cns-navbar-hamburger-line:nth-child(2) {
@@ -322,7 +322,7 @@
 }
 
 .cns-navbar-hamburger--open .cns-navbar-hamburger-line:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
+  transform: rotate(-45deg);
 }
 
 /* ----- Mobile Menu ----- */
@@ -337,7 +337,7 @@
   background-color: var(--color-white);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-20px);
+  transform: none;
   transition: 
     opacity 300ms cubic-bezier(0.4, 0, 0.2, 1),
     transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -347,7 +347,7 @@
 .cns-navbar-mobile--open {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: none;
   z-index: 999;
 }
 
@@ -397,7 +397,7 @@
   position: absolute;
   right: 0;
   top: 50%;
-  transform: translateY(-50%);
+  transform: none;
   width: 8px;
   height: 8px;
   background-color: var(--color-gray-800);
@@ -462,7 +462,7 @@
   position: absolute;
   right: 0;
   top: 50%;
-  transform: translateY(-50%);
+  transform: none;
   width: 6px;
   height: 6px;
   background-color: var(--color-gray-800);
