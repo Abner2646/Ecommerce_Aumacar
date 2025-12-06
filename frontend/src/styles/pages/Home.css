@@ -1,0 +1,49 @@
+/* /src/styles/pages/Home.css */
+
+/* Landing Brand Selector Premium */
+.lnd-brand-selector {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .lnd-brand-selector {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+  }
+}
+
+/* Landing Brand Card Premium */
+
+.lnd-brand-card {
+  position: relative;
+  height: 425px;
+  overflow: hidden;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition:
+    transform 700ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 700ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: block;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  will-change: transform;
+}
+
+@media (min-width: 1024px) {
+  .lnd-brand-card {
+    height: 510px;
+  }
+}
+
+
+.lnd-brand-card:hover {
+  /* No transform, solo sombra si quieres */
+  box-shadow: 0 25px 35px -5px rgba(0, 0, 0, 0.2), 0 15px 15px -5px rgba(0, 0, 0, 0.08);
+}
+
+.lnd-brand-card:active {
+  /* No transform */
+}

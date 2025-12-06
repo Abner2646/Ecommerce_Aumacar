@@ -230,9 +230,10 @@
     `);
   </script>
 
-  <!-- Service Worker para PWA-->
+  <!-- Service Worker para PWA (deshabilitado en desarrollo)-->
+  <!--
   <script>
-    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+    if ('serviceWorker' in navigator && '%NODE_ENV%' === 'production') {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('%PUBLIC_URL%/sw.js')
           .then((registration) => {
@@ -244,5 +245,6 @@
       });
     }
   </script>
+  -->
 </body>
 </html>
