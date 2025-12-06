@@ -1,213 +1,252 @@
-// /src/pages/public/SubaruShowcase.jsx
-
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { MessageCircle } from 'lucide-react';
+import { Users, ArrowRight, Phone, MapPin, Mail } from 'react-feather';
+import suzukiParallax from '../../assets/images/Captura de pantalla 2025-12-03 200137.png';
 
 const SubaruShowcase = () => {
-  const [activeTab, setActiveTab] = useState('specs');
+  const [activeTab, setActiveTab] = useState('all');
 
-  // Datos mock de vehículos
-  const vehiculos = [
+  const modelos = [
     {
       id: 1,
-      nombre: 'Forester',
-      categoria: 'SUV',
-      descripcion: 'Versatilidad y aventura con tecnología AWD simétrica',
-      imagen: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800&q=80',
-      precio: '45.990',
+      nombre: 'Swift',
+      categoria: 'Hatchback',
+      descripcion: 'Diseño audaz con tecnología híbrida y máxima eficiencia',
+      precio: '24.990',
+      imagen: 'https://images.unsplash.com/photo-1619405399517-d7fce0f13302?w=800&h=600&fit=crop',
       specs: {
-        motor: '2.5L BOXER',
-        potencia: '182 HP',
-        transmision: 'CVT',
-        traccion: 'AWD'
+        motor: '1.2L Híbrido',
+        potencia: '90 HP',
+        consumo: '4.2 L/100km',
+        transmision: 'CVT'
       }
     },
     {
       id: 2,
-      nombre: 'Outback',
-      categoria: 'Wagon',
-      descripcion: 'La perfecta combinación entre elegancia y capacidad todoterreno',
-      imagen: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80',
-      precio: '52.990',
+      nombre: 'Vitara',
+      categoria: 'SUV Compacto',
+      descripcion: 'SUV compacto con tecnología ALLGRIP y diseño robusto',
+      precio: '32.990',
+      imagen: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&h=600&fit=crop',
       specs: {
-        motor: '2.4L Turbo',
-        potencia: '260 HP',
-        transmision: 'CVT',
-        traccion: 'AWD'
+        motor: '1.4L Turbo',
+        potencia: '140 HP',
+        consumo: '5.8 L/100km',
+        transmision: '6AT'
       }
     },
     {
       id: 3,
-      nombre: 'Crosstrek',
-      categoria: 'Crossover',
-      descripcion: 'Compacto, eficiente y preparado para cualquier aventura',
-      imagen: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&q=80',
+      nombre: 'Jimny',
+      categoria: '4x4',
+      descripcion: 'Icónico 4x4 compacto para aventuras sin límites',
       precio: '38.990',
+      imagen: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&h=600&fit=crop',
       specs: {
-        motor: '2.0L BOXER',
-        potencia: '152 HP',
-        transmision: 'CVT',
-        traccion: 'AWD'
+        motor: '1.5L',
+        potencia: '102 HP',
+        consumo: '6.4 L/100km',
+        transmision: '5MT/4AT'
       }
     },
     {
       id: 4,
-      nombre: 'Impreza',
-      categoria: 'Sedan',
-      descripcion: 'Deportividad y eficiencia para el día a día',
-      imagen: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80',
-      precio: '32.990',
+      nombre: 'S-Cross',
+      categoria: 'Crossover',
+      descripcion: 'Elegancia y versatilidad para la familia moderna',
+      precio: '35.990',
+      imagen: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop',
       specs: {
-        motor: '2.0L BOXER',
-        potencia: '152 HP',
-        transmision: 'CVT',
-        traccion: 'AWD'
+        motor: '1.4L Turbo',
+        potencia: '129 HP',
+        consumo: '5.3 L/100km',
+        transmision: '6AT'
       }
     },
     {
       id: 5,
-      nombre: 'Ascent',
-      categoria: 'SUV 7 Pasajeros',
-      descripcion: 'Espacio, confort y seguridad para toda la familia',
-      imagen: 'https://images.unsplash.com/photo-1617654112368-307921291f42?w=800&q=80',
-      precio: '58.990',
+      nombre: 'Ignis',
+      categoria: 'Urbano',
+      descripcion: 'Compacto, eficiente y perfecto para la ciudad',
+      precio: '21.990',
+      imagen: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&h=600&fit=crop',
       specs: {
-        motor: '2.4L Turbo',
-        potencia: '260 HP',
-        transmision: 'CVT',
-        traccion: 'AWD'
+        motor: '1.2L',
+        potencia: '83 HP',
+        consumo: '4.7 L/100km',
+        transmision: '5MT/CVT'
       }
     },
     {
       id: 6,
-      nombre: 'WRX',
-      categoria: 'Deportivo',
-      descripcion: 'Pura emoción y rendimiento en estado puro',
-      imagen: 'https://images.unsplash.com/photo-1610768764270-790fbec18178?w=800&q=80',
-      precio: '62.990',
+      nombre: 'Baleno',
+      categoria: 'Sedan',
+      descripcion: 'Espacioso, elegante y eficiente para cada viaje',
+      precio: '27.990',
+      imagen: 'https://images.unsplash.com/photo-1617654112368-307921291f42?w=800&h=600&fit=crop',
       specs: {
-        motor: '2.4L Turbo',
-        potencia: '271 HP',
-        transmision: 'Manual 6V',
-        traccion: 'AWD'
+        motor: '1.4L',
+        potencia: '92 HP',
+        consumo: '5.1 L/100km',
+        transmision: '5MT/CVT'
       }
     }
   ];
 
   const caracteristicas = [
     {
-      titulo: 'Tecnología AWD Simétrica',
-      descripcion: 'Sistema de tracción en las cuatro ruedas que proporciona máxima estabilidad y control en cualquier condición.',
-      icono: '⚙️'
+      titulo: 'Tecnología Híbrida',
+      descripcion: 'Sistemas híbridos avanzados que combinan eficiencia y rendimiento sin compromisos.'
     },
     {
-      titulo: 'Motor BOXER',
-      descripcion: 'Diseño horizontalmente opuesto que reduce vibración y mejora el centro de gravedad del vehículo.',
-      icono: '🔧'
+      titulo: 'ALLGRIP 4x4',
+      descripcion: 'Sistema de tracción inteligente que se adapta automáticamente a cualquier terreno.'
     },
     {
-      titulo: 'EyeSight',
-      descripcion: 'Sistema avanzado de asistencia al conductor con detección de peatones y frenado automático.',
-      icono: '👁️'
+      titulo: 'Seguridad Total',
+      descripcion: 'Equipados con los sistemas de seguridad activa y pasiva más avanzados del mercado.'
     },
     {
-      titulo: 'Máxima Seguridad',
-      descripcion: 'Certificación Top Safety Pick+ del IIHS en todos nuestros modelos principales.',
-      icono: '🛡️'
+      titulo: 'Diseño Japonés',
+      descripcion: 'Estética funcional que combina tradición japonesa con modernidad contemporánea.'
     }
   ];
 
   return (
-    <main className="subaru-showcase">
+    <main className="bg-white">
       
-      {/* ==================== HERO SECTION ==================== */}
-      <section className="cns-hero">
-        <div className="cns-media-container">
-          <img 
-            src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1920&q=80"
-            alt="Subaru Hero"
-            className="showcase-hero-image"
+      {/* ==================== HERO SECTION PREMIUM ==================== */}
+      <section className="relative min-h-[600px] md:min-h-[700px] flex items-center">
+        <div className="absolute inset-0">
+          <video
+            ref={el => {
+              if (el) {
+                el.onloadedmetadata = () => {
+                  el.currentTime = 2;
+                  el.play();
+                };
+                el.ontimeupdate = () => {
+                  if (el.currentTime >= 13) {
+                    el.currentTime = 2;
+                  }
+                };
+              }
+            }}
+            src={require('../../assets/videos/16-19-41 (1).mp4')}
+            muted
+            loop
+            playsInline
+            autoPlay
+            className="w-full h-full object-cover"
+            style={{ filter: 'brightness(0.8) contrast(1.1)' }}
           />
-          <div className="cns-overlay"></div>
+          <div className="cns-hero-overlay"></div>
         </div>
-        
-        <div className="showcase-hero-content">
-          <div className="cns-container">
-            <div className="showcase-hero-text">
-              <span className="sbr-body showcase-hero-subtitle">
-                Performance y Confiabilidad
-              </span>
-              <h1 className="sbr-hero-title showcase-hero-title">
-                Subaru
-              </h1>
-              <p className="sbr-body showcase-hero-description">
-                Más de 50 años de innovación en tracción total y seguridad
-              </p>
-              <div className="showcase-hero-actions">
-                <button className="cns-btn-primary">
-                  Ver Modelos
-                </button>
-                <button className="cns-btn-secondary showcase-btn-secondary-light">
-                  Agendar Test Drive
-                </button>
-              </div>
+
+        <div className="relative z-10 cns-container px-4 md:px-8">
+          <div className="text-center max-w-4xl mx-auto">
+            <span className="cns-pill-badge">Performance & Eficiencia</span>
+            <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              Subaru
+            </h1>
+            <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto mb-12 leading-relaxed">
+             Tecnología Subaru para acompañarte en cada camino.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="#modelos"
+                className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
+              >
+                {/* Lupa Lucide */}
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:scale-130 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <div className="flex flex-col items-start">
+                  <span className="text-sm font-medium">Explorar Modelos</span>
+                </div>
+              </a>
+              <a 
+                href="https://wa.me/5492914044550" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
+              >
+                <MessageCircle size={24} className="group-hover:scale-130 transition-transform" />
+                {/* Solo el ícono crece en hover */}
+                <div className="flex flex-col items-start">
+                  <span className="text-sm font-medium">WhatsApp</span>
+                  <span className="text-sm font-normal">Consulta rápida</span>
+                </div>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ==================== DESTACADOS ==================== */}
-      <section className="cns-section showcase-featured-section">
+      {/* ==================== MODELOS DESTACADOS PREMIUM ==================== */}
+      <section className="cns-section">
         <div className="cns-container">
-          <div className="showcase-section-header">
-            <h2 className="sbr-heading text-h1-mobile lg:text-h1-desktop text-gray-900">
-              Modelos Destacados
+          <div className="text-center mb-16 lg:mb-20 max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Nuestra Línea 2025
             </h2>
-            <p className="sbr-body text-body-mobile lg:text-body-desktop text-gray-600">
-              Descubre nuestra línea completa de vehículos diseñados para cada estilo de vida
+            <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+              Descubre vehículos diseñados para cada aventura, desde la ciudad hasta el off-road
             </p>
           </div>
 
           <div className="cns-vehicle-grid">
-            {vehiculos.slice(0, 3).map((vehiculo) => (
-              <article key={vehiculo.id} className="cns-vehicle-card showcase-vehicle-card">
-                <div className="showcase-card-image-wrapper">
+            {modelos.slice(0, 3).map((modelo) => (
+              <article key={modelo.id} className="cns-vehicle-card">
+                <div className="relative overflow-hidden">
                   <img 
-                    src={vehiculo.imagen} 
-                    alt={vehiculo.nombre}
-                    className="cns-card-image"
+                    src={modelo.imagen}
+                    alt={modelo.nombre}
+                    className="cns-card-image w-full aspect-[4/3] object-cover"
                   />
-                  <div className="showcase-card-badge">
-                    {vehiculo.categoria}
+                  <div className="cns-badge">
+                    {modelo.categoria}
                   </div>
                 </div>
-                <div className="showcase-card-content">
-                  <h3 className="sbr-heading text-h2-mobile lg:text-h2-desktop text-gray-900">
-                    {vehiculo.nombre}
+
+                <div className="p-6 space-y-4">
+                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
+                    {modelo.nombre}
                   </h3>
-                  <p className="sbr-body text-body-mobile text-gray-600 showcase-card-description">
-                    {vehiculo.descripcion}
-                  </p>
                   
-                  <div className="showcase-card-specs">
-                    <div className="showcase-spec-item">
-                      <span className="showcase-spec-label">Motor</span>
-                      <span className="showcase-spec-value">{vehiculo.specs.motor}</span>
+                  <p className="text-base md:text-lg text-gray-600 leading-relaxed min-h-[3rem]">
+                    {modelo.descripcion}
+                  </p>
+
+                  <div className="cns-specs-grid pt-4 border-t border-gray-200">
+                    <div className="cns-spec-item">
+                      <span className="block mb-1">Motor</span>
+                      <span className="cns-spec-value">{modelo.specs.motor}</span>
                     </div>
-                    <div className="showcase-spec-item">
-                      <span className="showcase-spec-label">Potencia</span>
-                      <span className="showcase-spec-value">{vehiculo.specs.potencia}</span>
+                    <div className="cns-spec-item">
+                      <span className="block mb-1">Potencia</span>
+                      <span className="cns-spec-value">{modelo.specs.potencia}</span>
+                    </div>
+                    <div className="cns-spec-item">
+                      <span className="block mb-1">Consumo</span>
+                      <span className="cns-spec-value">{modelo.specs.consumo}</span>
+                    </div>
+                    <div className="cns-spec-item">
+                      <span className="block mb-1">Transmisión</span>
+                      <span className="cns-spec-value">{modelo.specs.transmision}</span>
                     </div>
                   </div>
 
-                  <div className="showcase-card-footer">
-                    <div className="showcase-card-price">
-                      <span className="showcase-price-label">Desde</span>
-                      <span className="sbr-heading showcase-price-value">
-                        ${vehiculo.precio}
+                  <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+                    <div>
+                      <span className="text-sm text-gray-500 block mb-1">Desde</span>
+                      <span className="cns-price">
+                        ${modelo.precio}
                       </span>
                     </div>
-                    <button className="cns-btn-primary showcase-card-btn">
-                      Ver Detalles
+                    <button className="cns-btn-secondary">
+                      Ver Detalles →
                     </button>
                   </div>
                 </div>
@@ -217,52 +256,56 @@ const SubaruShowcase = () => {
         </div>
       </section>
 
-      {/* ==================== PARALLAX SECTION ==================== */}
-      <section className="showcase-parallax-section">
-        <div className="showcase-parallax-image">
-          <img 
-            src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1920&q=80"
-            alt="Subaru en carretera"
-          />
-          <div className="cns-overlay"></div>
+      {/* ==================== PARALLAX SECTION PREMIUM ==================== */}
+      <section className="cns-parallax">
+        <div className="cns-parallax-bg" style={{ backgroundImage: 'url(https://i.blogs.es/8e0d91/img_7548-mejorado-nr-copia/1366_2000.jpeg)' }}>
         </div>
-        <div className="showcase-parallax-content">
-          <div className="cns-container">
-            <div className="showcase-parallax-text">
-              <h2 className="sbr-hero-title text-white">
-                Confianza en cada kilómetro
-              </h2>
-              <p className="sbr-body showcase-parallax-description">
-                La tracción simétrica AWD de Subaru te brinda el control total que necesitas en cualquier superficie y condición climática
-              </p>
-            </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/70 to-gray-900/40"></div>
+        
+        <div className="cns-container relative z-10 flex items-center min-h-[400px] md:min-h-[500px] py-20">
+          <div className="max-w-2xl">
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight">
+              Diseñado para<br />cualquier terreno
+            </h2>
+            <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed">
+              La tecnología ALLGRIP 4x4 te brinda control total en carretera, nieve, barro o arena. 
+              Sin importar el destino, Subaru te lleva allí.
+            </p>
+            <button className="cns-btn-primary px-8 py-4">
+              Conocer ALLGRIP
+            </button>
           </div>
         </div>
       </section>
 
-      {/* ==================== CARACTERÍSTICAS ==================== */}
-      <section className="cns-section">
+      {/* ==================== CARACTERÍSTICAS PREMIUM ==================== */}
+      <section className="cns-section bg-gray-50">
         <div className="cns-container">
-          <div className="showcase-section-header">
-            <h2 className="sbr-heading text-h1-mobile lg:text-h1-desktop text-gray-900">
+          <div className="text-center mb-16 max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Tecnología Subaru
             </h2>
-            <p className="sbr-body text-body-mobile lg:text-body-desktop text-gray-600">
-              Innovación que marca la diferencia
+            <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+              Innovación que marca la diferencia en cada kilómetro
             </p>
           </div>
 
-          <div className="showcase-features-grid">
-            {caracteristicas.map((caracteristica, index) => (
-              <div key={index} className="showcase-feature-card">
-                <div className="showcase-feature-icon">
-                  {caracteristica.icono}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {caracteristicas.map((feature, index) => (
+              <div key={index} className="cns-feature-card text-center">
+                <div className="cns-icon-container mx-auto">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {index === 0 && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />}
+                    {index === 1 && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />}
+                    {index === 2 && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />}
+                    {index === 3 && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />}
+                  </svg>
                 </div>
-                <h3 className="sbr-heading text-h2-mobile text-gray-900">
-                  {caracteristica.titulo}
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-3">
+                  {feature.titulo}
                 </h3>
-                <p className="sbr-body text-body-mobile text-gray-600">
-                  {caracteristica.descripcion}
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                  {feature.descripcion}
                 </p>
               </div>
             ))}
@@ -270,102 +313,129 @@ const SubaruShowcase = () => {
         </div>
       </section>
 
-      {/* ==================== LÍNEA COMPLETA ==================== */}
-      <section className="cns-section showcase-all-models-section">
+      {/* ==================== LÍNEA COMPLETA PREMIUM ==================== */}
+      <section className="cns-section">
         <div className="cns-container">
-          <div className="showcase-section-header">
-            <h2 className="sbr-heading text-h1-mobile lg:text-h1-desktop text-gray-900">
+          <div className="text-center mb-16 max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Línea Completa 2024
             </h2>
-            <p className="sbr-body text-body-mobile lg:text-body-desktop text-gray-600">
+            <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
               Encuentra el Subaru perfecto para ti
             </p>
           </div>
 
-          {/* Tabs */}
-          <div className="showcase-tabs">
-            <button 
-              className={`showcase-tab ${activeTab === 'specs' ? 'active' : ''}`}
+          {/* Tabs Premium */}
+          <div className="flex justify-center gap-2 mb-12 border-b border-gray-200">
+            <button
+              onClick={() => setActiveTab('all')}
+              className={`px-8 py-4 font-semibold transition-all duration-200 border-b-2 ${
+                activeTab === 'all'
+                  ? 'border-gray-900 text-gray-900'
+                  : 'border-transparent text-gray-400 hover:text-gray-600'
+              }`}
+            >
+              Todos los Modelos
+            </button>
+            <button
               onClick={() => setActiveTab('specs')}
+              className={`px-8 py-4 font-semibold transition-all duration-200 border-b-2 ${
+                activeTab === 'specs'
+                  ? 'border-gray-900 text-gray-900'
+                  : 'border-transparent text-gray-400 hover:text-gray-600'
+              }`}
             >
               Especificaciones
             </button>
-            <button 
-              className={`showcase-tab ${activeTab === 'gallery' ? 'active' : ''}`}
-              onClick={() => setActiveTab('gallery')}
-            >
-              Galería
-            </button>
           </div>
 
-          {/* Tab Content */}
-          {activeTab === 'specs' && (
-            <div className="showcase-models-list">
-              {vehiculos.map((vehiculo) => (
-                <div key={vehiculo.id} className="showcase-model-row">
-                  <div className="showcase-model-image">
-                    <img src={vehiculo.imagen} alt={vehiculo.nombre} />
-                  </div>
-                  <div className="showcase-model-info">
-                    <div>
-                      <h3 className="sbr-heading text-h2-mobile text-gray-900">
-                        {vehiculo.nombre}
-                      </h3>
-                      <span className="showcase-model-category">
-                        {vehiculo.categoria}
-                      </span>
+          {/* Tab Content - Galería */}
+          {activeTab === 'all' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {modelos.map((modelo) => (
+                <div key={modelo.id} className="cns-vehicle-card group">
+                  <div className="relative overflow-hidden">
+                    <img 
+                      src={modelo.imagen}
+                      alt={modelo.nombre}
+                      className="cns-card-image w-full aspect-[4/3] object-cover"
+                    />
+                    <div className="cns-badge">
+                      {modelo.categoria}
                     </div>
-                    <p className="sbr-body text-body-mobile text-gray-600">
-                      {vehiculo.descripcion}
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                      {modelo.nombre}
+                    </h3>
+                    <p className="text-base text-gray-600 mb-4 leading-relaxed min-h-[3rem]">
+                      {modelo.descripcion}
                     </p>
-                  </div>
-                  <div className="showcase-model-specs-grid">
-                    <div className="showcase-model-spec">
-                      <span className="showcase-spec-label">Motor</span>
-                      <span className="sbr-body showcase-spec-value">{vehiculo.specs.motor}</span>
-                    </div>
-                    <div className="showcase-model-spec">
-                      <span className="showcase-spec-label">Potencia</span>
-                      <span className="sbr-body showcase-spec-value">{vehiculo.specs.potencia}</span>
-                    </div>
-                    <div className="showcase-model-spec">
-                      <span className="showcase-spec-label">Transmisión</span>
-                      <span className="sbr-body showcase-spec-value">{vehiculo.specs.transmision}</span>
-                    </div>
-                    <div className="showcase-model-spec">
-                      <span className="showcase-spec-label">Tracción</span>
-                      <span className="sbr-body showcase-spec-value">{vehiculo.specs.traccion}</span>
-                    </div>
-                  </div>
-                  <div className="showcase-model-action">
-                    <div className="showcase-model-price">
-                      <span className="showcase-price-label">Desde</span>
-                      <span className="sbr-heading text-h2-mobile text-gray-900">
-                        ${vehiculo.precio}
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                      <div>
+                        <span className="text-sm text-gray-500 block">Desde</span>
+                        <span className="text-2xl font-bold text-gray-900">
+                          ${modelo.precio}
+                        </span>
+                      </div>
+                      <span className="text-base text-gray-600 group-hover:text-gray-900 transition-colors font-medium">
+                        Ver más →
                       </span>
                     </div>
-                    <button className="cns-btn-secondary">
-                      Más Info
-                    </button>
                   </div>
                 </div>
               ))}
             </div>
           )}
 
-          {activeTab === 'gallery' && (
-            <div className="cns-vehicle-grid">
-              {vehiculos.map((vehiculo) => (
-                <div key={vehiculo.id} className="showcase-gallery-item">
-                  <img 
-                    src={vehiculo.imagen} 
-                    alt={vehiculo.nombre}
-                    className="cns-card-image"
-                  />
-                  <div className="showcase-gallery-overlay">
-                    <h4 className="sbr-heading text-h2-mobile text-white">
-                      {vehiculo.nombre}
-                    </h4>
+          {/* Tab Content - Especificaciones */}
+          {activeTab === 'specs' && (
+            <div className="space-y-4">
+              {modelos.map((modelo) => (
+                <div key={modelo.id} className="bg-gray-50 rounded-xl p-6 hover:bg-white hover:shadow-lg transition-all duration-300">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div className="lg:col-span-3">
+                      <img 
+                        src={modelo.imagen}
+                        alt={modelo.nombre}
+                        className="w-full h-32 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div className="lg:col-span-3">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                        {modelo.nombre}
+                      </h3>
+                      <span className="text-sm text-gray-500 font-medium">{modelo.categoria}</span>
+                    </div>
+                    <div className="lg:col-span-4">
+                      <div className="cns-specs-grid">
+                        <div className="cns-spec-item">
+                          <span className="block mb-1">Motor</span>
+                          <span className="cns-spec-value">{modelo.specs.motor}</span>
+                        </div>
+                        <div className="cns-spec-item">
+                          <span className="block mb-1">Potencia</span>
+                          <span className="cns-spec-value">{modelo.specs.potencia}</span>
+                        </div>
+                        <div className="cns-spec-item">
+                          <span className="block mb-1">Consumo</span>
+                          <span className="cns-spec-value">{modelo.specs.consumo}</span>
+                        </div>
+                        <div className="cns-spec-item">
+                          <span className="block mb-1">Transmisión</span>
+                          <span className="cns-spec-value">{modelo.specs.transmision}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="lg:col-span-2 text-center lg:text-right">
+                      <span className="text-sm text-gray-500 block mb-1">Desde</span>
+                      <span className="text-2xl font-bold text-gray-900 block mb-4">
+                        ${modelo.precio}
+                      </span>
+                      <button className="cns-btn-secondary w-full lg:w-auto">
+                        Más Info
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -374,28 +444,90 @@ const SubaruShowcase = () => {
         </div>
       </section>
 
-      {/* ==================== CTA FINAL ==================== */}
-      <section className="showcase-cta-section">
-        <div className="cns-container">
-          <div className="showcase-cta-content">
-            <h2 className="sbr-hero-title text-white showcase-cta-title">
-              Agenda tu Test Drive
-            </h2>
-            <p className="sbr-body showcase-cta-description">
-              Experimenta la diferencia Subaru. Visita nuestro concesionario y prueba el modelo que más te guste
-            </p>
-            <div className="showcase-cta-actions">
-              <button className="cns-btn-primary showcase-cta-btn">
-                Agendar Ahora
-              </button>
-              <button className="cns-btn-secondary showcase-btn-secondary-light">
-                Contactar Asesor
-              </button>
+      {/* CTA Section Premium */}
+      <section className="relative cns-section min-h-[600px] md:min-h-[700px] flex items-center overflow-hidden">
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"></div>
+
+        <div className="cns-container relative z-10">
+          <div className="max-w-5xl mx-auto">
+            {/* Content */}
+            <div className="text-center mb-12 md:mb-16">
+              {/* Heading y descripción nuevos */}
+              <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
+                Agenda tu Test Drive
+              </h2>
+              <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto">
+                Experimenta la diferencia Subaru. Visita nuestro concesionario y descubre 
+                por qué millones de conductores confían en nosotros.
+              </p>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+                <a 
+                  href="#marcas" 
+                  className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-104 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto justify-center"
+                >
+                  <span>Agendar ahora</span>
+                  <ArrowRight className="w-5 h-5 group-hover:scale-[2] transition-transform" />
+                </a>
+                <a 
+                  href="tel:02914517000" 
+                  className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg transition-all duration-300 w-full sm:w-auto justify-center hover:scale-104"
+                >
+                  <Phone className="w-5 h-5 group-hover:scale-150 transition-transform" />
+                  <span>(0291) 451-7000</span>
+                </a>
+              </div>
+
+              {/* Contact Options */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto pt-12 border-t border-white/20">
+                {/* WhatsApp */}
+                <a 
+                  href="https://wa.me/5492914277849" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                >
+                  <MessageCircle className="w-6 h-6 text-white group-hover:scale-180 transition-transform" />
+                  <div className="text-left">
+                    <div className="text-sm text-white/60 font-medium">WhatsApp</div>
+                    <div className="text-white font-semibold">Consulta rápida</div>
+                  </div>
+                </a>
+
+                {/* Dirección */}
+                <a 
+                  href="https://maps.google.com" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                >
+                  <MapPin className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
+                  <div className="text-left">
+                    <div className="text-sm text-white/60 font-medium">Visitanos</div>
+                    <div className="text-white font-semibold">Bahía Blanca</div>
+                  </div>
+                </a>
+
+                {/* Email */}
+                <a 
+                  href="mailto:info@aumacar.com.ar" 
+                  className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                >
+                  <Mail className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
+                  <div className="text-left">
+                    <div className="text-sm text-white/60 font-medium">Email</div>
+                    <div className="text-white font-semibold">Escríbenos</div>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
-
     </main>
   );
 };
