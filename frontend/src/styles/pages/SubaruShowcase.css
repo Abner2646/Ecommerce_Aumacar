@@ -71,11 +71,11 @@
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+
   }
 }
 
@@ -261,7 +261,7 @@
 }
 
 .showcase-feature-card:hover {
-  transform: translateY(-8px);
+
 }
 
 .showcase-feature-icon {
@@ -333,7 +333,7 @@
 }
 
 .showcase-model-row:hover {
-  transform: translateX(8px);
+
 }
 
 .showcase-model-image {

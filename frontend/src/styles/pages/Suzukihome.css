@@ -5,11 +5,11 @@
 @keyframes suzuki-home-fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+
   }
 }
 
@@ -86,7 +86,7 @@
 }
 
 .suzuki-home-feature-item:hover {
-  transform: translateX(8px);
+
 }
 
 /* Overlay gradient para CTA */
@@ -101,6 +101,6 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .suzuki-home-feature-item:hover {
-    transform: translateX(4px);
+
   }
 }

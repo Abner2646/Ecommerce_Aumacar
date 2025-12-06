@@ -123,58 +123,7 @@ const Navbar = () => {
 
         {/* Navegación Desktop */}
         <div className="cns-navbar-nav">
-          {/* Dropdown Marcas */}
-          <div 
-            className="cns-navbar-dropdown"
-            onMouseEnter={handleDropdownEnter}
-            onMouseLeave={handleDropdownLeave}
-            ref={dropdownRef}
-          >
-            <button
-              className={`cns-navbar-link cns-navbar-dropdown-trigger ${isInBrandPage ? 'cns-navbar-link--active' : ''}`}
-              aria-expanded={isDropdownOpen}
-              aria-haspopup="true"
-            >
-              Marcas
-              <svg 
-                className={`cns-navbar-dropdown-arrow ${isDropdownOpen ? 'cns-navbar-dropdown-arrow--open' : ''}`}
-                width="12" 
-                height="12" 
-                viewBox="0 0 12 12" 
-                fill="none"
-                aria-hidden="true"
-              >
-                <path 
-                  d="M2.5 4.5L6 8L9.5 4.5" 
-                  stroke="currentColor" 
-                  strokeWidth="1.5" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
 
-            {/* Dropdown Menu */}
-            <div 
-              className={`cns-navbar-dropdown-menu ${isDropdownOpen ? 'cns-navbar-dropdown-menu--open' : ''}`}
-              role="menu"
-            >
-              <Link 
-                to="/subaru" 
-                className={`cns-navbar-dropdown-item ${location.pathname.startsWith('/subaru') ? 'cns-navbar-dropdown-item--active' : ''}`}
-                role="menuitem"
-              >
-                Subaru
-              </Link>
-              <Link 
-                to="/suzuki" 
-                className={`cns-navbar-dropdown-item ${location.pathname.startsWith('/suzuki') ? 'cns-navbar-dropdown-item--active' : ''}`}
-                role="menuitem"
-              >
-                Suzuki
-              </Link>
-            </div>
-          </div>
 
           {/* Link Contacto */}
           <NavLink 
@@ -205,49 +154,7 @@ const Navbar = () => {
           aria-hidden={!isMobileMenuOpen}
         >
           <div className="cns-navbar-mobile-content">
-            {/* Marcas Accordion */}
-            <div className="cns-navbar-mobile-item">
-              <button
-                className={`cns-navbar-mobile-link cns-navbar-mobile-accordion-trigger ${isInBrandPage ? 'cns-navbar-mobile-link--active' : ''}`}
-                onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
-                aria-expanded={isMobileDropdownOpen}
-              >
-                Marcas
-                <svg 
-                  className={`cns-navbar-mobile-accordion-arrow ${isMobileDropdownOpen ? 'cns-navbar-mobile-accordion-arrow--open' : ''}`}
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 12 12" 
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path 
-                    d="M2.5 4.5L6 8L9.5 4.5" 
-                    stroke="currentColor" 
-                    strokeWidth="1.5" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
 
-              <div 
-                className={`cns-navbar-mobile-accordion ${isMobileDropdownOpen ? 'cns-navbar-mobile-accordion--open' : ''}`}
-              >
-                <Link 
-                  to="/subaru" 
-                  className={`cns-navbar-mobile-sublink ${location.pathname.startsWith('/subaru') ? 'cns-navbar-mobile-sublink--active' : ''}`}
-                >
-                  Subaru
-                </Link>
-                <Link 
-                  to="/suzuki" 
-                  className={`cns-navbar-mobile-sublink ${location.pathname.startsWith('/suzuki') ? 'cns-navbar-mobile-sublink--active' : ''}`}
-                >
-                  Suzuki
-                </Link>
-              </div>
-            </div>
 
             {/* Contacto */}
             <NavLink 

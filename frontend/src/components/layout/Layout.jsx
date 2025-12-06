@@ -3,15 +3,18 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import { useLocation } from 'react-router-dom';
 
 const Layout = () => {
+  const location = useLocation();
+  const hideFooter = location.pathname === '/login';
   return (
     <div className="cns-layout-container">
       <Navbar />
       <main className="cns-layout-main">
         <Outlet />
       </main>
-      <Footer />
+      {!hideFooter && <Footer />}
     </div>
   );
 };

@@ -16,6 +16,7 @@ import './globals.css';
 import './styles/main.css';
 
 // Páginas públicas
+import Home from './pages/public/Home.jsx';
 import Login from './pages/public/Login.jsx';
 import SubaruShowcase from './pages/public/SubaruShowcase.jsx';
 import SuzukiHomeConAPI from './pages/public/SuzukiHome.jsx';
@@ -51,8 +52,9 @@ function App() {
                 RUTAS PÚBLICAS (con Layout principal)
             ══════════════════════════════════════════════════════════ */}
             <Route element={<Layout />}>
-              <Route path="showcase" element={<SubaruShowcase />} />
-              <Route path="prueba" element={<SuzukiHomeConAPI />} />
+              <Route index element={<SubaruShowcase />} />
+              <Route path="subaru" element={<SubaruShowcase />} />
+              <Route path="suzuki" element={<SuzukiHomeConAPI />} />
               <Route path="login" element={<Login />} />
             </Route>
 

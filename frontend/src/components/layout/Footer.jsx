@@ -9,23 +9,20 @@ const Footer = () => {
       <div className="cns-container">
         <div className="cns-footer-grid">
           
-          {/* COLUMNA IZQUIERDA: Logo y Redes */}
-          <div className="cns-footer-brand-column">
-            {/* Logo Area - Reemplazar src con tu logo real */}
-            <div className="cns-footer-logo-container">
-              {/* Opción A: Si tienes imagen */}
-              {/* <img src="/logo-blanco.png" alt="Subaru Suzuki Bahía" className="cns-footer-logo" /> */}
-              
-              {/* Opción B: Texto Tipográfico (Placeholder elegante) */}
-              <span className="text-xs text-gray-400 uppercase tracking-widest mt-1 block">
-                Concesionario Oficial
-              </span>
-              <h2 className="text-2xl font-bold tracking-tighter text-white">
-                SUBARU <span className="text-gray-600">|</span> SUZUKI
-              </h2>
+          {/* COLUMNA 1: Logo y Redes */}
+          <div className="cns-footer-column">
+            <div className="cns-footer-logo-area">
+              {/* Concesionario Oficial removed as per request */}
+              <p className="text-2xl md:text-3xl text-white font-bold mt-2">
+                Aumacar S.R.L.
+              </p>
             </div>
 
-            {/* Redes Sociales (Debajo del logo) */}
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xs mt-6">
+              Tu concesionaria de confianza en Bahía Blanca. Excelencia automotriz desde hace más de 20 años.
+            </p>
+
+            {/* Redes Sociales */}
             <div className="cns-footer-socials">
               <a 
                 href="https://www.instagram.com/subarusuzukibahia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
@@ -34,7 +31,7 @@ const Footer = () => {
                 className="cns-social-link"
                 aria-label="Instagram"
               >
-                <Instagram size={24} strokeWidth={1.5} />
+                <Instagram size={20} strokeWidth={1.5} />
               </a>
               <a 
                 href="https://www.facebook.com/subarusuzukibahia" 
@@ -43,30 +40,52 @@ const Footer = () => {
                 className="cns-social-link"
                 aria-label="Facebook"
               >
-                <Facebook size={24} strokeWidth={1.5} />
+                <Facebook size={20} strokeWidth={1.5} />
               </a>
             </div>
           </div>
 
-          {/* COLUMNA DERECHA: Información de Contacto */}
-          <div className="cns-footer-info-column">
-            
-            {/* Dirección */}
-            <div className="cns-footer-info-item">
-              <MapPin className="cns-footer-icon" size={20} />
-              <div>
-                <p className="text-white font-medium">Bahía Blanca</p>
-                <p className="text-gray-400 text-sm">Alvarado 802, B8000</p>
-                <p className="text-gray-400 text-sm">Provincia de Buenos Aires</p>
-              </div>
-            </div>
+          {/* COLUMNA 2: Navegación Rápida */}
+          <div className="cns-footer-column">
+            <h3 className="cns-footer-heading">Navegación</h3>
+            <ul className="cns-footer-links">
+              <li>
+                <a href="/" className="cns-footer-link">
+                  Inicio
+                </a>
+              </li>
+              <li>
+                <a href="/subaru" className="cns-footer-link">
+                  Subaru
+                </a>
+              </li>
+              <li>
+                <a href="/suzuki" className="cns-footer-link">
+                  Suzuki
+                </a>
+              </li>
+              <li>
+                <a href="#contacto" className="cns-footer-link">
+                  Contacto
+                </a>
+              </li>
+            </ul>
+          </div>
 
-            {/* Teléfonos */}
-            <div className="cns-footer-contact-group">
-              {/* Fijo */}
-              <a href="tel:02914517000" className="cns-footer-info-item hover:opacity-80 transition-opacity">
-                <Phone className="cns-footer-icon" size={20} />
-                <span className="text-gray-300">0291-4517000 (Fijo)</span>
+          {/* COLUMNA 3: Contacto */}
+          <div className="cns-footer-column">
+            <h3 className="cns-footer-heading">Contacto</h3>
+            
+            <div className="cns-footer-contact-list">
+              {/* Teléfono */}
+              <a 
+                href="tel:02914517000" 
+                className="cns-footer-contact-item group"
+              >
+                <Phone className="cns-footer-icon group-hover:text-white" size={18} />
+                <span className="text-gray-400 text-sm font-medium transition-colors">
+                  0291-4517000
+                </span>
               </a>
 
               {/* Whatsapp */}
@@ -74,21 +93,59 @@ const Footer = () => {
                 href="https://wa.me/5492914277849" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="cns-footer-info-item hover:opacity-80 transition-opacity"
+                className="cns-footer-contact-item group"
               >
-                <MessageCircle className="cns-footer-icon" size={20} />
-                <span className="text-gray-300">291-4277849 (Whatsapp)</span>
+                <MessageCircle className="cns-footer-icon group-hover:text-white" size={18} />
+                <span className="text-gray-400 text-sm font-medium transition-colors">
+                  291-4277849
+                </span>
               </a>
-            </div>
 
+              {/* Dirección */}
+              <div className="cns-footer-contact-item">
+                <MapPin className="cns-footer-icon" size={18} />
+                <div className="text-left">
+                  <p className="text-gray-400 text-sm font-medium">Alvarado 802</p>
+                  <p className="text-gray-400 text-sm font-medium">Bahía Blanca, B8000</p>
+                </div>
+              </div>
+            </div>
           </div>
+
+          {/* COLUMNA 4: Horarios */}
+          <div className="cns-footer-column">
+            <h3 className="cns-footer-heading">Horarios</h3>
+            <div className="space-y-3">
+              <div>
+                <p className="text-gray-400 text-sm font-medium mb-1">Lunes a Viernes</p>
+                <p className="text-gray-500 text-sm">8:00 - 12:00 | 16:00 - 20:00</p>
+              </div>
+              <div>
+                <p className="text-gray-400 text-sm font-medium mb-1">Sábados</p>
+                <p className="text-gray-500 text-sm">9:00 - 13:00</p>
+              </div>
+              <div>
+                <p className="text-gray-400 text-sm font-medium mb-1">Domingos</p>
+                <p className="text-gray-500 text-sm">Cerrado</p>
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        {/* Copyright / Bottom Bar */}
+        {/* Copyright / Bottom Bar Premium */}
         <div className="cns-footer-bottom">
-          <p className="text-xs text-gray-600">
-            © {new Date().getFullYear()} Aumacar. Todos los derechos reservados.
-          </p>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            {/* Copyright text removed as per request */}
+            <div className="flex gap-6 text-xs text-gray-500">
+              <a href="#privacidad" className="hover:text-gray-300 transition-colors">
+                Política de Privacidad
+              </a>
+              <a href="#terminos" className="hover:text-gray-300 transition-colors">
+                Términos y Condiciones
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

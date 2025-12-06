@@ -1,3 +1,20 @@
+/* Solo el ícono crece en hover para los botones principales del hero */
+.group:hover svg, .group:hover .lucide {
+  transform: scale(1.18);
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.group svg, .group .lucide {
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Solo el ícono de la feature card crece en hover (1.04) */
+.group:hover .cns-icon-container svg {
+  transform: scale(1.04);
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.cns-icon-container svg {
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+}
 /* /src/styles/components.css */
 
 /**
@@ -49,33 +66,39 @@
 }
 
 .cns-btn-primary {
-  padding: var(--space-sm) var(--space-lg);
+  padding: 1rem 2rem;
   font-size: var(--font-size-body-mobile);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-white);
   background-color: var(--color-gray-900);
   border: none;
-  border-radius: var(--radius-md); /* ← AGREGADO */
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: opacity var(--transition-base);
+  transition: all 200ms cubic-bezier(0, 0, 0.2, 1);
   display: inline-block;
   text-align: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .cns-btn-primary:hover {
-  opacity: var(--hover-opacity);
+  transform: scale(1.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.cns-btn-primary:active {
+  transform: scale(1.1);
 }
 
 .cns-btn-secondary {
-  padding: var(--space-sm) var(--space-lg);
+  padding: 1rem 2rem;
   font-size: var(--font-size-body-mobile);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-gray-900);
   background-color: transparent;
-  border: 1px solid var(--color-gray-900);
-  border-radius: var(--radius-md); /* ← AGREGADO */
+  border: 2px solid var(--color-gray-900);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all var(--transition-base);
+  transition: all 250ms cubic-bezier(0, 0, 0.2, 1);
   display: inline-block;
   text-align: center;
 }
@@ -83,19 +106,31 @@
 .cns-btn-secondary:hover {
   color: var(--color-white);
   background-color: var(--color-gray-900);
+  transform: scale(1.1);
+}
+
+.cns-btn-secondary:active {
+  transform: scale(1.1);
 }
 
 .cns-vehicle-card {
   position: relative;
   overflow: hidden;
   background-color: var(--color-white);
-  border-radius: var(--radius-lg); /* ← AGREGADO */
+  border-radius: 1rem;
   cursor: pointer;
-  transition: transform var(--transition-base);
+  transition: all 700ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.cns-vehicle-card:hover {
+  transform: scale(1.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .cns-vehicle-card:hover .cns-card-image {
-  transform: scale(var(--hover-scale));
+  transform: scale(1.1);
+  filter: brightness(1.1) saturate(1.1);
 }
 
 .cns-card-image {
@@ -195,6 +230,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
+  min-height: 300px;
 }
 
 @media (min-width: 768px) {
@@ -204,20 +240,225 @@
   }
 }
 
+/* ==================== COMPONENTES PREMIUM ==================== */
+
+/* Badge de Categoría */
+.cns-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-gray-900);
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 10;
+}
+
+/* Gradient Overlay para Hero */
+.cns-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  pointer-events: none;
+}
+
+/* Badge Pill Superior */
+.cns-pill-badge {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-white);
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+
+/* Feature Card Premium */
+.cns-feature-card {
+  background: linear-gradient(135deg, var(--color-gray-50) 0%, var(--color-white) 100%);
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-gray-200);
+  transition: all 700ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.cns-feature-card:hover {
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+  /* transform removed so only icon grows */
+  transform: translateY(-8px);
+}
+
+/* Icon Container */
+.cns-icon-container {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-gray-900);
+  border-radius: var(--radius-lg);
+  margin-bottom: 1.5rem;
+}
+
+.cns-icon-container svg {
+  width: 32px;
+  height: 32px;
+  color: var(--color-white);
+}
+
+/* Botón Ghost para Footer */
+.cns-btn-ghost {
+  color: var(--color-white);
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 200ms;
+  text-underline-offset: 4px;
+}
+
+.cns-btn-ghost:hover {
+  color: var(--color-gray-300);
+  text-decoration: underline;
+}
+
+/* Precio Premium */
+.cns-price {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .cns-price {
+    font-size: 2rem;
+  }
+}
+
+/* Specs Grid */
+.cns-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.cns-spec-item {
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+}
+
+.cns-spec-value {
+  font-weight: 600;
+  color: var(--color-gray-900);
+  display: block;
+  margin-top: 0.25rem;
+}
+
+/* Parallax Container */
+.cns-parallax {
+  position: relative;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.cns-parallax-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  filter: brightness(0.8) contrast(1.1);
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading Skeleton */
+.cns-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-gray-200) 25%,
+    var(--color-gray-100) 50%,
+    var(--color-gray-200) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Focus States (Accesibilidad) */
+.cns-btn-primary:focus,
+.cns-btn-secondary:focus,
+.cns-btn-ghost:focus {
+  outline: 2px solid var(--color-gray-900);
+  outline-offset: 2px;
+}
+
+/* Reveal Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cns-reveal {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+
+
 .lnd-brand-card {
   flex: 1;
-  min-height: 400px;
+  min-height: 340px; /* 400px - 15% = 340px */
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-xl); /* ← AGREGADO */
   cursor: pointer;
-  transition: transform var(--transition-base);
+  /* transition: none; */
+   padding-bottom: 300px;
 }
+
 
 .lnd-brand-card:hover {
-  transform: translateY(-8px);
+  /* No transform, no scale, no movement */
 }
 
+
 .lnd-brand-card:hover .cns-card-image {
-  transform: scale(var(--hover-scale));
+  /* No transform, no scale */
 }
