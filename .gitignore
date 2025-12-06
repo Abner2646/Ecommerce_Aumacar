@@ -1,3 +1,17 @@
+# Ignorar archivos pesados y carpetas de dependencias/build
+frontend/src/assets/videos/
+frontend/src/assets/audios/
+frontend/src/assets/images/
+node_modules/
+build/
+dist/
+.next/
+*.log
+.DS_Store
+Thumbs.db
+.env
+.env.local
+.env.production
 # Ignorar archivos de videos
 frontend/src/assets/videos/
 # Dependencies
