@@ -35,11 +35,24 @@ export const apiClient = async (endpoint, options = {}) => {
     }
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Error en la petición');
+      let errorText = '';
+      try {
+        const error = await response.json();
+        throw new Error(error.error || 'Error en la petición');
+      } catch (jsonErr) {
+        // Si no es JSON válido, devolver texto plano
+        errorText = await response.text();
+        throw new Error(errorText || 'Error en la petición (no JSON)');
+      }
     }
 
-    return await response.json();
+    try {
+      return await response.json();
+    } catch (jsonErr) {
+      // Si la respuesta no es JSON válida
+      const text = await response.text();
+      throw new Error(text || 'Respuesta no es JSON válido');
+    }
   } catch (error) {
     console.error('API Error:', error);
     throw error;

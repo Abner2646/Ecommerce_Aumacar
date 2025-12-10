@@ -117,6 +117,11 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: true
     },
+    favorito: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false
+    },
     slug: {
       type: DataTypes.STRING(250),
       allowNull: false,

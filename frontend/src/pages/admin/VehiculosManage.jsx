@@ -148,6 +148,39 @@ console.log('isLoading:', isLoading);
 
   // Configuración de columnas
   const columns = [
+        // Columna de favorito (estrella)
+        {
+          key: 'favorito',
+          label: '',
+          width: '40px',
+          render: (row) => (
+            <button
+              title={row.favorito ? 'Quitar de favoritos' : 'Marcar como favorito'}
+              onClick={async (e) => {
+                e.stopPropagation();
+                try {
+                  await updateVehiculo.mutateAsync({ id: row.id, data: { favorito: !row.favorito } });
+                } catch (err) {
+                  toast.error('Error al actualizar favorito');
+                }
+              }}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                position: 'absolute',
+                top: 8,
+                right: 8,
+                zIndex: 2
+              }}
+            >
+              <i
+                className={`fa-star fa-lg fa-solid ${row.favorito ? 'text-yellow-400' : 'text-gray-300'}`}
+                style={{ filter: row.favorito ? 'drop-shadow(0 0 2px #facc15)' : 'none' }}
+              ></i>
+            </button>
+          )
+        },
     {
       key: 'imagen',
       label: 'Imagen',

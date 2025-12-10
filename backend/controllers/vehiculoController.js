@@ -238,6 +238,10 @@ const crearVehiculo = async (req, res) => {
       });
     }
 
+    // Si no viene el campo favorito, por defecto es false
+    if (typeof vehiculoData.favorito === 'undefined') {
+      vehiculoData.favorito = false;
+    }
     const vehiculo = await db.Vehiculo.create(vehiculoData);
 
     res.status(201).json({
@@ -286,6 +290,10 @@ const actualizarVehiculo = async (req, res) => {
       }
     }
 
+    // Si no viene el campo favorito, mantener el valor actual
+    if (typeof vehiculoData.favorito === 'undefined') {
+      delete vehiculoData.favorito;
+    }
     await vehiculo.update(vehiculoData);
 
     res.json({

@@ -21,17 +21,24 @@ export const marcasApi = {
 
   // POST /api/marcas (con logo)
   create: async (data) => {
+    // Si ya es FormData, lo enviamos tal cual
+    if (data instanceof FormData) {
+      return apiClientFormData('/marcas', data);
+    }
+    // Si es objeto plano, lo convertimos
     const formData = new FormData();
-    formData.append('nombre', data.nombre);
-    formData.append('slug', data.slug);
+    if (data.nombre) formData.append('nombre', data.nombre);
+    if (data.slug) formData.append('slug', data.slug);
     formData.append('descripcion', data.descripcion || '');
     formData.append('activa', data.activa);
     formData.append('orden', data.orden || 0);
-    
     if (data.colorPrimario) formData.append('colorPrimario', data.colorPrimario);
     if (data.colorSecundario) formData.append('colorSecundario', data.colorSecundario);
     if (data.logo) formData.append('logo', data.logo);
-
+    if (data.fotoPresentacion) formData.append('fotoPresentacion', data.fotoPresentacion);
+    if (data.videoPresentacion) formData.append('videoPresentacion', data.videoPresentacion);
+    if (data.videoPortada) formData.append('videoPortada', data.videoPortada);
+    if (data.plantilla) formData.append('plantilla', data.plantilla);
     return apiClientFormData('/marcas', formData);
   },
 

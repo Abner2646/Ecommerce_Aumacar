@@ -15,20 +15,24 @@ import AdminLayout from './components/layout/AdminLayout.jsx';
 import './globals.css';
 import './styles/main.css';
 
-// Páginas públicas
+import React, { Suspense } from 'react';
 import Home from './pages/public/Home.jsx';
 import Login from './pages/public/Login.jsx';
 import SubaruShowcase from './pages/public/SubaruShowcase.jsx';
 import SuzukiHomeConAPI from './pages/public/SuzukiHome.jsx';
-
-// Páginas admin
+import Plantilla1 from './pages/public/plantilla1.jsx';
+import Plantilla2 from './pages/public/plantilla2.jsx';
+import Plantilla3 from './pages/public/plantilla3.jsx';
 import Dashboard from './pages/admin/Dashboard';
 import VehiculosManage from './pages/admin/VehiculosManage';
 import VehiculoCreate from './pages/admin/VehiculoCreate';
 import VehiculoEdit from './pages/admin/VehiculoEdit';
 import MarcasManage from './pages/admin/MarcasManage.jsx';
 import CaracteristicasManage from './pages/admin/CaracteristicasManage.jsx';
-import ColoresManage from './pages/admin/ColoresManage.jsx'
+import ColoresManage from './pages/admin/ColoresManage.jsx';
+import VehiculoInfo from './pages/public/VehiculoInfo.jsx';
+const MarcaPage = React.lazy(() => import('./pages/public/MarcaPage.jsx'));
+
 
 // Query Client Configuration
 const queryClient = new QueryClient({
@@ -56,6 +60,17 @@ function App() {
               <Route path="subaru" element={<SubaruShowcase />} />
               <Route path="suzuki" element={<SuzukiHomeConAPI />} />
               <Route path="login" element={<Login />} />
+              <Route path="plantilla1" element={<Plantilla1 />} />
+              <Route path="plantilla2" element={<Plantilla2 />} />
+              <Route path="plantilla3" element={<Plantilla3 />} />
+              {/* Ruta dinámica para marcas */}
+              <Route path="marca/:slug" element={
+                <Suspense fallback={<div>Cargando marca...</div>}>
+                  <MarcaPage />
+                </Suspense>
+              } />
+              {/* Ruta dinámica para info de vehículo por nombre */}
+              <Route path="vehiculo/:nombre" element={<VehiculoInfo />} />
             </Route>
 
             {/* ══════════════════════════════════════════════════════════

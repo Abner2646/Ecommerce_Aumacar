@@ -126,12 +126,15 @@ const Navbar = () => {
 
 
           {/* Link Contacto */}
-          <NavLink 
-            to="/contacto" 
-            className={({ isActive }) => getLinkClass(isActive)}
+          <button
+            className={getLinkClass(false)}
+            onClick={() => {
+              window.dispatchEvent(new CustomEvent('scrollToContacto'));
+            }}
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
           >
             Contacto
-          </NavLink>
+          </button>
         </div>
 
         {/* Botón Hamburguesa Mobile */}
@@ -157,14 +160,16 @@ const Navbar = () => {
 
 
             {/* Contacto */}
-            <NavLink 
-              to="/contacto" 
-              className={({ isActive }) => 
-                `cns-navbar-mobile-link ${isActive ? 'cns-navbar-mobile-link--active' : ''}`
-              }
+            <button
+              className="cns-navbar-mobile-link"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('scrollToContacto'));
+                setIsMobileMenuOpen(false);
+              }}
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
             >
               Contacto
-            </NavLink>
+            </button>
           </div>
         </div>
       </nav>

@@ -1,27 +1,25 @@
 // /src/components/layout/Footer.jsx
 import React from 'react';
+import useMarcasFooter from '../../hooks/useMarcasFooter';
 import { Instagram, Facebook, MapPin, Phone, MessageCircle } from 'lucide-react';
 import '../../styles/Footer.css';
 
 const Footer = () => {
+  const marcas = useMarcasFooter();
   return (
     <footer className="cns-footer">
       <div className="cns-container">
         <div className="cns-footer-grid">
-          
           {/* COLUMNA 1: Logo y Redes */}
           <div className="cns-footer-column">
             <div className="cns-footer-logo-area">
-              {/* Concesionario Oficial removed as per request */}
               <p className="text-2xl md:text-3xl text-white font-bold mt-2">
                 Aumacar S.R.L.
               </p>
             </div>
-
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs mt-6">
               Tu concesionaria de confianza en Bahía Blanca. Excelencia automotriz desde hace más de 20 años.
             </p>
-
             {/* Redes Sociales */}
             <div className="cns-footer-socials">
               <a 
@@ -44,7 +42,6 @@ const Footer = () => {
               </a>
             </div>
           </div>
-
           {/* COLUMNA 2: Navegación Rápida */}
           <div className="cns-footer-column">
             <h3 className="cns-footer-heading">Navegación</h3>
@@ -54,16 +51,13 @@ const Footer = () => {
                   Inicio
                 </a>
               </li>
-              <li>
-                <a href="/subaru" className="cns-footer-link">
-                  Subaru
-                </a>
-              </li>
-              <li>
-                <a href="/suzuki" className="cns-footer-link">
-                  Suzuki
-                </a>
-              </li>
+              {marcas.map(marca => (
+                <li key={marca.id}>
+                  <a href={`/marca/${marca.slug}`} className="cns-footer-link">
+                    {marca.nombre}
+                  </a>
+                </li>
+              ))}
               <li>
                 <a href="#contacto" className="cns-footer-link">
                   Contacto
@@ -101,14 +95,20 @@ const Footer = () => {
                 </span>
               </a>
 
-              {/* Dirección */}
-              <div className="cns-footer-contact-item">
-                <MapPin className="cns-footer-icon" size={18} />
+              {/* Dirección - ahora es un enlace a Google Maps */}
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Alvarado+802,+Bahía+Blanca,+B8000"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cns-footer-contact-item group"
+                aria-label="Ver ubicación en Google Maps"
+              >
+                <MapPin className="cns-footer-icon group-hover:text-white" size={18} />
                 <div className="text-left">
                   <p className="text-gray-400 text-sm font-medium">Alvarado 802</p>
                   <p className="text-gray-400 text-sm font-medium">Bahía Blanca, B8000</p>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
 

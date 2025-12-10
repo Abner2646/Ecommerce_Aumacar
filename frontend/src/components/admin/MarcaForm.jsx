@@ -15,12 +15,97 @@ const marcaSchema = z.object({
   activa: z.boolean(),
   orden: z.number().min(0, 'Orden debe ser mayor o igual a 0'),
   colorPrimario: z.string().optional(),
-  colorSecundario: z.string().optional()
+  colorSecundario: z.string().optional(),
+  plantilla: z.number().min(1).max(3)
 });
 
 const MarcaForm = ({ marca, onSuccess }) => {
   const [logoPreview, setLogoPreview] = useState(marca?.logo || null);
   const [logoFile, setLogoFile] = useState(null);
+  // Presentación media states
+  const [fotoPresentacionPreview, setFotoPresentacionPreview] = useState(marca?.fotoPresentacion || null);
+  const [fotoPresentacionFile, setFotoPresentacionFile] = useState(null);
+  // Foto del medio states
+  const [fotoDelMedioPreview, setFotoDelMedioPreview] = useState(marca?.fotoDelMedio || null);
+  const [fotoDelMedioFile, setFotoDelMedioFile] = useState(null);
+      // Manejar cambio de fotoDelMedio
+      const handleFotoDelMedioChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          if (!file.type.startsWith('image/')) {
+            alert('Por favor selecciona una imagen válida');
+            return;
+          }
+          if (file.size > 5 * 1024 * 1024) {
+            alert('La imagen no debe superar 5MB');
+            return;
+          }
+          setFotoDelMedioFile(file);
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setFotoDelMedioPreview(reader.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+  const [videoPresentacionPreview, setVideoPresentacionPreview] = useState(marca?.videoPresentacion || null);
+  const [videoPresentacionFile, setVideoPresentacionFile] = useState(null);
+  const [videoPortadaPreview, setVideoPortadaPreview] = useState(marca?.videoPortada || null);
+  const [videoPortadaFile, setVideoPortadaFile] = useState(null);
+    // Manejar cambio de fotoPresentacion
+    const handleFotoPresentacionChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        if (!file.type.startsWith('image/')) {
+          alert('Por favor selecciona una imagen válida');
+          return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+          alert('La imagen no debe superar 5MB');
+          return;
+        }
+        setFotoPresentacionFile(file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setFotoPresentacionPreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+    // Manejar cambio de videoPresentacion
+    const handleVideoPresentacionChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        if (!file.type.startsWith('video/')) {
+          alert('Por favor selecciona un video válido');
+          return;
+        }
+        if (file.size > 20 * 1024 * 1024) {
+          alert('El video no debe superar 20MB');
+          return;
+        }
+        setVideoPresentacionFile(file);
+        setVideoPresentacionPreview(URL.createObjectURL(file));
+      }
+    };
+
+    // Manejar cambio de videoPortada
+    const handleVideoPortadaChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        if (!file.type.startsWith('video/')) {
+          alert('Por favor selecciona un video válido');
+          return;
+        }
+        if (file.size > 20 * 1024 * 1024) {
+          alert('El video no debe superar 20MB');
+          return;
+        }
+        setVideoPortadaFile(file);
+        setVideoPortadaPreview(URL.createObjectURL(file));
+      }
+    };
   
   const createMarca = useCreateMarca();
   const updateMarca = useUpdateMarca();
@@ -42,7 +127,8 @@ const MarcaForm = ({ marca, onSuccess }) => {
       activa: true,
       orden: 0,
       colorPrimario: '#000000',
-      colorSecundario: '#FFFFFF'
+      colorSecundario: '#FFFFFF',
+      plantilla: 1
     }
   });
 
@@ -101,11 +187,36 @@ const MarcaForm = ({ marca, onSuccess }) => {
 
   const onSubmit = async (data) => {
     try {
-      // Preparar FormData si hay logo nuevo
-      const formData = {
-        ...data,
-        logo: logoFile
-      };
+      // Validación extra antes de enviar
+      const hexColorRegex = /^#[0-9A-Fa-f]{6}$/;
+      if (data.colorPrimario && !hexColorRegex.test(data.colorPrimario)) {
+        alert('Color primario debe tener formato #RRGGBB');
+        return;
+      }
+      if (data.colorSecundario && !hexColorRegex.test(data.colorSecundario)) {
+        alert('Color secundario debe tener formato #RRGGBB');
+        return;
+      }
+      if (!data.slug || !/^[a-z0-9-]+$/.test(data.slug)) {
+        alert('Slug solo puede contener minúsculas, números y guiones');
+        return;
+      }
+
+      // Preparar FormData solo con datos válidos
+      const formData = new FormData();
+      if (data.nombre) formData.append('nombre', data.nombre);
+      if (data.slug) formData.append('slug', data.slug);
+      if (data.descripcion) formData.append('descripcion', data.descripcion);
+      formData.append('activa', typeof data.activa === 'boolean' ? data.activa : Boolean(data.activa));
+      formData.append('orden', typeof data.orden === 'number' ? data.orden : Number(data.orden) || 0);
+      if (data.colorPrimario && hexColorRegex.test(data.colorPrimario)) formData.append('colorPrimario', data.colorPrimario);
+      if (data.colorSecundario && hexColorRegex.test(data.colorSecundario)) formData.append('colorSecundario', data.colorSecundario);
+      if (logoFile) formData.append('logo', logoFile);
+      if (fotoPresentacionFile) formData.append('fotoPresentacion', fotoPresentacionFile);
+      if (fotoDelMedioFile) formData.append('fotoDelMedio', fotoDelMedioFile);
+      if (videoPresentacionFile) formData.append('videoPresentacion', videoPresentacionFile);
+      if (videoPortadaFile) formData.append('videoPortada', videoPortadaFile);
+      if (data.plantilla) formData.append('plantilla', data.plantilla);
 
       if (isEditing) {
         await updateMarca.mutateAsync({ id: marca.id, data: formData });
@@ -114,12 +225,91 @@ const MarcaForm = ({ marca, onSuccess }) => {
       }
       onSuccess();
     } catch (error) {
-      console.error('Error:', error);
+      // Mostrar mensaje de error del backend si existe
+      let errorMsg = 'Error al crear/actualizar la marca';
+      if (error?.response?.data?.error) {
+        errorMsg = error.response.data.error;
+      } else if (error?.response?.data) {
+        errorMsg = JSON.stringify(error.response.data);
+      } else if (error?.message) {
+        errorMsg = error.message;
+      }
+      alert(errorMsg);
+      if (window?.toast) {
+        window.toast.error(errorMsg);
+      }
+      console.error('Error:', errorMsg, error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" encType="multipart/form-data">
+      {/* Foto del Medio */}
+      <div>
+        <label className="adm-form-label">Foto del Medio</label>
+        {fotoDelMedioPreview && (
+          <div className="adm-logo-preview mb-4">
+            <img src={fotoDelMedioPreview} alt="Preview foto del medio" className="adm-logo-preview-img" />
+          </div>
+        )}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFotoDelMedioChange}
+          className="adm-file-input"
+        />
+        <p className="text-xs text-gray-500 mt-2">Formato: JPG, PNG. Máx: 5MB. Recomendado: 800x400px</p>
+      </div>
+            {/* Foto Presentación */}
+            <div>
+              <label className="adm-form-label">Foto Presentación</label>
+              {fotoPresentacionPreview && (
+                <div className="adm-logo-preview mb-4">
+                  <img src={fotoPresentacionPreview} alt="Preview foto presentación" className="adm-logo-preview-img" />
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFotoPresentacionChange}
+                className="adm-file-input"
+              />
+              <p className="text-xs text-gray-500 mt-2">Formato: JPG, PNG. Máx: 5MB. Recomendado: 800x400px</p>
+            </div>
+
+            {/* Video Presentación */}
+            <div>
+              <label className="adm-form-label">Video Presentación</label>
+              {videoPresentacionPreview && (
+                <div className="adm-logo-preview mb-4">
+                  <video src={videoPresentacionPreview} controls className="adm-logo-preview-img" style={{ maxHeight: 200 }} />
+                </div>
+              )}
+              <input
+                type="file"
+                accept="video/*"
+                onChange={handleVideoPresentacionChange}
+                className="adm-file-input"
+              />
+              <p className="text-xs text-gray-500 mt-2">Formato: MP4, WebM. Máx: 20MB</p>
+            </div>
+
+            {/* Video Portada */}
+            <div>
+              <label className="adm-form-label">Video Portada</label>
+              {videoPortadaPreview && (
+                <div className="adm-logo-preview mb-4">
+                  <video src={videoPortadaPreview} controls className="adm-logo-preview-img" style={{ maxHeight: 200 }} />
+                </div>
+              )}
+              <input
+                type="file"
+                accept="video/*"
+                onChange={handleVideoPortadaChange}
+                className="adm-file-input"
+              />
+              <p className="text-xs text-gray-500 mt-2">Formato: MP4, WebM. Máx: 20MB</p>
+            </div>
       {/* Logo Upload */}
       <div>
         <label className="adm-form-label">
@@ -206,8 +396,8 @@ const MarcaForm = ({ marca, onSuccess }) => {
         />
       </div>
 
-      {/* Grid de 2 columnas para Orden y Activa */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Grid de 2 columnas para Orden, Activa y Plantilla */}
+      <div className="grid grid-cols-3 gap-4">
         {/* Orden */}
         <div>
           <label className="adm-form-label">
@@ -241,6 +431,17 @@ const MarcaForm = ({ marca, onSuccess }) => {
               Marca activa
             </label>
           </div>
+        </div>
+
+        {/* Plantilla */}
+        <div>
+          <label className="adm-form-label">Plantilla</label>
+          <select {...register('plantilla', { valueAsNumber: true })} className="adm-form-input">
+            <option value={1}>Plantilla 1</option>
+            <option value={2}>Plantilla 2</option>
+            <option value={3}>Plantilla 3</option>
+          </select>
+          <p className="text-xs text-gray-500 mt-2">Elige el diseño que prefieras para la marca</p>
         </div>
       </div>
 
