@@ -59,6 +59,32 @@ module.exports = (sequelize) => {
       validate: {
         is: /^#[0-9A-F]{6}$/i
       }
+    },
+      plantilla: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+        validate: {
+          min: 1,
+          max: 3
+        }
+      },
+    fotoPresentacion: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },
+    videoPresentacion: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },
+    videoPortada: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    }
+    ,
+    fotoDelMedio: {
+      type: DataTypes.STRING(500),
+      allowNull: true
     }
   }, {
     tableName: 'marcas',

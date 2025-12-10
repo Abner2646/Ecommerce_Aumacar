@@ -1,5 +1,5 @@
 const db = require('../models');
-const { subirImagen, eliminarArchivo } = require('../utils/cloudinary');
+const { subirImagen, subirVideo, eliminarArchivo } = require('../utils/cloudinary');
 const { extraerPublicId } = require('../utils/helpers');
 
 /**
@@ -17,25 +17,26 @@ const obtenerMarcas = async (req, res) => {
     const marcas = await db.Marca.findAll({
       where,
       order: [['orden', 'ASC'], ['nombre', 'ASC']],
-      attributes: { exclude: ['createdAt', 'updatedAt'] }
+      attributes: {
+        include: ['plantilla']
+      }
     });
-
-    res.json({
-      marcas,
-      total: marcas.length
-    });
-
+    // Forzar plantilla en el JSON
+    const marcasConPlantilla = marcas.map(m => ({
+      ...m.toJSON(),
+      plantilla: m.plantilla
+    }));
+    res.json({ marcas: marcasConPlantilla });
   } catch (error) {
     console.error('Error al obtener marcas:', error);
-    res.status(500).json({
-      error: 'Error al obtener marcas'
-    });
+    res.status(500).json({ error: 'Error al obtener marcas' });
   }
 };
 
 /**
  * Obtener marca por ID
  */
+        // ...existing code...
 const obtenerMarcaPorId = async (req, res) => {
   try {
     const { id } = req.params;
@@ -105,7 +106,20 @@ const obtenerMarcaPorSlug = async (req, res) => {
  */
 const crearMarca = async (req, res) => {
   try {
-    const { nombre, slug, descripcion, activa, orden, colorPrimario, colorSecundario } = req.body;
+    let { nombre, slug, descripcion, activa, orden, colorPrimario, colorSecundario, plantilla } = req.body;
+
+    // Normalizar valores para evitar 'undefined' en campos booleanos y numéricos
+    if (typeof activa === 'undefined' || activa === '' || activa === null) {
+      activa = true;
+    } else if (typeof activa === 'string') {
+      activa = activa === 'true' || activa === '1';
+    }
+    if (typeof orden === 'undefined' || orden === '' || orden === null) {
+      orden = 0;
+    } else {
+      orden = Number(orden);
+      if (isNaN(orden)) orden = 0;
+    }
 
     // Verificar si ya existe una marca con ese slug
     const marcaExistente = await db.Marca.findOne({ where: { slug } });
@@ -115,11 +129,40 @@ const crearMarca = async (req, res) => {
       });
     }
 
+
     // Subir logo si existe
     let logoUrl = null;
-    if (req.file) {
-      const resultado = await subirImagen(req.file.buffer, 'marcas');
+    if (req.files && req.files.logo && req.files.logo[0]) {
+      const resultado = await subirImagen(req.files.logo[0].buffer, 'marcas');
       logoUrl = resultado.secure_url;
+    }
+
+    // Subir fotoPresentacion si existe
+    let fotoPresentacionUrl = null;
+    if (req.files && req.files.fotoPresentacion && req.files.fotoPresentacion[0]) {
+      const resultado = await subirImagen(req.files.fotoPresentacion[0].buffer, 'marcas/presentacion');
+      fotoPresentacionUrl = resultado.secure_url;
+    }
+
+    // Subir fotoDelMedio si existe
+    let fotoDelMedioUrl = null;
+    if (req.files && req.files.fotoDelMedio && req.files.fotoDelMedio[0]) {
+      const resultado = await subirImagen(req.files.fotoDelMedio[0].buffer, 'marcas/fotoDelMedio');
+      fotoDelMedioUrl = resultado.secure_url;
+    }
+
+    // Subir videoPresentacion si existe
+    let videoPresentacionUrl = null;
+    if (req.files && req.files.videoPresentacion && req.files.videoPresentacion[0]) {
+      const resultado = await subirVideo(req.files.videoPresentacion[0].buffer, 'marcas/presentacion');
+      videoPresentacionUrl = resultado.secure_url;
+    }
+
+    // Subir videoPortada si existe
+    let videoPortadaUrl = null;
+    if (req.files && req.files.videoPortada && req.files.videoPortada[0]) {
+      const resultado = await subirVideo(req.files.videoPortada[0].buffer, 'marcas/portada');
+      videoPortadaUrl = resultado.secure_url;
     }
 
     const marca = await db.Marca.create({
@@ -127,10 +170,15 @@ const crearMarca = async (req, res) => {
       slug,
       descripcion,
       logo: logoUrl,
-      activa: activa !== undefined ? activa : true,
-      orden: orden || 0,
+      fotoPresentacion: fotoPresentacionUrl,
+      fotoDelMedio: fotoDelMedioUrl,
+      videoPresentacion: videoPresentacionUrl,
+      videoPortada: videoPortadaUrl,
+      activa,
+      orden,
       colorPrimario,
-      colorSecundario
+      colorSecundario,
+      plantilla: plantilla !== undefined ? Number(plantilla) : 1
     });
 
     res.status(201).json({
@@ -140,13 +188,16 @@ const crearMarca = async (req, res) => {
 
   } catch (error) {
     console.error('Error al crear marca:', error);
-    
+    if (error.errors && error.errors.length) {
+      return res.status(400).json({
+        error: error.errors[0].message
+      });
+    }
     if (error.name === 'SequelizeUniqueConstraintError') {
       return res.status(400).json({
         error: 'Ya existe una marca con ese nombre o slug'
       });
     }
-
     res.status(500).json({
       error: 'Error al crear marca'
     });
@@ -159,7 +210,7 @@ const crearMarca = async (req, res) => {
 const actualizarMarca = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, slug, descripcion, activa, orden, colorPrimario, colorSecundario } = req.body;
+    const { nombre, slug, descripcion, activa, orden, colorPrimario, colorSecundario, plantilla } = req.body;
 
     const marca = await db.Marca.findByPk(id);
 
@@ -193,7 +244,8 @@ const actualizarMarca = async (req, res) => {
       activa: activa !== undefined ? activa : marca.activa,
       orden: orden !== undefined ? orden : marca.orden,
       colorPrimario: colorPrimario || marca.colorPrimario,
-      colorSecundario: colorSecundario || marca.colorSecundario
+      colorSecundario: colorSecundario || marca.colorSecundario,
+      plantilla: plantilla !== undefined ? Number(plantilla) : marca.plantilla
     });
 
     res.json({
@@ -203,13 +255,16 @@ const actualizarMarca = async (req, res) => {
 
   } catch (error) {
     console.error('Error al actualizar marca:', error);
-    
+    if (error.errors && error.errors.length) {
+      return res.status(400).json({
+        error: error.errors[0].message
+      });
+    }
     if (error.name === 'SequelizeUniqueConstraintError') {
       return res.status(400).json({
         error: 'Ya existe una marca con ese nombre o slug'
       });
     }
-
     res.status(500).json({
       error: 'Error al actualizar marca'
     });

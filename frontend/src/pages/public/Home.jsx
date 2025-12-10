@@ -1,9 +1,100 @@
 // /src/pages/public/Home.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { marcasApi } from '../../api/marcas.api';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
+// Componente para renderizar las marcas dinámicamente
+function BrandCards() {
+  const [marcas, setMarcas] = useState([]);
+  useEffect(() => {
+    marcasApi.getAll().then(res => {
+      setMarcas(res.marcas || []);
+    });
+  }, []);
+
+  return marcas.map(marca => (
+    <a
+      key={marca.id}
+      href={`/marca/${marca.slug}`}
+      className="lnd-brand-card w-full max-w-[560px] min-h-[560px] md:min-h-[560px] aspect-[4/3] mx-auto"
+      onMouseEnter={e => {
+        const video = e.currentTarget.querySelector('.brand-video');
+        const img = e.currentTarget.querySelector('.brand-img');
+        if (video) {
+          video.style.display = 'block';
+          video.play();
+        }
+        if (img) {
+          img.style.display = 'none';
+        }
+      }}
+      onMouseLeave={e => {
+        const video = e.currentTarget.querySelector('.brand-video');
+        const img = e.currentTarget.querySelector('.brand-img');
+        if (video) {
+          video.pause();
+          video.currentTime = 0;
+          video.style.display = 'none';
+        }
+        if (img) {
+          img.style.display = 'block';
+        }
+      }}
+    >
+      <div className="absolute inset-0 overflow-hidden rounded-2xl">
+        <img
+          src={marca.fotoPresentacion}
+          alt={marca.nombre}
+          className="w-full h-full object-cover brand-img"
+          style={{ filter: 'saturate(1.1)', display: 'block', position: 'absolute', inset: 0 }}
+        />
+        {marca.videoPresentacion && (
+          <video
+            className="w-full h-full object-cover brand-video"
+            style={{ filter: 'saturate(1.1)', position: 'absolute', inset: 0, display: 'none' }}
+            src={marca.videoPresentacion}
+            muted
+            playsInline
+            loop
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/20"></div>
+      </div>
+      <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12">
+        <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          {marca.nombre}
+        </h3>
+        <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
+          {marca.descripcion}
+        </p>
+        <div className="inline-flex items-center gap-2 text-white font-semibold">
+          <span className="text-lg">Explorar modelos</span>
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </div>
+      </div>
+    </a>
+  ));
+}
 
 const Home = () => {
+  // Ref para la sección de contacto
+  const contactoRef = React.useRef(null);
+
+  // Handler para scroll desde la navbar
+  React.useEffect(() => {
+    // Escucha el evento personalizado 'scrollToContacto'
+    const handler = () => {
+      if (contactoRef.current) {
+        const y = contactoRef.current.getBoundingClientRect().top + window.pageYOffset + 70;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    };
+    window.addEventListener('scrollToContacto', handler);
+    return () => window.removeEventListener('scrollToContacto', handler);
+  }, []);
+
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section Premium */}
@@ -41,9 +132,16 @@ const Home = () => {
             Concesionaria oficial Subaru y Suzuki. Descubre la excelencia automotriz con las mejores marcas del mercado.
           </p>
           <div className="flex gap-3 justify-center flex-wrap mt-8">
-            <a 
-              href="#marcas"
+            <button
+              type="button"
               className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
+              onClick={() => {
+                const marcas = document.getElementById('marcas');
+                if (marcas) {
+                  const y = marcas.getBoundingClientRect().top + window.pageYOffset + 120;
+                  window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+              }}
             >
               {/* Lupa Lucide */}
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:scale-130 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -53,7 +151,7 @@ const Home = () => {
               <div className="flex flex-col items-start">
                 <span className="text-sm font-medium">Explorar Marcas</span>
               </div>
-            </a>
+            </button>
             <a 
               href="https://wa.me/5492914044550" 
               target="_blank" 
@@ -78,157 +176,9 @@ const Home = () => {
             Selecciona tu Marca
           </h2>
           
-          <div className="lnd-brand-selector">
-            {/* Subaru Card */}
-            <Link
-              to="/subaru"
-              className="lnd-brand-card"
-              onMouseEnter={e => {
-                const subaru = e.currentTarget.querySelector('.subaru-video');
-                const img = e.currentTarget.querySelector('.subaru-img');
-                if (subaru) {
-                  subaru.style.display = 'block';
-                  subaru.play();
-                }
-                if (img) {
-                  img.style.display = 'none';
-                }
-              }}
-              onMouseLeave={e => {
-                const subaru = e.currentTarget.querySelector('.subaru-video');
-                const img = e.currentTarget.querySelector('.subaru-img');
-                if (subaru) {
-                  subaru.pause();
-                  subaru.currentTime = 48;
-                  subaru.style.display = 'none';
-                }
-                if (img) {
-                  img.style.display = 'block';
-                }
-              }}
-            >
-              <div className="absolute inset-0 overflow-hidden rounded-2xl">
-                <img
-                  src={require('../../assets/images/subaru-crosstrek-1849561.jpg')}
-                  alt="Subaru"
-                  className="w-full h-full object-cover subaru-img"
-                  style={{ filter: 'saturate(1.1)', display: 'block', position: 'absolute', inset: 0 }}
-                />
-                <video
-                  ref={el => {
-                    if (el) {
-                      el.onloadedmetadata = () => {
-                        el.currentTime = 48;
-                      };
-                      el.ontimeupdate = () => {
-                        if (el.currentTime >= 58) {
-                          el.currentTime = 48;
-                          el.pause();
-                        }
-                      };
-                      el.style.display = 'none';
-                    }
-                  }}
-                  src={require('../../assets/videos/Subaru Impreza Sti _ Cinematic Car Edit _ Wide Body _ Stance Nation.mp4')}
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover subaru-video"
-                  style={{ filter: 'saturate(1.1)', position: 'absolute', inset: 0 }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/20"></div>
-              </div>
-              
-              <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12">
-                <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                  Subaru
-                </h3>
-                <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
-                  Confianza, seguridad y tecnología AWD simétrica
-                </p>
-                <div className="inline-flex items-center gap-2 text-white font-semibold">
-                  <span className="text-lg">Explorar modelos</span>
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </div>
-              </div>
-            </Link>
-
-            {/* Suzuki Card */}
-            <Link
-              to="/suzuki"
-              className="lnd-brand-card"
-              onClick={() => window.scrollTo(0, 0)}
-              onMouseEnter={e => {
-                const suzuki = e.currentTarget.querySelector('.suzuki-video');
-                const img = e.currentTarget.querySelector('.suzuki-img');
-                if (suzuki) {
-                  suzuki.style.display = 'block';
-                  suzuki.play();
-                }
-                if (img) {
-                  img.style.display = 'none';
-                }
-              }}
-              onMouseLeave={e => {
-                const suzuki = e.currentTarget.querySelector('.suzuki-video');
-                const img = e.currentTarget.querySelector('.suzuki-img');
-                if (suzuki) {
-                  suzuki.pause();
-                  suzuki.currentTime = 38;
-                  suzuki.style.display = 'none';
-                }
-                if (img) {
-                  img.style.display = 'block';
-                }
-              }}
-            >
-              <div className="absolute inset-0 overflow-hidden rounded-2xl">
-                <img
-                  src={require('../../assets/images/Captura de pantalla 2025-12-03 200137.png')}
-                  alt="Suzuki"
-                  className="w-full h-full object-cover suzuki-img"
-                  style={{ filter: 'saturate(1.1)', display: 'block', position: 'absolute', inset: 0, zIndex: 1 }}
-                />
-                <video
-                  ref={el => {
-                    if (el) {
-                      el.onloadedmetadata = () => {
-                        el.currentTime = 38;
-                      };
-                      el.ontimeupdate = () => {
-                        if (el.currentTime >= 48) {
-                          el.currentTime = 38;
-                          el.pause();
-                        }
-                      };
-                      el.style.display = 'none';
-                    }
-                  }}
-                  src={require('../../assets/videos/THE CITY RALLYIST _ SUBARU WRX STI.mp4')}
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover suzuki-video"
-                  style={{ filter: 'saturate(1.1)', position: 'absolute', inset: 0, zIndex: 1, transform: 'scale(1.3)', transformOrigin: 'center center' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/20" style={{ zIndex: 2 }}></div>
-              </div>
-              
-              <div className="relative h-full flex flex-col justify-end p-8 md:p-12" style={{ zIndex: 20 }}>
-                <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                  Suzuki
-                </h3>
-                <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
-                  Diseño japonés, eficiencia y tecnología híbrida
-                </p>
-                <div className="inline-flex items-center gap-2 text-white font-semibold">
-                  <span className="text-lg">Explorar modelos</span>
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </div>
-              </div>
-            </Link>
+          <div className="lnd-brand-selector grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {/* Render dinámico de marcas */}
+            <BrandCards />
           </div>
         </div>
       </section>
@@ -297,7 +247,7 @@ const Home = () => {
       </section>
 
       {/* CTA Section Premium */}
-      <section className="relative cns-section min-h-[600px] md:min-h-[700px] flex items-center overflow-hidden">
+      <section ref={contactoRef} id="contacto" className="relative cns-section min-h-[600px] md:min-h-[700px] flex items-center overflow-hidden">
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"></div>
 
@@ -332,15 +282,24 @@ const Home = () => {
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-                <a 
-                  href="#marcas" 
+                <button
+                  type="button"
                   className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-104 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto justify-center"
+                  onClick={() => {
+                    const marcas = document.getElementById('marcas');
+                    if (marcas) {
+                      const y = marcas.getBoundingClientRect().top + window.pageYOffset + 120;
+                      window.scrollTo({ top: y, behavior: 'smooth' });
+                    }
+                  }}
                 >
                   <span>Explorar Catálogo</span>
                   <ArrowRight className="w-5 h-5 group-hover:scale-[2] transition-transform" />
-                </a>
+                </button>
                 <a 
-                  href="tel:02914517000" 
+                  href="https://wa.me/5492914517000" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg transition-all duration-300 w-full sm:w-auto justify-center hover:scale-104"
                 >
                   <Phone className="w-5 h-5 group-hover:scale-150 transition-transform" />
@@ -366,7 +325,7 @@ const Home = () => {
 
                 {/* Dirección */}
                 <a 
-                  href="https://maps.google.com" 
+                  href="https://www.google.com/maps?q=Alvarado+802,+B8000+Bah%C3%ADa+Blanca,+Provincia+de+Buenos+Aires" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
@@ -379,16 +338,18 @@ const Home = () => {
                 </a>
 
                 {/* Email */}
-                <a 
-                  href="mailto:info@aumacar.com.ar" 
-                  className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-                >
-                  <Mail className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
-                  <div className="text-left">
-                    <div className="text-sm text-white/60 font-medium">Email</div>
-                    <div className="text-white font-semibold">Escríbenos</div>
-                  </div>
-                </a>
+                  <a 
+                    href="https://mail.google.com/mail/?view=cm&fs=1&to=ventasaumacar@gmail.com" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                  >
+                    <Mail className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
+                    <div className="text-left">
+                      <div className="text-sm text-white/60 font-medium">Email</div>
+                      <div className="text-white font-semibold">Escríbenos</div>
+                    </div>
+                  </a>
               </div>
             </div>
           </div>

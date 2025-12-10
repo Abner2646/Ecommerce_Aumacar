@@ -123,7 +123,13 @@ router.get('/slug/:slug', marcaController.obtenerMarcaPorSlug);
 router.post(
   '/',
   verificarToken,
-  upload.single('logo'),
+  upload.fields([
+    { name: 'logo', maxCount: 1 },
+    { name: 'fotoPresentacion', maxCount: 1 },
+    { name: 'fotoDelMedio', maxCount: 1 },
+    { name: 'videoPresentacion', maxCount: 1 },
+    { name: 'videoPortada', maxCount: 1 }
+  ]),
   validarMarca,
   marcaController.crearMarca
 );
@@ -167,7 +173,13 @@ router.put(
   '/:id',
   verificarToken,
   validarId,
-  upload.single('logo'),
+  upload.fields([
+    { name: 'logo', maxCount: 1 },
+    { name: 'fotoPresentacion', maxCount: 1 },
+    { name: 'fotoDelMedio', maxCount: 1 },
+    { name: 'videoPresentacion', maxCount: 1 },
+    { name: 'videoPortada', maxCount: 1 }
+  ]),
   validarMarca,
   marcaController.actualizarMarca
 );
