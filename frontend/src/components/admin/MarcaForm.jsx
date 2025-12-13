@@ -250,15 +250,27 @@ const MarcaForm = ({ marca, onSuccess }) => {
         {fotoDelMedioPreview && (
           <div className="adm-logo-preview mb-4">
             <img src={fotoDelMedioPreview} alt="Preview foto del medio" className="adm-logo-preview-img" />
+            <button
+              type="button"
+              className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              onClick={() => {
+                setFotoDelMedioPreview(null);
+                setFotoDelMedioFile(null);
+              }}
+            >Quitar imagen</button>
           </div>
         )}
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFotoDelMedioChange}
-          className="adm-file-input"
-        />
-        <p className="text-xs text-gray-500 mt-2">Formato: JPG, PNG. Máx: 5MB. Recomendado: 800x400px</p>
+        {!fotoDelMedioPreview && (
+          <>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFotoDelMedioChange}
+              className="adm-file-input"
+            />
+            <p className="text-xs text-gray-500 mt-2">Formato: JPG, PNG. Máx: 5MB. Recomendado: 800x400px</p>
+          </>
+        )}
       </div>
             {/* Foto Presentación */}
             <div>
@@ -266,15 +278,27 @@ const MarcaForm = ({ marca, onSuccess }) => {
               {fotoPresentacionPreview && (
                 <div className="adm-logo-preview mb-4">
                   <img src={fotoPresentacionPreview} alt="Preview foto presentación" className="adm-logo-preview-img" />
+                  <button
+                    type="button"
+                    className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                    onClick={() => {
+                      setFotoPresentacionPreview(null);
+                      setFotoPresentacionFile(null);
+                    }}
+                  >Quitar imagen</button>
                 </div>
               )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFotoPresentacionChange}
-                className="adm-file-input"
-              />
-              <p className="text-xs text-gray-500 mt-2">Formato: JPG, PNG. Máx: 5MB. Recomendado: 800x400px</p>
+              {!fotoPresentacionPreview && (
+                <>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFotoPresentacionChange}
+                    className="adm-file-input"
+                  />
+                  <p className="text-xs text-gray-500 mt-2">Formato: JPG, PNG. Máx: 5MB. Recomendado: 800x400px</p>
+                </>
+              )}
             </div>
 
             {/* Video Presentación */}
@@ -283,15 +307,27 @@ const MarcaForm = ({ marca, onSuccess }) => {
               {videoPresentacionPreview && (
                 <div className="adm-logo-preview mb-4">
                   <video src={videoPresentacionPreview} controls className="adm-logo-preview-img" style={{ maxHeight: 200 }} />
+                  <button
+                    type="button"
+                    className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                    onClick={() => {
+                      setVideoPresentacionPreview(null);
+                      setVideoPresentacionFile(null);
+                    }}
+                  >Quitar video</button>
                 </div>
               )}
-              <input
-                type="file"
-                accept="video/*"
-                onChange={handleVideoPresentacionChange}
-                className="adm-file-input"
-              />
-              <p className="text-xs text-gray-500 mt-2">Formato: MP4, WebM. Máx: 20MB</p>
+              {!videoPresentacionPreview && (
+                <>
+                  <input
+                    type="file"
+                    accept="video/*"
+                    onChange={handleVideoPresentacionChange}
+                    className="adm-file-input"
+                  />
+                  <p className="text-xs text-gray-500 mt-2">Formato: MP4, WebM. Máx: 20MB</p>
+                </>
+              )}
             </div>
 
             {/* Video Portada */}
@@ -300,15 +336,27 @@ const MarcaForm = ({ marca, onSuccess }) => {
               {videoPortadaPreview && (
                 <div className="adm-logo-preview mb-4">
                   <video src={videoPortadaPreview} controls className="adm-logo-preview-img" style={{ maxHeight: 200 }} />
+                  <button
+                    type="button"
+                    className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                    onClick={() => {
+                      setVideoPortadaPreview(null);
+                      setVideoPortadaFile(null);
+                    }}
+                  >Quitar video</button>
                 </div>
               )}
-              <input
-                type="file"
-                accept="video/*"
-                onChange={handleVideoPortadaChange}
-                className="adm-file-input"
-              />
-              <p className="text-xs text-gray-500 mt-2">Formato: MP4, WebM. Máx: 20MB</p>
+              {!videoPortadaPreview && (
+                <>
+                  <input
+                    type="file"
+                    accept="video/*"
+                    onChange={handleVideoPortadaChange}
+                    className="adm-file-input"
+                  />
+                  <p className="text-xs text-gray-500 mt-2">Formato: MP4, WebM. Máx: 20MB</p>
+                </>
+              )}
             </div>
       {/* Logo Upload */}
       <div>
@@ -324,27 +372,29 @@ const MarcaForm = ({ marca, onSuccess }) => {
               alt="Preview logo" 
               className="adm-logo-preview-img"
             />
-            {/*<button
+            <button
               type="button"
-              onClick={handleRemoveLogo}
-              className="adm-logo-preview-remove"
-              title="Remover logo"
-            >
-              <i className="fa-solid fa-xmark"></i>
-            </button>*/}
+              className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              onClick={() => {
+                setLogoPreview(null);
+                setLogoFile(null);
+              }}
+            >Quitar logo</button>
           </div>
         )}
-
-        {/* Input de archivo */}
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleLogoChange}
-          className="adm-file-input"
-        />
-        <p className="text-xs text-gray-500 mt-2">
-          Formato: JPG, PNG, SVG. Tamaño máximo: 2MB. Recomendado: 400x400px
-        </p>
+        {!logoPreview && (
+          <>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleLogoChange}
+              className="adm-file-input"
+            />
+            <p className="text-xs text-gray-500 mt-2">
+              Formato: JPG, PNG, SVG. Tamaño máximo: 2MB. Recomendado: 400x400px
+            </p>
+          </>
+        )}
       </div>
 
       {/* Nombre */}

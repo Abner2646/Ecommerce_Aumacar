@@ -632,10 +632,20 @@ const agregarVideo = async (req, res) => {
     }
 
     if (!req.file) {
+      console.error('No se recibió archivo en req.file');
       return res.status(400).json({
         error: 'No se proporcionó video'
       });
     }
+
+    // Log de depuración: información del archivo recibido
+    console.log('Archivo recibido para video:', {
+      fieldname: req.file.fieldname,
+      originalname: req.file.originalname,
+      mimetype: req.file.mimetype,
+      size: req.file.size,
+      bufferLength: req.file.buffer ? req.file.buffer.length : 0
+    });
 
     // Si se marca como principal, desmarcar los demás
     if (esPrincipal === 'true' || esPrincipal === true) {
@@ -646,25 +656,32 @@ const agregarVideo = async (req, res) => {
     }
 
     // Subir video a Cloudinary
-    const resultado = await subirVideo(req.file.buffer, `vehiculos/${vehiculo.slug}`);
+    try {
+      const resultado = await subirVideo(req.file.buffer, `vehiculos/${vehiculo.slug}`);
 
-    const video = await db.VideoVehiculo.create({
-      vehiculoId: id,
-      titulo: titulo || `Video ${vehiculo.modelo}`,
-      descripcion,
-      urlVideo: resultado.secure_url,
-      urlThumbnail: resultado.thumbnail_url || null,
-      duracion: resultado.duration || null,
-      tamano: resultado.bytes || null,
-      formato: resultado.format || 'mp4',
-      orden: orden || 0,
-      esPrincipal: esPrincipal === 'true' || esPrincipal === true
-    });
+      const video = await db.VideoVehiculo.create({
+        vehiculoId: id,
+        titulo: titulo || `Video ${vehiculo.modelo}`,
+        descripcion,
+        urlVideo: resultado.secure_url,
+        urlThumbnail: resultado.thumbnail_url || null,
+        duracion: resultado.duration || null,
+        tamano: resultado.bytes || null,
+        formato: resultado.format || 'mp4',
+        orden: orden || 0,
+        esPrincipal: esPrincipal === 'true' || esPrincipal === true
+      });
 
-    res.status(201).json({
-      mensaje: 'Video agregado exitosamente',
-      video
-    });
+      res.status(201).json({
+        mensaje: 'Video agregado exitosamente',
+        video
+      });
+    } catch (cloudinaryError) {
+      console.error('Error subiendo a Cloudinary:', cloudinaryError);
+      return res.status(500).json({
+        error: 'Error al subir el video a Cloudinary. Revisa el formato y tamaño.'
+      });
+    }
 
   } catch (error) {
     console.error('Error al agregar video:', error);

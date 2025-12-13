@@ -23,8 +23,6 @@
 
 /* 6. Estilos Específicos de Páginas  <----------*/
 @import './pages/Home.css';
-@import './pages/SubaruShowcase.css';
-@import './pages/Suzukihome.css';
 @import './pages/Admin.css';
 
 

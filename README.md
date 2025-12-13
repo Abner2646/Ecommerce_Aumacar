@@ -1,7 +1,8 @@
 # Ecommerce Aumacar
-cd backend
-npm install
-npm run migrate
+cd ecommerce
+DOCKER COMPOSE UP -D
+
+luego ir al front y poner npm start
 
 
 
