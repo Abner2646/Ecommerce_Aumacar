@@ -191,7 +191,7 @@ const Plantilla3 = ({ marca }) => {
 
       {/* ==================== PARALLAX SECTION PREMIUM ==================== */}
       <section className="cns-parallax">
-        <div className="cns-parallax-bg" style={{ backgroundImage: `url(${marca?.fotoDelMedio || 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1920&q=80'})` }}>
+        <div className="cns-parallax-bg" style={{ backgroundImage: `url(${marca?.fotoDelMedio})` }}>
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/70 to-gray-900/40"></div>
         

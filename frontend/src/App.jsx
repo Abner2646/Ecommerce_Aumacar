@@ -18,8 +18,6 @@ import './styles/main.css';
 import React, { Suspense } from 'react';
 import Home from './pages/public/Home.jsx';
 import Login from './pages/public/Login.jsx';
-import SubaruShowcase from './pages/public/SubaruShowcase.jsx';
-import SuzukiHomeConAPI from './pages/public/SuzukiHome.jsx';
 import Plantilla1 from './pages/public/plantilla1.jsx';
 import Plantilla2 from './pages/public/plantilla2.jsx';
 import Plantilla3 from './pages/public/plantilla3.jsx';
@@ -31,6 +29,7 @@ import MarcasManage from './pages/admin/MarcasManage.jsx';
 import CaracteristicasManage from './pages/admin/CaracteristicasManage.jsx';
 import ColoresManage from './pages/admin/ColoresManage.jsx';
 import VehiculoInfo from './pages/public/VehiculoInfo.jsx';
+import ComprarForm from './pages/public/ComprarForm.jsx';
 const MarcaPage = React.lazy(() => import('./pages/public/MarcaPage.jsx'));
 
 
@@ -57,8 +56,6 @@ function App() {
             ══════════════════════════════════════════════════════════ */}
             <Route element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="subaru" element={<SubaruShowcase />} />
-              <Route path="suzuki" element={<SuzukiHomeConAPI />} />
               <Route path="login" element={<Login />} />
               <Route path="plantilla1" element={<Plantilla1 />} />
               <Route path="plantilla2" element={<Plantilla2 />} />
@@ -71,6 +68,8 @@ function App() {
               } />
               {/* Ruta dinámica para info de vehículo por nombre */}
               <Route path="vehiculo/:nombre" element={<VehiculoInfo />} />
+              {/* Ruta para formulario de compra */}
+              <Route path="comprar/:id" element={<ComprarForm />} />
             </Route>
 
             {/* ══════════════════════════════════════════════════════════

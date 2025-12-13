@@ -4,10 +4,13 @@ import { useState } from 'react';
 import { useMarcas, useDeleteMarca } from '../../hooks/useMarcas';
 import Modal from '../../components/common/Modal';
 import MarcaForm from '../../components/admin/MarcaForm';
+// import MarcaMediaStep from '../../components/admin/MarcaMediaStep';
 
 const MarcasManage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMarca, setSelectedMarca] = useState(null);
+  const [step, setStep] = useState(1);
+  const [marcaDraft, setMarcaDraft] = useState(null);
   const [filtroActiva, setFiltroActiva] = useState('');
 
   // Construir filtros
@@ -21,11 +24,15 @@ const MarcasManage = () => {
 
   const handleCreate = () => {
     setSelectedMarca(null);
+    setMarcaDraft(null);
+    setStep(1);
     setIsModalOpen(true);
   };
 
   const handleEdit = (marca) => {
     setSelectedMarca(marca);
+    setMarcaDraft(null);
+    setStep(1);
     setIsModalOpen(true);
   };
 
@@ -48,6 +55,8 @@ const MarcasManage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedMarca(null);
+    setStep(1);
+    setMarcaDraft(null);
   };
 
   // Loading state
@@ -213,10 +222,17 @@ const MarcasManage = () => {
         title={selectedMarca ? 'Editar Marca' : 'Nueva Marca'}
         size="lg"
       >
-        <MarcaForm
-          marca={selectedMarca}
-          onSuccess={handleCloseModal}
-        />
+        {step === 1 ? (
+          <MarcaForm
+            marca={selectedMarca}
+            onSuccess={(data) => {
+              setMarcaDraft(data);
+              setStep(2);
+            }}
+          />
+        ) : (
+          {/* MarcaMediaStep eliminado por error de módulo no encontrado */}
+        )}
       </Modal>
     </div>
   );
