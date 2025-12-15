@@ -1,10 +1,10 @@
 
 import React, { useState } from 'react';
-import VehiculoCarrusel from '../../components/VehiculoCarrusel';
+import GaleriaVehiculo from '../../components/GaleriaVehiculo';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useVehiculos } from '../../hooks/useVehiculos';
 import { useColoresVehiculo } from '../../hooks/useColores';
-import { Info, DollarSign, Zap, Settings } from 'react-feather';
+import '../../styles/VehiculoInfo.css';
 
 
 function VehiculoInfo() {
@@ -30,46 +30,55 @@ function VehiculoInfo() {
   if (!vehiculo) return <div className="text-center py-20 text-xl text-gray-600">Vehículo no encontrado</div>;
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white flex flex-col items-center py-12 px-4">
-      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center justify-between">
+    <section className="vehiculo-info-section">
+      <div className="vehiculo-info-grid">
         {/* Imagen principal */}
-        <div className="flex justify-center items-center">
-          <div className="bg-white rounded-3xl shadow-2xl p-6 flex items-center justify-center w-full" style={{ minHeight: '340px', minWidth: '320px' }}>
-            {/* Carrusel centralizado */}
-            {(vehiculo.imagenes?.length > 0 || vehiculo.videos?.length > 0) ? (
-              <VehiculoCarrusel
-                images={vehiculo.imagenes?.map(img => img.url) || []}
-                videos={vehiculo.videos?.map(vid => vid.url) || []}
-              />
-            ) : (
-              <img
-                src={vehiculo.imagen || 'https://via.placeholder.com/600x400'}
-                alt={vehiculo.modelo || vehiculo.nombre}
-                className="rounded-2xl shadow-xl max-w-lg w-full object-contain transition-all duration-300"
-                style={{ background: '#f8f8f8', padding: '12px' }}
-              />
-            )}
-          </div>
+        <div className="vehiculo-galeria-container">
+          {(vehiculo.imagenes?.length > 0 || vehiculo.videos?.length > 0) ? (
+            (() => {
+              const galeriaImages = [...(vehiculo.imagenes || [])]
+                .sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0))
+                .map(img => img.url);
+              console.log('IMAGENES PARA GALERIA:', galeriaImages);
+              return (
+                <GaleriaVehiculo
+                  images={galeriaImages}
+                  videos={vehiculo.videos?.map(vid => vid.url) || []}
+                  etiqueta={"★ Buenas valoraciones"}
+                />
+              );
+            })()
+          ) : (
+            <img
+              src={vehiculo.imagen || 'https://via.placeholder.com/600x400'}
+              alt={vehiculo.modelo || vehiculo.nombre}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
+            />
+          )}
         </div>
         {/* Info principal */}
-        <div className="flex flex-col gap-6">
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-2 leading-tight">
-              <span className="text-black">{vehiculo.modelo}</span>
-              {vehiculo.nombre && <span className="block text-3xl md:text-4xl font-bold text-black mt-2">{vehiculo.nombre}</span>}
-              {vehiculo.version && <span className="block text-3xl md:text-4xl font-bold text-black mt-2">{vehiculo.version}</span>}
+        <div className="vehiculo-info-main">
+          <div className="vehiculo-info-card">
+            <h1 className="vehiculo-info-title">
+              <span>{vehiculo.modelo}</span>
             </h1>
-            <hr className="my-4 border-gray-200" />
-            <div className="mb-6">
-              <span className="block text-lg text-gray-700 mb-1">Desde:</span>
-              <span className="text-4xl md:text-5xl font-extrabold text-gray-900">${Number(vehiculo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}</span>
+            {vehiculo.nombre && (
+              <div className="vehiculo-info-subtitle" style={{ marginTop: 0 }}>{vehiculo.nombre}</div>
+            )}
+            {vehiculo.version && (
+              <div className="vehiculo-info-subtitle">{vehiculo.version}</div>
+            )}
+            <hr style={{ margin: '16px 0', borderColor: '#e5e7eb' }} />
+            <div style={{ marginBottom: 24 }}>
+              <span style={{ display: 'block', color: '#555', marginBottom: 4 }}>Desde:</span>
+              <span className="vehiculo-info-price">${Number(vehiculo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}</span>
               {vehiculo.precioUsd && (
-                <span className="ml-2 text-2xl text-gray-500">/ usd {Number(vehiculo.precioUsd).toLocaleString('en-US')}</span>
+                <span className="vehiculo-info-price-usd">/ usd {Number(vehiculo.precioUsd).toLocaleString('en-US')}</span>
               )}
             </div>
-            <div className="flex gap-4 mb-8">
+            <div className="vehiculo-info-btns">
               <button
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg shadow-lg transition-all duration-300"
+                className="vehiculo-info-btn"
                 onClick={() => navigate(`/comprar/${vehiculo.id}`)}
               >
                 Comprar
@@ -78,12 +87,12 @@ function VehiculoInfo() {
                 href="https://wa.me/5492914277849?text=Hola%20quiero%20informaci%C3%B3n%20sobre%20el%20veh%C3%ADculo%20"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-2 border-blue-600 hover:bg-blue-50 text-blue-700 font-bold py-3 px-8 rounded-lg text-lg shadow-lg transition-all duration-300 flex items-center justify-center"
+                className="vehiculo-info-btn vehiculo-info-btn-outline"
               >
                 Contactar con un asesor
               </a>
             </div>
-            <div className="flex gap-3 mb-6 flex-wrap">
+            <div className="vehiculo-info-colores">
               {colores.length > 0 ? (
                 colores.map((color, idx) => {
                   const isSelected = colorSeleccionado === color.colorId;
@@ -91,35 +100,34 @@ function VehiculoInfo() {
                     <button
                       key={color.colorId}
                       type="button"
-                      className={`flex flex-col items-center focus:outline-none ${isSelected ? 'ring-2 ring-gray-300' : ''}`}
+                      className={`vehiculo-info-color-btn${isSelected ? ' selected' : ''}`}
                       onClick={() => setColorSeleccionado(color.colorId)}
-                      style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
                     >
                       <span
-                        className={`w-8 h-8 rounded-full border-4 ${isSelected ? 'border-gray-300' : 'border-gray-300'} inline-block shadow`}
-                        style={{ background: color.codigoHex, boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
+                        className="vehiculo-info-color-circle"
+                        style={{ background: color.codigoHex }}
                         title={color.nombre}
                       ></span>
-                      <span className="text-xs text-gray-600 mt-1">{color.nombre}</span>
+                      <span className="vehiculo-info-color-label">{color.nombre}</span>
                     </button>
                   );
                 })
               ) : (
-                <span className="text-gray-400">Sin colores asignados</span>
+                <span style={{ color: '#bbb' }}>Sin colores asignados</span>
               )}
             </div>
-            <div className="mt-8 grid grid-cols-2 gap-4">
-              <div className="text-base text-gray-700"><span className="font-bold">Motor:</span> {vehiculo.motor || vehiculo.specs?.motor || '-'}</div>
-              <div className="text-base text-gray-700"><span className="font-bold">Potencia:</span> {vehiculo.potencia || vehiculo.specs?.potencia || '-'}</div>
-              <div className="text-base text-gray-700"><span className="font-bold">Consumo:</span> {vehiculo.consumo || vehiculo.specs?.consumo || '-'}</div>
-              <div className="text-base text-gray-700"><span className="font-bold">Transmisión:</span> {vehiculo.transmision || vehiculo.specs?.transmision || '-'}</div>
+            <div className="vehiculo-info-specs">
+              <div><span style={{ fontWeight: 'bold' }}>Motor:</span> {vehiculo.motor || vehiculo.specs?.motor || '-'}</div>
+              <div><span style={{ fontWeight: 'bold' }}>Potencia:</span> {vehiculo.potencia || vehiculo.specs?.potencia || '-'}</div>
+              <div><span style={{ fontWeight: 'bold' }}>Consumo:</span> {vehiculo.consumo || vehiculo.specs?.consumo || '-'}</div>
+              <div><span style={{ fontWeight: 'bold' }}>Transmisión:</span> {vehiculo.transmision || vehiculo.specs?.transmision || '-'}</div>
             </div>
           </div>
           {/* Características destacadas si existen */}
           {vehiculo.caracteristicas && vehiculo.caracteristicas.length > 0 && (
-            <div className="bg-blue-50 rounded-xl shadow p-6 mt-4">
-              <h3 className="text-xl font-bold text-blue-700 mb-4">Características destacadas</h3>
-              <ul className="list-disc pl-6 text-base text-blue-900">
+            <div className="vehiculo-info-features">
+              <h3 className="vehiculo-info-features-title">Características destacadas</h3>
+              <ul className="vehiculo-info-features-list">
                 {vehiculo.caracteristicas.map((c, i) => (
                   <li key={i}>{c}</li>
                 ))}
