@@ -26,9 +26,8 @@ const obtenerVehiculos = async (req, res) => {
         {
           model: db.ImagenVehiculo,
           as: 'imagenes',
-          where: { esPrincipal: true },
           required: false,
-          limit: 1
+          order: [['orden', 'ASC']]
         }
       ],
       order,
