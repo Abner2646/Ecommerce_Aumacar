@@ -13,27 +13,36 @@ const VehiculoCarrusel = ({ images = [], videos = [] }) => {
   ];
 
   return (
-    <Swiper
-      modules={[Navigation, Pagination]}
-      navigation
-      pagination={{ clickable: true }}
-      spaceBetween={20}
-      slidesPerView={1}
-      style={{ maxWidth: 600 }}
-    >
-      {media.map((item, idx) => (
-        <SwiperSlide key={idx}>
-          {item.type === 'image' ? (
-            <img src={item.url} alt={`media-${idx}`} style={{ width: '100%', borderRadius: 12 }} />
-          ) : (
-            <video controls style={{ width: '100%', borderRadius: 12 }}>
-              <source src={item.url} type="video/mp4" />
-              Tu navegador no soporta el tag de video.
-            </video>
-          )}
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <div style={{ width: '100%', maxWidth: 600, minHeight: 340, position: 'relative' }}>
+      <Swiper
+        modules={[Navigation, Pagination]}
+        navigation
+        pagination={{ clickable: true }}
+        spaceBetween={20}
+        slidesPerView={1}
+        style={{ width: '100%', minHeight: 340 }}
+      >
+        {media.map((item, idx) => (
+          <SwiperSlide key={idx}>
+            {item.type === 'image' ? (
+              <img
+                src={item.url}
+                alt={`media-${idx}`}
+                style={{ width: '100%', height: '340px', objectFit: 'contain', borderRadius: 18, background: '#f8f8f8', padding: 12 }}
+              />
+            ) : (
+              <video
+                controls
+                style={{ width: '100%', height: '340px', objectFit: 'contain', borderRadius: 18, background: '#f8f8f8', padding: 12 }}
+              >
+                <source src={item.url} type="video/mp4" />
+                Tu navegador no soporta el tag de video.
+              </video>
+            )}
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
   );
 };
 
