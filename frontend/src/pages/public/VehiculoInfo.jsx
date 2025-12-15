@@ -1,6 +1,6 @@
+
 import React, { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import VehiculoCarrusel from '../../components/VehiculoCarrusel';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useVehiculos } from '../../hooks/useVehiculos';
 import { useColoresVehiculo } from '../../hooks/useColores';
@@ -35,23 +35,12 @@ function VehiculoInfo() {
         {/* Imagen principal */}
         <div className="flex justify-center items-center">
           <div className="bg-white rounded-3xl shadow-2xl p-6 flex items-center justify-center w-full" style={{ minHeight: '340px', minWidth: '320px' }}>
-            {vehiculo.imagenes && vehiculo.imagenes.length > 0 ? (
-              <Swiper
-                spaceBetween={20}
-                slidesPerView={1}
-                style={{ width: '100%', maxWidth: '600px' }}
-              >
-                {vehiculo.imagenes.map((img, idx) => (
-                  <SwiperSlide key={idx}>
-                    <img
-                      src={img.url}
-                      alt={`Imagen ${idx + 1} de ${vehiculo.modelo || vehiculo.nombre}`}
-                      className="rounded-2xl shadow-xl w-full object-contain transition-all duration-300"
-                      style={{ background: '#f8f8f8', padding: '12px', maxHeight: '340px' }}
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+            {/* Carrusel centralizado */}
+            {(vehiculo.imagenes?.length > 0 || vehiculo.videos?.length > 0) ? (
+              <VehiculoCarrusel
+                images={vehiculo.imagenes?.map(img => img.url) || []}
+                videos={vehiculo.videos?.map(vid => vid.url) || []}
+              />
             ) : (
               <img
                 src={vehiculo.imagen || 'https://via.placeholder.com/600x400'}
@@ -71,7 +60,6 @@ function VehiculoInfo() {
               {vehiculo.version && <span className="block text-3xl md:text-4xl font-bold text-black mt-2">{vehiculo.version}</span>}
             </h1>
             <hr className="my-4 border-gray-200" />
-            <div className="text-gray-500 mb-2 text-base">Imagen referencial: {vehiculo.modelo || vehiculo.nombre} {vehiculo.version || ''}</div>
             <div className="mb-6">
               <span className="block text-lg text-gray-700 mb-1">Desde:</span>
               <span className="text-4xl md:text-5xl font-extrabold text-gray-900">${Number(vehiculo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}</span>

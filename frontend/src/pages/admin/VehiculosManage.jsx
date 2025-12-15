@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { 
   useVehiculos, 
   useDeleteVehiculo,
-  useCreateVehiculo 
+  useCreateVehiculo,
+  useUpdateVehiculo
 } from '../../hooks/useVehiculos';
 import { useMarcas } from '../../hooks/useMarcas';
 import DataTable from '../../components/admin/DataTable';
@@ -46,6 +47,7 @@ console.log('vehiculosData:', vehiculosData);
 console.log('isLoading:', isLoading);
   const deleteVehiculo = useDeleteVehiculo();
   const createVehiculo = useCreateVehiculo();
+  const updateVehiculo = useUpdateVehiculo();
 
   const marcas = marcasData?.marcas || [];
   const vehiculos = vehiculosData?.vehiculos || [];
