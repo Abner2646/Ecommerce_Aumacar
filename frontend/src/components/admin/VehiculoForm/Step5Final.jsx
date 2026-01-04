@@ -13,10 +13,10 @@ const TIPO_LABELS = {
 };
 
 const PLANTILLAS = [
-  { value: 1, label: 'Plantilla 1', description: 'Layout estándar' },
-  { value: 2, label: 'Plantilla 2', description: 'Layout premium' },
-  { value: 3, label: 'Plantilla 3', description: 'Layout compacto' },
-  { value: 4, label: 'Plantilla 4', description: 'Layout especial' }
+  { value: 1, label: 'Plantilla 1', description: 'Videos: 1' },
+  { value: 2, label: 'Plantilla 2', description: 'Videos: 1' },
+  { value: 3, label: 'Plantilla 3', description: 'Videos: 1 o 2' },
+  { value: 4, label: 'Plantilla 4', description: 'No apta videos' }
 ];
 
 const Step5Final = ({ 

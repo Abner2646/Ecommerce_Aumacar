@@ -37,6 +37,12 @@ const Sidebar = () => {
       path: '/admin/colores',
       icon: 'fa-palette',
       label: 'Colores'
+    },
+    // ========== AGREGAR ESTA LÍNEA ==========
+    {
+      path: '/admin/clientes',
+      icon: 'fa-users',
+      label: 'Clientes'
     }
   ];
 

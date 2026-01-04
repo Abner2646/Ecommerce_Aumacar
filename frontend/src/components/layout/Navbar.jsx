@@ -111,14 +111,14 @@ const Navbar = () => {
     >
       <nav className="cns-navbar-container" aria-label="Navegación principal">
         {/* Logo */}
-        <Link to="/" className="cns-navbar-logo" aria-label="Aumacar - Ir al inicio">
+        <Link to="/" className="cns-navbar-logo" aria-label="aumacar - Ir al inicio">
           <img 
             src={isScrolled ? symbolDark : symbolLight} 
             alt="" 
             aria-hidden="true"
             className="cns-navbar-logo-symbol"
           />
-          <span className="cns-navbar-logo-text">Aumacar S.R.L.</span>
+          <span className="cns-navbar-logo-text">aumacar S.R.L.</span>
         </Link>
 
         {/* Navegación Desktop */}

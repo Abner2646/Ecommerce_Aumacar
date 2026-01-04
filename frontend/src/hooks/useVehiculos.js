@@ -1,4 +1,4 @@
-// /src/hooks/useVehiculos.js
+// /src/hooks/useVehiculos.js 
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { vehiculosApi } from '../api/vehiculos.api';
@@ -201,3 +201,4 @@ export const useAssignCaracteristicas = () => {
     }
   });
 };
+

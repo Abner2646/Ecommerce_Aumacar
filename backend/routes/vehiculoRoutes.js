@@ -1,9 +1,11 @@
+// routes/vehiculoRoutes.js
 const express = require('express');
 const router = express.Router();
 const vehiculoController = require('../controllers/vehiculoController');
 const { verificarToken } = require('../middlewares/authMiddleware');
 const { validarVehiculo, validarId } = require('../middlewares/validationMiddleware');
 const { upload } = require('../utils/cloudinary');
+const db = require('../models');
 
 /**
  * @route   GET /api/vehiculos
@@ -314,7 +316,7 @@ router.post(
 router.delete(
   '/imagenes/:imagenId',
   verificarToken,
-  validarId,
+  /*validarId,*/
   vehiculoController.eliminarImagen
 );
 
@@ -376,7 +378,7 @@ router.post(
 router.delete(
   '/videos/:videoId',
   verificarToken,
-  validarId,
+  /*validarId,*/
   vehiculoController.eliminarVideo
 );
 
@@ -445,5 +447,48 @@ router.put('/imagenes/:imagenId', verificarToken, vehiculoController.actualizarI
 // un campo opcional 'colorVehiculoId' en el body para asociar 
 // las imágenes a un color específico del vehículo.
 // ==========================================
+router.get('/:id/caracteristicas', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const vehiculo = await db.Vehiculo.findByPk(id, {
+      include: [
+        {
+          model: db.Caracteristica,
+          as: 'caracteristicas',
+          through: { attributes: [] },
+          attributes: ['id', 'nombre', 'icono', 'tipo'], // ✅ Incluir icono
+          where: { activa: true },
+          required: false
+        }
+      ]
+    });
+
+    if (!vehiculo) {
+      return res.status(404).json({
+        message: 'Vehículo no encontrado'
+      });
+    }
+
+    // ✅ NUEVO: Devolver objetos completos, no solo strings
+    const caracteristicasFormateadas = vehiculo.caracteristicas.map(c => ({
+      id: c.id,
+      nombre: c.nombre,
+      icono: c.icono,
+      tipo: c.tipo
+    }));
+
+    res.json({
+      caracteristicas: caracteristicasFormateadas
+    });
+
+  } catch (error) {
+    console.error('Error al obtener características del vehículo:', error);
+    res.status(500).json({
+      message: 'Error al obtener características del vehículo',
+      error: error.message
+    });
+  }
+});
 
 module.exports = router;

@@ -29,11 +29,11 @@ db.Caracteristica = require('./Caracteristica')(sequelize);
 db.VehiculoCaracteristica = require('./VehiculoCaracteristica')(sequelize);
 db.VideoVehiculo = require('./VideoVehiculo')(sequelize);
 db.Usuario = require('./Usuario')(sequelize);
-
-// ========== NUEVOS MODELOS ==========
 db.Color = require('./Color')(sequelize);
 db.ColorVehiculo = require('./ColorVehiculo')(sequelize);
 
+// ========== NUEVO MODELO ==========
+db.FotoClienteRegion = require('./FotoClienteRegion')(sequelize);
 
 // Asociaciones
 Object.keys(db).forEach(modelName => {

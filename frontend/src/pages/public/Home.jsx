@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { marcasApi } from '../../api/marcas.api';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
+import ClientesCercanos from '../../components/public/ClientesCercanos';
+
 // Componente para renderizar las marcas dinámicamente
 function BrandCards() {
   const [marcas, setMarcas] = useState([]);
@@ -175,13 +177,15 @@ const Home = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
             Selecciona tu Marca
           </h2>
-          
           <div className="lnd-brand-selector grid grid-cols-1 sm:grid-cols-2 gap-8">
             {/* Render dinámico de marcas */}
             <BrandCards />
           </div>
         </div>
       </section>
+
+                <ClientesCercanos />
+
 
       {/* Features Section Premium */}
       <section className="cns-section bg-gradient-to-b from-white via-gray-50 to-white">

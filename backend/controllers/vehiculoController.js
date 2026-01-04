@@ -67,20 +67,19 @@ const obtenerVehiculoPorId = async (req, res) => {
           include: [{
             model: db.ColorVehiculo,
             as: 'colorVehiculo',
+            required: false,
             include: [{
               model: db.Color,
               as: 'color',
               attributes: ['id', 'nombre', 'codigoHex']
             }]
-          }],
-          order: [['orden', 'ASC']]
+          }]
         },
         {
           model: db.VideoVehiculo,
           as: 'videos',
-          where: { activo: true },
           required: false,
-          order: [['orden', 'ASC']]
+          separate: true
         },
         {
           model: db.Caracteristica,
@@ -89,17 +88,20 @@ const obtenerVehiculoPorId = async (req, res) => {
           where: { activa: true },
           required: false
         },
-        // ========== INCLUIR COLORES ==========
         {
           model: db.ColorVehiculo,
           as: 'coloresVehiculo',
+          required: false,
           include: [{
             model: db.Color,
             as: 'color',
             attributes: ['id', 'nombre', 'codigoHex']
-          }],
-          order: [['orden', 'ASC']]
+          }]
         }
+      ],
+      order: [
+        [{ model: db.ImagenVehiculo, as: 'imagenes' }, 'orden', 'ASC'],
+        [{ model: db.ColorVehiculo, as: 'coloresVehiculo' }, 'orden', 'ASC']
       ]
     });
 
@@ -109,8 +111,14 @@ const obtenerVehiculoPorId = async (req, res) => {
       });
     }
 
-    // Formatear respuesta con colores
+    // Formatear respuesta
     const respuesta = vehiculo.toJSON();
+    
+    // Filtrar videos activos y ordenar
+    respuesta.videos = respuesta.videos
+      ?.filter(v => v.activo === true)
+      .sort((a, b) => a.orden - b.orden) || [];
+    
     respuesta.colores = respuesta.coloresVehiculo?.map(cv => ({
       colorVehiculoId: cv.id,
       colorId: cv.color.id,
@@ -151,20 +159,19 @@ const obtenerVehiculoPorSlug = async (req, res) => {
           include: [{
             model: db.ColorVehiculo,
             as: 'colorVehiculo',
+            required: false,
             include: [{
               model: db.Color,
               as: 'color',
               attributes: ['id', 'nombre', 'codigoHex']
             }]
-          }],
-          order: [['orden', 'ASC']]
+          }]
         },
         {
           model: db.VideoVehiculo,
           as: 'videos',
-          where: { activo: true },
           required: false,
-          order: [['orden', 'ASC']]
+          separate: true
         },
         {
           model: db.Caracteristica,
@@ -173,17 +180,20 @@ const obtenerVehiculoPorSlug = async (req, res) => {
           where: { activa: true },
           required: false
         },
-        // ========== INCLUIR COLORES ==========
         {
           model: db.ColorVehiculo,
           as: 'coloresVehiculo',
+          required: false,
           include: [{
             model: db.Color,
             as: 'color',
             attributes: ['id', 'nombre', 'codigoHex']
-          }],
-          order: [['orden', 'ASC']]
+          }]
         }
+      ],
+      order: [
+        [{ model: db.ImagenVehiculo, as: 'imagenes' }, 'orden', 'ASC'],
+        [{ model: db.ColorVehiculo, as: 'coloresVehiculo' }, 'orden', 'ASC']
       ]
     });
 
@@ -193,8 +203,14 @@ const obtenerVehiculoPorSlug = async (req, res) => {
       });
     }
 
-    // Formatear respuesta con colores
+    // Formatear respuesta
     const respuesta = vehiculo.toJSON();
+    
+    // Filtrar videos activos y ordenar
+    respuesta.videos = respuesta.videos
+      ?.filter(v => v.activo === true)
+      .sort((a, b) => a.orden - b.orden) || [];
+    
     respuesta.colores = respuesta.coloresVehiculo?.map(cv => ({
       colorVehiculoId: cv.id,
       colorId: cv.color.id,
@@ -241,6 +257,7 @@ const crearVehiculo = async (req, res) => {
     if (typeof vehiculoData.favorito === 'undefined') {
       vehiculoData.favorito = false;
     }
+    
     const vehiculo = await db.Vehiculo.create(vehiculoData);
 
     res.status(201).json({
@@ -293,6 +310,7 @@ const actualizarVehiculo = async (req, res) => {
     if (typeof vehiculoData.favorito === 'undefined') {
       delete vehiculoData.favorito;
     }
+    
     await vehiculo.update(vehiculoData);
 
     res.json({
@@ -371,7 +389,6 @@ const eliminarVehiculo = async (req, res) => {
 
 /**
  * Agregar imágenes a un vehículo
- * ========== MODIFICADO para soportar colorVehiculoId ==========
  */
 const agregarImagenes = async (req, res) => {
   try {
@@ -398,7 +415,7 @@ const agregarImagenes = async (req, res) => {
       colorVehiculoValido = await db.ColorVehiculo.findOne({
         where: { 
           id: colorVehiculoId,
-          vehiculoId: id // Asegurar que el color pertenece a este vehículo
+          vehiculoId: id
         }
       });
 
@@ -451,8 +468,7 @@ const agregarImagenes = async (req, res) => {
 };
 
 /**
- * Actualizar imagen (cambiar color, orden, etc.)
- * ========== NUEVO ENDPOINT ==========
+ * Actualizar imagen
  */
 const actualizarImagen = async (req, res) => {
   try {
@@ -470,7 +486,6 @@ const actualizarImagen = async (req, res) => {
     // Validar colorVehiculoId si se proporciona
     if (colorVehiculoId !== undefined) {
       if (colorVehiculoId === null || colorVehiculoId === '') {
-        // Permitir quitar el color (imagen genérica)
         imagen.colorVehiculoId = null;
       } else {
         const colorVehiculo = await db.ColorVehiculo.findOne({
@@ -555,7 +570,6 @@ const eliminarImagen = async (req, res) => {
 
 /**
  * Obtener imágenes por color
- * ========== NUEVO ENDPOINT ==========
  */
 const obtenerImagenesPorColor = async (req, res) => {
   try {
@@ -569,11 +583,9 @@ const obtenerImagenesPorColor = async (req, res) => {
       });
     }
 
-    // Construir condición de búsqueda
     const whereCondition = { vehiculoId: id };
     
     if (incluirGenericas === 'true') {
-      // Imágenes del color específico + genéricas (null)
       whereCondition[Op.or] = [
         { colorVehiculoId: colorVehiculoId },
         { colorVehiculoId: null }
@@ -594,7 +606,7 @@ const obtenerImagenesPorColor = async (req, res) => {
         }]
       }],
       order: [
-        ['colorVehiculoId', 'ASC NULLS FIRST'], // Genéricas primero
+        ['colorVehiculoId', 'ASC NULLS FIRST'],
         ['orden', 'ASC']
       ]
     });
@@ -637,13 +649,11 @@ const agregarVideo = async (req, res) => {
       });
     }
 
-    // Log de depuración: información del archivo recibido
     console.log('Archivo recibido para video:', {
       fieldname: req.file.fieldname,
       originalname: req.file.originalname,
       mimetype: req.file.mimetype,
-      size: req.file.size,
-      bufferLength: req.file.buffer ? req.file.buffer.length : 0
+      size: req.file.size
     });
 
     // Si se marca como principal, desmarcar los demás
@@ -656,19 +666,40 @@ const agregarVideo = async (req, res) => {
 
     // Subir video a Cloudinary
     try {
+      console.log('Iniciando subida a Cloudinary...');
       const resultado = await subirVideo(req.file.buffer, `vehiculos/${vehiculo.slug}`);
+      
+      console.log('Respuesta de Cloudinary:', {
+        secure_url: resultado.secure_url,
+        thumbnail_url: resultado.thumbnail_url,
+        duration: resultado.duration,
+        bytes: resultado.bytes,
+        format: resultado.format,
+        resource_type: resultado.resource_type
+      });
 
-      const video = await db.VideoVehiculo.create({
+      const videoData = {
         vehiculoId: id,
         titulo: titulo || `Video ${vehiculo.modelo}`,
         descripcion,
         urlVideo: resultado.secure_url,
         urlThumbnail: resultado.thumbnail_url || null,
-        duracion: resultado.duration || null,
+        duracion: resultado.duration ? Math.round(resultado.duration) : null, // Redondear a entero
         tamano: resultado.bytes || null,
         formato: resultado.format || 'mp4',
         orden: orden || 0,
-        esPrincipal: esPrincipal === 'true' || esPrincipal === true
+        esPrincipal: esPrincipal === 'true' || esPrincipal === true,
+        activo: true
+      };
+
+      console.log('Creando registro en BD con datos:', videoData);
+
+      const video = await db.VideoVehiculo.create(videoData);
+
+      console.log('Video creado exitosamente:', {
+        id: video.id,
+        titulo: video.titulo,
+        activo: video.activo
       });
 
       res.status(201).json({
@@ -676,9 +707,13 @@ const agregarVideo = async (req, res) => {
         video
       });
     } catch (cloudinaryError) {
-      console.error('Error subiendo a Cloudinary:', cloudinaryError);
+      console.error('Error completo:', {
+        message: cloudinaryError.message,
+        stack: cloudinaryError.stack,
+        name: cloudinaryError.name
+      });
       return res.status(500).json({
-        error: 'Error al subir el video a Cloudinary. Revisa el formato y tamaño.'
+        error: `Error al procesar el video: ${cloudinaryError.message}`
       });
     }
 
@@ -792,9 +827,9 @@ module.exports = {
   actualizarVehiculo,
   eliminarVehiculo,
   agregarImagenes,
-  actualizarImagen,      // NUEVO
+  actualizarImagen,
   eliminarImagen,
-  obtenerImagenesPorColor, // NUEVO
+  obtenerImagenesPorColor,
   agregarVideo,
   eliminarVideo,
   asignarCaracteristicas

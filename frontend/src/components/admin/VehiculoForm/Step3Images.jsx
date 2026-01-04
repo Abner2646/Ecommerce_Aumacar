@@ -1,4 +1,4 @@
-// /src/components/admin/VehiculoForm/Step3Images.jsx
+// /src/components/admin/VehiculoForm/Step3Images.jsx 
 
 import { useState, useRef } from 'react';
 

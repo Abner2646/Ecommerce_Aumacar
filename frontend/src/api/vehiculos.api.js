@@ -1,13 +1,11 @@
 // /src/api/vehiculos.api.js 
 
-import { apiClient, apiClientFormData } from '../api/cliente';
+//import { apiClient, apiClientFormData } from '../api/cliente';
+import { apiClient, apiClientFormData } from './cliente';
+
 
 export const vehiculosApi = {
   // GET /api/vehiculos (con filtros)
-  /*getAll: async (filters = {}) => {
-    const queryString = new URLSearchParams(filters).toString();
-    return apiClient(`/vehiculos${queryString ? `?${queryString}` : ''}`);
-  },*/
   getAll: async (filters = {}) => {
     // Filtrar parámetros vacíos
     const cleanFilters = Object.fromEntries(
@@ -63,14 +61,17 @@ export const vehiculosApi = {
     if (options.orden !== undefined) {
       formData.append('orden', options.orden);
     }
+    if (options.colorVehiculoId) {
+      formData.append('colorVehiculoId', options.colorVehiculoId);
+    }
 
     return apiClientFormData(`/vehiculos/${vehiculoId}/imagenes`, formData);
   },
 
-  // DELETE /api/vehiculos/imagenes/:imagenId
-  deleteImage: async (imagenId) => {
-    return apiClient(`/vehiculos/imagenes/${imagenId}`, { method: 'DELETE' });
-  },
+// DELETE /api/vehiculos/imagenes/:imagenId
+deleteImage: async (imagenId) => {
+  return apiClient(`/vehiculos/imagenes/${imagenId}`, { method: 'DELETE' });
+},
 
   // POST /api/vehiculos/:id/videos
   addVideo: async (vehiculoId, video, metadata = {}) => {
@@ -89,7 +90,7 @@ export const vehiculosApi = {
     return apiClientFormData(`/vehiculos/${vehiculoId}/videos`, formData);
   },
 
-  // DELETE /api/vehiculos/videos/:videoId
+  // DELETE /api/vehiculos/videos/:videoId  
   deleteVideo: async (videoId) => {
     return apiClient(`/vehiculos/videos/${videoId}`, { method: 'DELETE' });
   },
@@ -102,10 +103,31 @@ export const vehiculosApi = {
     });
   },
 
+  // PATCH /api/vehiculos/:id
   updatePartial: async (id, data) => {
-  return apiClient(`/vehiculos/${id}`, {
-    method: 'PATCH',
-    body: JSON.stringify(data)
-  });
-}
+    return apiClient(`/vehiculos/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data)
+    });
+  },
+
+  // GET /api/vehiculos/:id/caracteristicas
+  getCaracteristicasByVehiculoId: async (vehiculoId) => {
+    return apiClient(`/vehiculos/${vehiculoId}/caracteristicas`);
+  },
+
+  // POST /api/vehiculos/:vehiculoId/colores
+  assignColores: async (vehiculoId, coloresIds) => {
+    return apiClient(`/vehiculos/${vehiculoId}/colores`, {
+      method: 'POST',
+      body: JSON.stringify({ coloresIds })
+    });
+  },
+
+  // DELETE /api/vehiculos/:vehiculoId/colores/:colorId
+  removeColor: async (vehiculoId, colorId) => {
+    return apiClient(`/vehiculos/${vehiculoId}/colores/${colorId}`, {
+      method: 'DELETE'
+    });
+  }
 };

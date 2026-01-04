@@ -1,4 +1,4 @@
-// /src/components/admin/VehiculoForm/Step2Colores.jsx
+// /src/components/admin/VehiculoForm/Step2Colores.jsx 
 
 import { useState } from 'react';
 import { useColores } from '../../../hooks/useColores';

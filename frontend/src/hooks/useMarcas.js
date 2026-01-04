@@ -1,4 +1,4 @@
-// src/hooks/useMarcas.js 
+// src/hooks/useMarcas.js   
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { marcasApi } from '../api/marcas.api';
@@ -34,10 +34,14 @@ export const useCreateMarca = () => {
     mutationFn: marcasApi.create,
     onSuccess: () => {
       queryClient.invalidateQueries(['marcas']);
-      toast.success('Marca creada exitosamente');
+      setTimeout(() => {
+        toast.success('Marca creada exitosamente');
+      }, 0);
     },
     onError: (error) => {
-      toast.error(error.message || 'Error al crear marca');
+      setTimeout(() => {
+        toast.error(error.message || 'Error al crear marca');
+      }, 0);
     }
   });
 };
@@ -50,10 +54,14 @@ export const useUpdateMarca = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries(['marcas']);
       queryClient.invalidateQueries(['marca', variables.id]);
-      toast.success('Marca actualizada exitosamente');
+      setTimeout(() => {
+        toast.success('Marca actualizada exitosamente');
+      }, 0);
     },
     onError: (error) => {
-      toast.error(error.message || 'Error al actualizar marca');
+      setTimeout(() => {
+        toast.error(error.message || 'Error al actualizar marca');
+      }, 0);
     }
   });
 };
@@ -65,12 +73,15 @@ export const useDeleteMarca = () => {
     mutationFn: marcasApi.delete,
     onSuccess: () => {
       queryClient.invalidateQueries(['marcas']);
-      toast.success('Marca eliminada exitosamente');
+      setTimeout(() => {
+        toast.success('Marca eliminada exitosamente');
+      }, 0);
     },
     onError: (error) => {
-      // El backend debería devolver un mensaje específico si la marca tiene vehículos
       const mensaje = error.message || 'Error al eliminar marca';
-      toast.error(mensaje);
+      setTimeout(() => {
+        toast.error(mensaje);
+      }, 0);
     }
   });
 };

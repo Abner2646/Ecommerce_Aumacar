@@ -30,6 +30,7 @@ import CaracteristicasManage from './pages/admin/CaracteristicasManage.jsx';
 import ColoresManage from './pages/admin/ColoresManage.jsx';
 import VehiculoInfo from './pages/public/VehiculoInfo.jsx';
 import ComprarForm from './pages/public/ComprarForm.jsx';
+import ClientesManage from './pages/admin/ClientesManage.jsx'
 const MarcaPage = React.lazy(() => import('./pages/public/MarcaPage.jsx'));
 
 
@@ -80,6 +81,8 @@ function App() {
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="colores" element={<ColoresManage />} />
+
+              <Route path="clientes" element={<ClientesManage />} />
               
               {/* Vehículos */}
               <Route path="vehiculos">
