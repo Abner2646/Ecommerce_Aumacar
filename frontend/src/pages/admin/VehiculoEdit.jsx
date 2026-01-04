@@ -1,4 +1,4 @@
-// /src/pages/admin/VehiculoEdit.jsx
+// /src/pages/admin/VehiculoEdit.jsx 
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';

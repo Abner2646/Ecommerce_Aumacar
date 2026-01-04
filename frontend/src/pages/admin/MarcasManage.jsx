@@ -1,16 +1,13 @@
-// /src/pages/admin/MarcasManage.jsx
+// /src/pages/admin/MarcasManage.jsx 
 
 import { useState } from 'react';
 import { useMarcas, useDeleteMarca } from '../../hooks/useMarcas';
 import Modal from '../../components/common/Modal';
 import MarcaForm from '../../components/admin/MarcaForm';
-// import MarcaMediaStep from '../../components/admin/MarcaMediaStep';
 
 const MarcasManage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMarca, setSelectedMarca] = useState(null);
-  const [step, setStep] = useState(1);
-  const [marcaDraft, setMarcaDraft] = useState(null);
   const [filtroActiva, setFiltroActiva] = useState('');
 
   // Construir filtros
@@ -24,20 +21,15 @@ const MarcasManage = () => {
 
   const handleCreate = () => {
     setSelectedMarca(null);
-    setMarcaDraft(null);
-    setStep(1);
     setIsModalOpen(true);
   };
 
   const handleEdit = (marca) => {
     setSelectedMarca(marca);
-    setMarcaDraft(null);
-    setStep(1);
     setIsModalOpen(true);
   };
 
   const handleDelete = async (marca) => {
-    // Verificar si tiene vehículos (esta info debería venir del backend)
     const confirmMessage = marca.vehiculos && marca.vehiculos.length > 0
       ? `La marca "${marca.nombre}" tiene ${marca.vehiculos.length} vehículo(s) asociado(s). ¿Estás seguro de eliminarla?`
       : `¿Estás seguro de eliminar la marca "${marca.nombre}"?`;
@@ -46,7 +38,6 @@ const MarcasManage = () => {
       try {
         await deleteMarca.mutateAsync(marca.id);
       } catch (error) {
-        // El error ya se maneja en el hook con toast
         console.error('Error al eliminar:', error);
       }
     }
@@ -55,8 +46,10 @@ const MarcasManage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedMarca(null);
-    setStep(1);
-    setMarcaDraft(null);
+  };
+
+  const handleSuccess = () => {
+    handleCloseModal();
   };
 
   // Loading state
@@ -222,17 +215,10 @@ const MarcasManage = () => {
         title={selectedMarca ? 'Editar Marca' : 'Nueva Marca'}
         size="lg"
       >
-        {step === 1 ? (
-          <MarcaForm
-            marca={selectedMarca}
-            onSuccess={(data) => {
-              setMarcaDraft(data);
-              setStep(2);
-            }}
-          />
-        ) : (
-          {/* MarcaMediaStep eliminado por error de módulo no encontrado */}
-        )}
+        <MarcaForm
+          marca={selectedMarca}
+          onSuccess={handleSuccess}
+        />
       </Modal>
     </div>
   );

@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { caracteristicasApi } from '../api/caracteristicas.api';
 import toast from 'react-hot-toast';
+import { vehiculosApi } from '../api/vehiculos.api';
 
 export const useCaracteristicas = (filters = {}) => {
   return useQuery({
@@ -62,5 +63,14 @@ export const useDeleteCaracteristica = () => {
     onError: (error) => {
       toast.error(error.message || 'Error al eliminar característica');
     }
+  });
+};
+
+// Agregada para la implemetnación de múltiples plantillas de vehículos
+export const useCaracteristicasVehiculo = (vehiculoId) => {
+  return useQuery({
+    queryKey: ['vehiculo', vehiculoId, 'caracteristicas'],
+    queryFn: () => vehiculosApi.getCaracteristicasByVehiculoId(vehiculoId),
+    enabled: !!vehiculoId
   });
 };

@@ -1,9 +1,5 @@
-Arreglar:
+Añadir una sección en cada plantilla de marca de un cliente que compró en base a la ip y añadirlo al panel de admin (1)
 
-
-Desarrollar:
-Seo
-
-Después de Santi:
-Poner imágenes de previsualización de las plantillas
-
+Santi:
+El seeder del usuario administrador
+Que el form de compra lleve al número correcto

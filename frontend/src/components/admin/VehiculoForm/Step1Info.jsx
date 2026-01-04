@@ -1,4 +1,4 @@
-// /src/components/admin/VehiculoForm/Step1Info.jsx
+// /src/components/admin/VehiculoForm/Step1Info.jsx  
 
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -112,11 +112,18 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
   const año = watch('año');
   const marcaId = watch('marcaId');
 
-  const generarSlug = () => {
-    if (!modelo || !version || !año || !marcaId) return;
+  // Auto-generar slug cuando cambian los campos relevantes
+  useEffect(() => {
+    if (!modelo || !version || !año || !marcaId) {
+      setValue('slug', '');
+      return;
+    }
 
     const marca = marcas.find(m => m.id === parseInt(marcaId));
-    if (!marca) return;
+    if (!marca) {
+      setValue('slug', '');
+      return;
+    }
 
     const slug = `${marca.slug}-${modelo}-${version}-${año}`
       .toLowerCase()
@@ -128,7 +135,7 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
       .replace(/-+$/, '');
     
     setValue('slug', slug);
-  };
+  }, [modelo, version, año, marcaId, marcas, setValue]);
 
   const onSubmit = (formData) => {
     formData.marcaId = parseInt(formData.marcaId);
@@ -161,10 +168,6 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
             </label>
             <select
               {...register('marcaId', { valueAsNumber: true })}
-              onChange={(e) => {
-                setValue('marcaId', parseInt(e.target.value));
-                generarSlug();
-              }}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.marcaId ? 'border-red-500' : 'border-gray-300'}`}
             >
               <option value="">Selecciona una marca</option>
@@ -183,7 +186,6 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
             <input
               type="text"
               {...register('modelo')}
-              onChange={(e) => { setValue('modelo', e.target.value); generarSlug(); }}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.modelo ? 'border-red-500' : 'border-gray-300'}`}
               placeholder="Ej: Corolla, Outback"
             />
@@ -198,7 +200,6 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
             <input
               type="text"
               {...register('version')}
-              onChange={(e) => { setValue('version', e.target.value); generarSlug(); }}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.version ? 'border-red-500' : 'border-gray-300'}`}
               placeholder="Ej: XEI 2.0, Premium"
             />
@@ -213,7 +214,6 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
             <input
               type="number"
               {...register('año', { valueAsNumber: true })}
-              onChange={(e) => { setValue('año', parseInt(e.target.value)); generarSlug(); }}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.año ? 'border-red-500' : 'border-gray-300'}`}
             />
             {errors.año && <p className="text-red-500 text-sm mt-1">{errors.año.message}</p>}
@@ -353,10 +353,21 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Slug (URL) <span className="text-red-500">*</span></label>
-            <input type="text" {...register('slug')} placeholder="toyota-corolla-xei-2024" className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.slug ? 'border-red-500' : 'border-gray-300'}`} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Slug (URL) <span className="text-red-500">*</span>
+              <span className="ml-2 text-xs text-gray-400">(generado automáticamente)</span>
+            </label>
+            <input 
+              type="text" 
+              {...register('slug')} 
+              readOnly
+              className={`w-full px-3 py-2 border rounded-lg bg-gray-50 cursor-not-allowed ${errors.slug ? 'border-red-500' : 'border-gray-300'}`}
+              placeholder="Se generará automáticamente"
+            />
             {errors.slug && <p className="text-red-500 text-sm mt-1">{errors.slug.message}</p>}
-            <p className="text-xs text-gray-500 mt-1">URL: /vehiculos/{watch('slug') || 'slug-del-vehiculo'}</p>
+            <p className="text-xs text-gray-500 mt-1">
+              URL: /vehiculos/{watch('slug') || 'slug-del-vehiculo'}
+            </p>
           </div>
         </div>
       </div>

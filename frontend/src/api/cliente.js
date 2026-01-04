@@ -1,4 +1,4 @@
-// src/api/cliente.js
+// src/api/cliente.js 
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
 
@@ -34,24 +34,26 @@ export const apiClient = async (endpoint, options = {}) => {
       throw new Error('Sesión expirada');
     }
 
+    // ✅ FIX: Leer el body UNA SOLA VEZ como texto
+    const text = await response.text();
+
+    // Si hay error, intentar parsear como JSON o usar texto plano
     if (!response.ok) {
-      let errorText = '';
       try {
-        const error = await response.json();
-        throw new Error(error.error || 'Error en la petición');
+        const errorData = JSON.parse(text);
+        throw new Error(errorData.error || errorData.message || 'Error en la petición');
       } catch (jsonErr) {
-        // Si no es JSON válido, devolver texto plano
-        errorText = await response.text();
-        throw new Error(errorText || 'Error en la petición (no JSON)');
+        // Si no es JSON válido, usar el texto plano
+        throw new Error(text || `Error ${response.status}: ${response.statusText}`);
       }
     }
 
+    // Si es exitoso, parsear como JSON
     try {
-      return await response.json();
+      return JSON.parse(text);
     } catch (jsonErr) {
-      // Si la respuesta no es JSON válida
-      const text = await response.text();
-      throw new Error(text || 'Respuesta no es JSON válido');
+      // Si la respuesta exitosa no es JSON válido
+      throw new Error('Respuesta no es JSON válido: ' + text);
     }
   } catch (error) {
     console.error('API Error:', error);
@@ -90,14 +92,26 @@ export const apiClientFormData = async (endpoint, formData, options = {}) => {
       throw new Error('Sesión expirada');
     }
 
+    // ✅ FIX: Leer el body UNA SOLA VEZ
+    const text = await response.text();
+
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Error en la petición');
+      try {
+        const errorData = JSON.parse(text);
+        throw new Error(errorData.error || errorData.message || 'Error en la petición');
+      } catch (jsonErr) {
+        throw new Error(text || `Error ${response.status}: ${response.statusText}`);
+      }
     }
 
-    return await response.json();
+    try {
+      return JSON.parse(text);
+    } catch (jsonErr) {
+      throw new Error('Respuesta no es JSON válido: ' + text);
+    }
   } catch (error) {
     console.error('API Error:', error);
     throw error;
   }
 };
+

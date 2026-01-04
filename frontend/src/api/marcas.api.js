@@ -1,4 +1,4 @@
-// /src/api/marcas.api.js
+// /src/api/marcas.api.js 
 
 import { apiClient, apiClientFormData } from './cliente';
 
@@ -44,8 +44,13 @@ export const marcasApi = {
 
   // PUT /api/marcas/:id
   update: async (id, data) => {
-    const formData = new FormData();
+    // Si ya es FormData, lo enviamos directamente
+    if (data instanceof FormData) {
+      return apiClientFormData(`/marcas/${id}`, data, { method: 'PUT' });
+    }
     
+    // Si no es FormData, lo convertimos (aunque no debería pasar)
+    const formData = new FormData();
     Object.keys(data).forEach(key => {
       if (data[key] !== null && data[key] !== undefined) {
         formData.append(key, data[key]);

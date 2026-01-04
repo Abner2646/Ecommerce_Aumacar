@@ -1,4 +1,4 @@
-// /src/components/admin/StepIndicator.jsx
+// /src/components/admin/StepIndicator.jsx 
 
 const StepIndicator = ({ 
   currentStep, 

@@ -1,4 +1,4 @@
-// /src/components/admin/MarcaForm.jsx 
+// /src/components/admin/MarcaForm.jsx   
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -22,90 +22,14 @@ const marcaSchema = z.object({
 const MarcaForm = ({ marca, onSuccess }) => {
   const [logoPreview, setLogoPreview] = useState(marca?.logo || null);
   const [logoFile, setLogoFile] = useState(null);
-  // Presentación media states
   const [fotoPresentacionPreview, setFotoPresentacionPreview] = useState(marca?.fotoPresentacion || null);
   const [fotoPresentacionFile, setFotoPresentacionFile] = useState(null);
-  // Foto del medio states
   const [fotoDelMedioPreview, setFotoDelMedioPreview] = useState(marca?.fotoDelMedio || null);
   const [fotoDelMedioFile, setFotoDelMedioFile] = useState(null);
-      // Manejar cambio de fotoDelMedio
-      const handleFotoDelMedioChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          if (!file.type.startsWith('image/')) {
-            alert('Por favor selecciona una imagen válida');
-            return;
-          }
-          if (file.size > 5 * 1024 * 1024) {
-            alert('La imagen no debe superar 5MB');
-            return;
-          }
-          setFotoDelMedioFile(file);
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setFotoDelMedioPreview(reader.result);
-          };
-          reader.readAsDataURL(file);
-        }
-      };
   const [videoPresentacionPreview, setVideoPresentacionPreview] = useState(marca?.videoPresentacion || null);
   const [videoPresentacionFile, setVideoPresentacionFile] = useState(null);
   const [videoPortadaPreview, setVideoPortadaPreview] = useState(marca?.videoPortada || null);
   const [videoPortadaFile, setVideoPortadaFile] = useState(null);
-    // Manejar cambio de fotoPresentacion
-    const handleFotoPresentacionChange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        if (!file.type.startsWith('image/')) {
-          alert('Por favor selecciona una imagen válida');
-          return;
-        }
-        if (file.size > 5 * 1024 * 1024) {
-          alert('La imagen no debe superar 5MB');
-          return;
-        }
-        setFotoPresentacionFile(file);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setFotoPresentacionPreview(reader.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-
-    // Manejar cambio de videoPresentacion
-    const handleVideoPresentacionChange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        if (!file.type.startsWith('video/')) {
-          alert('Por favor selecciona un video válido');
-          return;
-        }
-        if (file.size > 20 * 1024 * 1024) {
-          alert('El video no debe superar 20MB');
-          return;
-        }
-        setVideoPresentacionFile(file);
-        setVideoPresentacionPreview(URL.createObjectURL(file));
-      }
-    };
-
-    // Manejar cambio de videoPortada
-    const handleVideoPortadaChange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        if (!file.type.startsWith('video/')) {
-          alert('Por favor selecciona un video válido');
-          return;
-        }
-        if (file.size > 20 * 1024 * 1024) {
-          alert('El video no debe superar 20MB');
-          return;
-        }
-        setVideoPortadaFile(file);
-        setVideoPortadaPreview(URL.createObjectURL(file));
-      }
-    };
   
   const createMarca = useCreateMarca();
   const updateMarca = useUpdateMarca();
@@ -132,17 +56,14 @@ const MarcaForm = ({ marca, onSuccess }) => {
     }
   });
 
-  // Auto-generar slug desde nombre
-  const nombre = watch('nombre');
   const handleNombreChange = (e) => {
     const value = e.target.value;
     setValue('nombre', value);
     
-    // Solo auto-generar si no estamos editando o si el slug está vacío
     if (!isEditing || !marca?.slug) {
       const slug = value
         .toLowerCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Quitar acentos
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .replace(/\s+/g, '-')
         .replace(/[^\w-]+/g, '')
         .replace(/--+/g, '-')
@@ -152,25 +73,18 @@ const MarcaForm = ({ marca, onSuccess }) => {
     }
   };
 
-  // Manejar cambio de logo
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validar que sea imagen
       if (!file.type.startsWith('image/')) {
         alert('Por favor selecciona una imagen válida');
         return;
       }
-
-      // Validar tamaño (máx 2MB)
       if (file.size > 2 * 1024 * 1024) {
         alert('La imagen no debe superar 2MB');
         return;
       }
-
       setLogoFile(file);
-      
-      // Generar preview
       const reader = new FileReader();
       reader.onloadend = () => {
         setLogoPreview(reader.result);
@@ -179,15 +93,90 @@ const MarcaForm = ({ marca, onSuccess }) => {
     }
   };
 
-  // Remover logo
-  const handleRemoveLogo = () => {
-    setLogoFile(null);
-    setLogoPreview(marca?.logo || null);
+  const handleFotoPresentacionChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        alert('Por favor selecciona una imagen válida');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert('La imagen no debe superar 5MB');
+        return;
+      }
+      setFotoPresentacionFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFotoPresentacionPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleFotoDelMedioChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        alert('Por favor selecciona una imagen válida');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert('La imagen no debe superar 5MB');
+        return;
+      }
+      setFotoDelMedioFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFotoDelMedioPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleVideoPresentacionChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('video/')) {
+        alert('Por favor selecciona un video válido');
+        return;
+      }
+      if (file.size > 20 * 1024 * 1024) {
+        alert('El video no debe superar 20MB');
+        return;
+      }
+      setVideoPresentacionFile(file);
+      setVideoPresentacionPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleVideoPortadaChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('video/')) {
+        alert('Por favor selecciona un video válido');
+        return;
+      }
+      if (file.size > 20 * 1024 * 1024) {
+        alert('El video no debe superar 20MB');
+        return;
+      }
+      setVideoPortadaFile(file);
+      setVideoPortadaPreview(URL.createObjectURL(file));
+    }
   };
 
   const onSubmit = async (data) => {
+    if (!data.nombre || !data.slug || !data.colorPrimario || !data.colorSecundario) {
+      alert('Por favor completa todos los campos obligatorios');
+      return;
+    }
+
+    if (!isEditing && !logoFile) {
+      alert('Por favor selecciona un logo para la marca');
+      return;
+    }
+
     try {
-      // Validación extra antes de enviar
       const hexColorRegex = /^#[0-9A-Fa-f]{6}$/;
       if (data.colorPrimario && !hexColorRegex.test(data.colorPrimario)) {
         alert('Color primario debe tener formato #RRGGBB');
@@ -202,7 +191,6 @@ const MarcaForm = ({ marca, onSuccess }) => {
         return;
       }
 
-      // Preparar FormData solo con datos válidos
       const formData = new FormData();
       if (data.nombre) formData.append('nombre', data.nombre);
       if (data.slug) formData.append('slug', data.slug);
@@ -225,7 +213,6 @@ const MarcaForm = ({ marca, onSuccess }) => {
       }
       onSuccess();
     } catch (error) {
-      // Mostrar mensaje de error del backend si existe
       let errorMsg = 'Error al crear/actualizar la marca';
       if (error?.response?.data?.error) {
         errorMsg = error.response.data.error;
@@ -235,10 +222,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
         errorMsg = error.message;
       }
       alert(errorMsg);
-      if (window?.toast) {
-        window.toast.error(errorMsg);
-      }
-      console.error('Error:', errorMsg, error);
+      console.error('Error:', error);
     }
   };
 
@@ -272,99 +256,100 @@ const MarcaForm = ({ marca, onSuccess }) => {
           </>
         )}
       </div>
-            {/* Foto Presentación */}
-            <div>
-              <label className="adm-form-label">Foto Presentación</label>
-              {fotoPresentacionPreview && (
-                <div className="adm-logo-preview mb-4">
-                  <img src={fotoPresentacionPreview} alt="Preview foto presentación" className="adm-logo-preview-img" />
-                  <button
-                    type="button"
-                    className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                    onClick={() => {
-                      setFotoPresentacionPreview(null);
-                      setFotoPresentacionFile(null);
-                    }}
-                  >Quitar imagen</button>
-                </div>
-              )}
-              {!fotoPresentacionPreview && (
-                <>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFotoPresentacionChange}
-                    className="adm-file-input"
-                  />
-                  <p className="text-xs text-gray-500 mt-2">Formato: JPG, PNG. Máx: 5MB. Recomendado: 800x400px</p>
-                </>
-              )}
-            </div>
 
-            {/* Video Presentación */}
-            <div>
-              <label className="adm-form-label">Video Presentación</label>
-              {videoPresentacionPreview && (
-                <div className="adm-logo-preview mb-4">
-                  <video src={videoPresentacionPreview} controls className="adm-logo-preview-img" style={{ maxHeight: 200 }} />
-                  <button
-                    type="button"
-                    className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                    onClick={() => {
-                      setVideoPresentacionPreview(null);
-                      setVideoPresentacionFile(null);
-                    }}
-                  >Quitar video</button>
-                </div>
-              )}
-              {!videoPresentacionPreview && (
-                <>
-                  <input
-                    type="file"
-                    accept="video/*"
-                    onChange={handleVideoPresentacionChange}
-                    className="adm-file-input"
-                  />
-                  <p className="text-xs text-gray-500 mt-2">Formato: MP4, WebM. Máx: 20MB</p>
-                </>
-              )}
-            </div>
+      {/* Foto Presentación */}
+      <div>
+        <label className="adm-form-label">Foto Presentación</label>
+        {fotoPresentacionPreview && (
+          <div className="adm-logo-preview mb-4">
+            <img src={fotoPresentacionPreview} alt="Preview foto presentación" className="adm-logo-preview-img" />
+            <button
+              type="button"
+              className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              onClick={() => {
+                setFotoPresentacionPreview(null);
+                setFotoPresentacionFile(null);
+              }}
+            >Quitar imagen</button>
+          </div>
+        )}
+        {!fotoPresentacionPreview && (
+          <>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFotoPresentacionChange}
+              className="adm-file-input"
+            />
+            <p className="text-xs text-gray-500 mt-2">Formato: JPG, PNG. Máx: 5MB. Recomendado: 800x400px</p>
+          </>
+        )}
+      </div>
 
-            {/* Video Portada */}
-            <div>
-              <label className="adm-form-label">Video Portada</label>
-              {videoPortadaPreview && (
-                <div className="adm-logo-preview mb-4">
-                  <video src={videoPortadaPreview} controls className="adm-logo-preview-img" style={{ maxHeight: 200 }} />
-                  <button
-                    type="button"
-                    className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                    onClick={() => {
-                      setVideoPortadaPreview(null);
-                      setVideoPortadaFile(null);
-                    }}
-                  >Quitar video</button>
-                </div>
-              )}
-              {!videoPortadaPreview && (
-                <>
-                  <input
-                    type="file"
-                    accept="video/*"
-                    onChange={handleVideoPortadaChange}
-                    className="adm-file-input"
-                  />
-                  <p className="text-xs text-gray-500 mt-2">Formato: MP4, WebM. Máx: 20MB</p>
-                </>
-              )}
-            </div>
+      {/* Video Presentación */}
+      <div>
+        <label className="adm-form-label">Video Presentación</label>
+        {videoPresentacionPreview && (
+          <div className="adm-logo-preview mb-4">
+            <video src={videoPresentacionPreview} controls className="adm-logo-preview-img" style={{ maxHeight: 200 }} />
+            <button
+              type="button"
+              className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              onClick={() => {
+                setVideoPresentacionPreview(null);
+                setVideoPresentacionFile(null);
+              }}
+            >Quitar video</button>
+          </div>
+        )}
+        {!videoPresentacionPreview && (
+          <>
+            <input
+              type="file"
+              accept="video/*"
+              onChange={handleVideoPresentacionChange}
+              className="adm-file-input"
+            />
+            <p className="text-xs text-gray-500 mt-2">Formato: MP4, WebM. Máx: 20MB</p>
+          </>
+        )}
+      </div>
+
+      {/* Video Portada */}
+      <div>
+        <label className="adm-form-label">Video Portada</label>
+        {videoPortadaPreview && (
+          <div className="adm-logo-preview mb-4">
+            <video src={videoPortadaPreview} controls className="adm-logo-preview-img" style={{ maxHeight: 200 }} />
+            <button
+              type="button"
+              className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              onClick={() => {
+                setVideoPortadaPreview(null);
+                setVideoPortadaFile(null);
+              }}
+            >Quitar video</button>
+          </div>
+        )}
+        {!videoPortadaPreview && (
+          <>
+            <input
+              type="file"
+              accept="video/*"
+              onChange={handleVideoPortadaChange}
+              className="adm-file-input"
+            />
+            <p className="text-xs text-gray-500 mt-2">Formato: MP4, WebM. Máx: 20MB</p>
+          </>
+        )}
+      </div>
+
       {/* Logo Upload */}
       <div>
         <label className="adm-form-label">
-          Logo de la Marca
+          Logo de la Marca {!isEditing && <span className="text-red-500">*</span>}
         </label>
         
-        {/* Preview del logo */}
         {logoPreview && (
           <div className="adm-logo-preview mb-4">
             <img 
@@ -410,7 +395,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
           placeholder="Ej: Toyota, Subaru"
         />
         {errors.nombre && (
-          <p className="adm-form-error">{errors.nombre.message}</p>
+          <p className="adm-form-error">{String(errors.nombre.message)}</p>
         )}
       </div>
 
@@ -426,7 +411,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
           placeholder="toyota, subaru"
         />
         {errors.slug && (
-          <p className="adm-form-error">{errors.slug.message}</p>
+          <p className="adm-form-error">{String(errors.slug.message)}</p>
         )}
         <p className="text-xs text-gray-500 mt-2">
           La URL será: /{watch('slug') || 'marca'}
@@ -446,7 +431,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
         />
       </div>
 
-      {/* Grid de 2 columnas para Orden, Activa y Plantilla */}
+      {/* Grid de 3 columnas para Orden, Activa y Plantilla */}
       <div className="grid grid-cols-3 gap-4">
         {/* Orden */}
         <div>
@@ -460,7 +445,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
             min="0"
           />
           {errors.orden && (
-            <p className="adm-form-error">{errors.orden.message}</p>
+            <p className="adm-form-error">{String(errors.orden.message)}</p>
           )}
           <p className="text-xs text-gray-500 mt-2">
             Orden de aparición en el sitio
@@ -500,7 +485,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
         {/* Color Primario */}
         <div>
           <label className="adm-form-label">
-            Color Primario
+            Color Primario <span className="text-red-500">*</span>
           </label>
           <div className="adm-color-picker">
             <input
@@ -523,7 +508,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
         {/* Color Secundario */}
         <div>
           <label className="adm-form-label">
-            Color Secundario
+            Color Secundario <span className="text-red-500">*</span>
           </label>
           <div className="adm-color-picker">
             <input
@@ -551,17 +536,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
           disabled={isSubmitting}
           className="adm-btn adm-btn-primary flex-1"
         >
-          {isSubmitting ? (
-            <>
-              <i className="fa-solid fa-spinner fa-spin"></i>
-              Guardando...
-            </>
-          ) : (
-            <>
-              <i className="fa-solid fa-check"></i>
-              {isEditing ? 'Actualizar Marca' : 'Crear Marca'}
-            </>
-          )}
+          {isSubmitting ? 'Guardando...' : (isEditing ? 'Actualizar Marca' : 'Crear Marca')}
         </button>
       </div>
     </form>
