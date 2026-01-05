@@ -3,6 +3,22 @@ import { useVehiculos } from '../../hooks/useVehiculos';
 import '../../styles/pages/plantilla1.css';
 import { MessageCircle } from 'lucide-react';
 import { Users, ArrowRight, Phone, MapPin, Mail } from 'react-feather';
+// Scroll suave y lento a una posición Y
+function smoothScrollTo(targetY, duration = 1200) {
+  const startY = window.pageYOffset;
+  const distance = targetY - startY;
+  let startTime = null;
+  function step(currentTime) {
+    if (!startTime) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
+    window.scrollTo(0, startY + distance * progress);
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    }
+  }
+  window.requestAnimationFrame(step);
+}
 
 function Plantilla1({ marca }) {
   const { data, isLoading, error } = useVehiculos({ marcaId: marca?.id });
@@ -17,7 +33,7 @@ function Plantilla1({ marca }) {
     const handleScrollToContacto = (e) => {
       if (ultimaSectionRef.current) {
         const y = ultimaSectionRef.current.getBoundingClientRect().top + window.pageYOffset + 50;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        smoothScrollTo(y);
       }
     };
     window.addEventListener('scrollToContacto', handleScrollToContacto);
@@ -86,7 +102,7 @@ function Plantilla1({ marca }) {
                   const section = document.getElementById('mas-vendidos');
                   if (section) {
                     const y = section.getBoundingClientRect().top + window.pageYOffset + 85;
-                    window.scrollTo({ top: y, behavior: 'smooth' });
+                    smoothScrollTo(y);
                   }
                 }}
               >
@@ -100,7 +116,7 @@ function Plantilla1({ marca }) {
                 </div>
               </button>
               <a 
-                href="https://wa.me/5492914044550" 
+                href="https://wa.me/5492914277849" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
@@ -133,7 +149,7 @@ function Plantilla1({ marca }) {
             {isLoading && <div>Cargando autos...</div>}
             {error && <div>Error al cargar autos</div>}
             {modelos.filter(m => m.destacado).map((modelo) => (
-              <article key={modelo.id} className="cns-vehicle-card" onClick={() => window.location.href = `/vehiculo/${encodeURIComponent(modelo.modelo.replace(/\s+/g, '-').toLowerCase())}`} style={{cursor: 'pointer'}}>
+              <article key={modelo.id} className="cns-vehicle-card" onClick={() => window.location.href = `/vehiculo/${modelo.slug}`} style={{cursor: 'pointer'}}>
                 <div className="relative overflow-hidden">
                   <img 
                     src={modelo.imagenes?.[0]?.url || modelo.imagen || 'https://via.placeholder.com/400x300'}
@@ -199,18 +215,26 @@ function Plantilla1({ marca }) {
               Diseñado para<br />cualquier terreno
             </h2>
             <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed">
-              La tecnología ALLGRIP 4x4 te brinda control total en carretera, nieve, barro o arena. 
-              Sin importar el destino, {marca?.nombre} te lleva allí.
+                {marca?.nombre} se adapta a cada camino para brindarte seguridad, estabilidad y confianza, acompañándote en cada destino, sin importar las condiciones.
             </p>
-            <button className="cns-btn-primary px-8 py-4">
-              Conocer ALLGRIP
+            <button
+              className="cns-btn-primary px-8 py-4"
+              onClick={() => {
+                const section = document.getElementById('caracteristicas');
+                if (section) {
+                  const y = section.getBoundingClientRect().top + window.pageYOffset + 10;
+                  smoothScrollTo(y);
+                }
+              }}
+            >
+              Conoce {marca?.nombre}
             </button>
           </div>
         </div>
       </section>
 
       {/* ==================== CARACTERÍSTICAS PREMIUM ==================== */}
-      <section className="cns-section bg-gray-50">
+      <section className="cns-section bg-gray-50" id="caracteristicas">
         <div className="cns-container">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -249,7 +273,7 @@ function Plantilla1({ marca }) {
         <div className="cns-container">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Línea Completa 2024
+              Línea Completa {marca?.nombre}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
               Encuentra el {marca?.nombre} perfecto para ti
@@ -286,7 +310,7 @@ function Plantilla1({ marca }) {
               {isLoading && <div>Cargando autos...</div>}
               {error && <div>Error al cargar autos</div>}
               {modelos.map((modelo) => (
-                <div key={modelo.id} className="cns-vehicle-card group" style={{cursor: 'pointer'}} onClick={() => window.location.href = `/vehiculo/${encodeURIComponent((modelo.modelo || modelo.nombre).replace(/\s+/g, '-').toLowerCase())}`}>
+                <div key={modelo.id} className="cns-vehicle-card group" style={{cursor: 'pointer'}} onClick={() => window.location.href = `/vehiculo/${modelo.slug}`}> 
                   <div className="relative overflow-hidden">
                     <img 
                       src={modelo.imagenes?.[0]?.url || modelo.imagen || 'https://via.placeholder.com/400x300'}
@@ -329,14 +353,14 @@ function Plantilla1({ marca }) {
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                     <div className="lg:col-span-3">
                       <img 
-                        src={modelo.imagen}
-                        alt={modelo.nombre}
+                        src={modelo.imagenes?.[0]?.url || modelo.imagen || 'https://via.placeholder.com/400x300'}
+                        alt={modelo.modelo || modelo.nombre || 'Vehículo'}
                         className="w-full h-32 object-cover rounded-lg"
                       />
                     </div>
                     <div className="lg:col-span-3">
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        {modelo.nombre}
+                        {modelo.modelo || modelo.nombre}
                       </h3>
                       <span className="text-sm text-gray-500 font-medium">{modelo.categoria}</span>
                     </div>
@@ -344,19 +368,19 @@ function Plantilla1({ marca }) {
                       <div className="cns-specs-grid">
                         <div className="cns-spec-item">
                           <span className="block mb-1">Motor</span>
-                          <span className="cns-spec-value">{modelo.specs.motor}</span>
+                          <span className="cns-spec-value">{modelo.specs?.motor || modelo.motor || '-'}</span>
                         </div>
                         <div className="cns-spec-item">
                           <span className="block mb-1">Potencia</span>
-                          <span className="cns-spec-value">{modelo.specs.potencia}</span>
+                          <span className="cns-spec-value">{modelo.specs?.potencia || modelo.potencia || '-'}</span>
                         </div>
                         <div className="cns-spec-item">
                           <span className="block mb-1">Consumo</span>
-                          <span className="cns-spec-value">{modelo.specs.consumo}</span>
+                          <span className="cns-spec-value">{modelo.specs?.consumo || modelo.consumo || '-'}</span>
                         </div>
                         <div className="cns-spec-item">
                           <span className="block mb-1">Transmisión</span>
-                          <span className="cns-spec-value">{modelo.specs.transmision}</span>
+                          <span className="cns-spec-value">{modelo.specs?.transmision || modelo.transmision || '-'}</span>
                         </div>
                       </div>
                     </div>
@@ -411,13 +435,13 @@ function Plantilla1({ marca }) {
                   <ArrowRight className="w-5 h-5 group-hover:scale-[2] transition-transform" />
                 </a>
                 <a 
-                  href="https://wa.me/5492914517000" 
+                  href="https://wa.me/5492914277849" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg transition-all duration-300 w-full sm:w-auto justify-center hover:scale-104"
                 >
                   <Phone className="w-5 h-5 group-hover:scale-150 transition-transform" />
-                  <span>(0291) 451-7000</span>
+                  <span>(291) 427-7849</span>
                 </a>
               </div>
 

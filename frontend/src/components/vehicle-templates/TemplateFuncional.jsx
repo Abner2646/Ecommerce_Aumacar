@@ -470,7 +470,14 @@ export default function Template01({ vehiculo }) {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <button
-                onClick={() => navigate(`/comprar/${id}`)}
+                onClick={() => {
+                  navigate(`/comprar/${id}`);
+                  setTimeout(() => {
+                    if (typeof window !== 'undefined') {
+                      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                    }
+                  }, 50);
+                }}
                 className="group w-full sm:w-auto inline-flex items-center justify-center px-12 py-6 text-lg font-bold text-gray-900 bg-white rounded-2xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 hover:shadow-2xl active:scale-95"
               >
                 Iniciar compra

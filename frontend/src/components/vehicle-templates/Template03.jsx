@@ -942,7 +942,14 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center max-w-2xl mx-auto">
             <button
-              onClick={() => navigate(`/comprar/${id}`)}
+              onClick={() => {
+                navigate(`/comprar/${id}`);
+                setTimeout(() => {
+                  if (typeof window !== 'undefined') {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                  }
+                }, 50);
+              }}
               className="flex-1 px-12 py-6 text-base font-bold text-black bg-white hover:bg-gray-100 transition-all duration-300 tracking-wider uppercase hover:scale-105"
             >
               Comprar ahora

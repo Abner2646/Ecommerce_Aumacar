@@ -187,7 +187,6 @@ const ComprarForm = () => {
                           />
                           <div>
                             <div className="font-semibold text-gray-900">{colorActual.nombre}</div>
-                            <div className="text-small text-gray-600">{colorActual.codigoHex}</div>
                           </div>
                         </div>
                       )}
@@ -453,7 +452,7 @@ function ModalPago({ onClose, formData, vehiculo, color }) {
     `Aguardo su contacto para coordinar los próximos pasos.`
   );
 
-  const wppUrl = `https://wa.me/5492914044550?text=${mensajeWpp}`;
+  const wppUrl = `https://wa.me/5492914277849?text=${mensajeWpp}`;
 
   return (
     <div 
