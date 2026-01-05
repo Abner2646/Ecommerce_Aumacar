@@ -1,9 +1,25 @@
-// /src/pages/public/Home.jsx
 import React, { useEffect, useState } from 'react';
 import { marcasApi } from '../../api/marcas.api';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
 import ClientesCercanos from '../../components/public/ClientesCercanos';
+// Scroll suave y lento a una posición Y
+function smoothScrollTo(targetY, duration = 1200) {
+  const startY = window.pageYOffset;
+  const distance = targetY - startY;
+  let startTime = null;
+  function step(currentTime) {
+    if (!startTime) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
+    window.scrollTo(0, startY + distance * progress);
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    }
+  }
+  window.requestAnimationFrame(step);
+}
+// /src/pages/public/Home.jsx
 
 // Componente para renderizar las marcas dinámicamente
 function BrandCards() {
@@ -141,7 +157,7 @@ const Home = () => {
                 const marcas = document.getElementById('marcas');
                 if (marcas) {
                   const y = marcas.getBoundingClientRect().top + window.pageYOffset + 120;
-                  window.scrollTo({ top: y, behavior: 'smooth' });
+                  smoothScrollTo(y);
                 }
               }}
             >
@@ -155,7 +171,7 @@ const Home = () => {
               </div>
             </button>
             <a 
-              href="https://wa.me/5492914044550" 
+              href="https://wa.me/5492914277849" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
@@ -278,7 +294,7 @@ const Home = () => {
 
               {/* Subtitle */}
               <p className="text-lg md:text-xl lg:text-2xl text-white/80 max-w-3xl mx-auto mb-12 leading-relaxed">
-                Visita nuestro showroom o explora nuestro catálogo online.
+                Visita nuestro concesionario o explora nuestro catálogo online.
                 <br className="hidden sm:block" />
               </p>
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -301,13 +317,13 @@ const Home = () => {
                   <ArrowRight className="w-5 h-5 group-hover:scale-[2] transition-transform" />
                 </button>
                 <a 
-                  href="https://wa.me/5492914517000" 
+                  href="https://wa.me/5492914277849" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg transition-all duration-300 w-full sm:w-auto justify-center hover:scale-104"
                 >
                   <Phone className="w-5 h-5 group-hover:scale-150 transition-transform" />
-                  <span>(0291) 451-7000</span>
+                  <span>(291) 427-7849</span>
                 </a>
               </div>
 

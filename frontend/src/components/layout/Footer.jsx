@@ -14,7 +14,7 @@ const Footer = () => {
           <div className="cns-footer-column">
             <div className="cns-footer-logo-area">
               <p className="text-2xl md:text-3xl text-white font-bold mt-2">
-                Aumacar S.R.L.
+                aumacar S.R.L.
               </p>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs mt-6">
@@ -118,7 +118,7 @@ const Footer = () => {
             <div className="space-y-3">
               <div>
                 <p className="text-gray-400 text-sm font-medium mb-1">Lunes a Viernes</p>
-                <p className="text-gray-500 text-sm">8:00 - 12:00 | 16:00 - 20:00</p>
+                <p className="text-gray-500 text-sm">9:00 - 18:00</p>
               </div>
               <div>
                 <p className="text-gray-400 text-sm font-medium mb-1">Sábados</p>

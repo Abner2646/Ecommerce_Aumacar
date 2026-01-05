@@ -3,6 +3,22 @@ import { useVehiculos } from '../../hooks/useVehiculos';
 import '../../styles/pages/plantilla2.css';
 import { MessageCircle } from 'lucide-react';
 import { Users, ArrowRight, Phone, MapPin, Mail } from 'react-feather';
+// Scroll suave y lento a una posición Y
+function smoothScrollTo(targetY, duration = 1200) {
+  const startY = window.pageYOffset;
+  const distance = targetY - startY;
+  let startTime = null;
+  function step(currentTime) {
+    if (!startTime) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
+    window.scrollTo(0, startY + distance * progress);
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    }
+  }
+  window.requestAnimationFrame(step);
+}
 
 // Recibe la marca como prop
 const Plantilla2 = ({ marca }) => {
@@ -12,7 +28,7 @@ const Plantilla2 = ({ marca }) => {
     const handler = () => {
       if (contactoRef.current) {
         const y = contactoRef.current.getBoundingClientRect().top + window.pageYOffset + 70;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        smoothScrollTo(y);
       }
     };
     window.addEventListener('scrollToContacto', handler);
@@ -86,7 +102,7 @@ const Plantilla2 = ({ marca }) => {
                   const section = document.getElementById('mas-vendidos');
                   if (section) {
                     const y = section.getBoundingClientRect().top + window.pageYOffset + 85;
-                    window.scrollTo({ top: y, behavior: 'smooth' });
+                    smoothScrollTo(y);
                   }
                 }}
               >
@@ -100,7 +116,7 @@ const Plantilla2 = ({ marca }) => {
                 </div>
               </button>
               <a 
-                href="https://wa.me/5492914044550" 
+                href="https://wa.me/5492914277849" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
@@ -133,7 +149,7 @@ const Plantilla2 = ({ marca }) => {
             {isLoading && <div>Cargando autos...</div>}
             {error && <div>Error al cargar autos</div>}
             {modelos.filter(m => m.destacado).map((modelo) => (
-              <article key={modelo.id} className="cns-vehicle-card" onClick={() => window.location.href = `/vehiculo/${encodeURIComponent(modelo.modelo.replace(/\s+/g, '-').toLowerCase())}`} style={{cursor: 'pointer'}}>
+              <article key={modelo.id} className="cns-vehicle-card" onClick={() => window.location.href = `/vehiculo/${modelo.slug}`} style={{cursor: 'pointer'}}>
                 <div className="relative overflow-hidden">
                   <img 
                     src={modelo.imagenes?.[0]?.url || modelo.imagen || 'https://via.placeholder.com/400x300'}
@@ -195,22 +211,30 @@ const Plantilla2 = ({ marca }) => {
         
         <div className="cns-container relative z-10 flex items-center min-h-[400px] md:min-h-[500px] py-20">
           <div className="max-w-2xl">
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight">
+             <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight">
               Diseñado para<br />cualquier terreno
             </h2>
             <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed">
-              La tecnología ALLGRIP 4x4 te brinda control total en carretera, nieve, barro o arena. 
-              Sin importar el destino, {marca?.nombre} te lleva allí.
+                {marca?.nombre} se adapta a cada camino para brindarte seguridad, estabilidad y confianza, acompañándote en cada destino, sin importar las condiciones.
             </p>
-            <button className="cns-btn-primary px-8 py-4">
-              Conocer ALLGRIP
+            <button
+              className="cns-btn-primary px-8 py-4"
+              onClick={() => {
+                const section = document.getElementById('caracteristicas');
+                if (section) {
+                  const y = section.getBoundingClientRect().top + window.pageYOffset + 10;
+                  smoothScrollTo(y);
+                }
+              }}
+            >
+              Conocer {marca?.nombre}
             </button>
           </div>
         </div>
       </section>
 
       {/* ==================== CARACTERÍSTICAS PREMIUM ==================== */}
-      <section className="cns-section bg-gray-50">
+      <section className="cns-section bg-gray-50" id="caracteristicas">
         <div className="cns-container">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -249,7 +273,7 @@ const Plantilla2 = ({ marca }) => {
         <div className="cns-container">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Línea Completa 2024
+              Línea Completa {marca?.nombre}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
               Encuentra el {marca?.nombre} perfecto para ti
@@ -286,7 +310,7 @@ const Plantilla2 = ({ marca }) => {
               {isLoading && <div>Cargando autos...</div>}
               {error && <div>Error al cargar autos</div>}
               {modelos.map((modelo) => (
-                <div key={modelo.id} className="cns-vehicle-card group" style={{cursor: 'pointer'}} onClick={() => window.location.href = `/vehiculo/${encodeURIComponent((modelo.modelo || modelo.nombre).replace(/\s+/g, '-').toLowerCase())}`}>
+                <div key={modelo.id} className="cns-vehicle-card group" style={{cursor: 'pointer'}} onClick={() => window.location.href = `/vehiculo/${modelo.slug}`}> 
                   <div className="relative overflow-hidden">
                     <img 
                       src={modelo.imagenes?.[0]?.url || modelo.imagen || 'https://via.placeholder.com/400x300'}
@@ -329,14 +353,14 @@ const Plantilla2 = ({ marca }) => {
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                     <div className="lg:col-span-3">
                       <img 
-                        src={modelo.imagen}
-                        alt={modelo.nombre}
+                        src={modelo.imagenes?.[0]?.url || modelo.imagen || 'https://via.placeholder.com/400x300'}
+                        alt={modelo.modelo || modelo.nombre || 'Vehículo'}
                         className="w-full h-32 object-cover rounded-lg"
                       />
                     </div>
                     <div className="lg:col-span-3">
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        {modelo.nombre}
+                        {modelo.modelo || modelo.nombre}
                       </h3>
                       <span className="text-sm text-gray-500 font-medium">{modelo.categoria}</span>
                     </div>
@@ -344,19 +368,19 @@ const Plantilla2 = ({ marca }) => {
                       <div className="cns-specs-grid">
                         <div className="cns-spec-item">
                           <span className="block mb-1">Motor</span>
-                          <span className="cns-spec-value">{modelo.specs.motor}</span>
+                          <span className="cns-spec-value">{modelo.specs?.motor || modelo.motor || '-'}</span>
                         </div>
                         <div className="cns-spec-item">
                           <span className="block mb-1">Potencia</span>
-                          <span className="cns-spec-value">{modelo.specs.potencia}</span>
+                          <span className="cns-spec-value">{modelo.specs?.potencia || modelo.potencia || '-'}</span>
                         </div>
                         <div className="cns-spec-item">
                           <span className="block mb-1">Consumo</span>
-                          <span className="cns-spec-value">{modelo.specs.consumo}</span>
+                          <span className="cns-spec-value">{modelo.specs?.consumo || modelo.consumo || '-'}</span>
                         </div>
                         <div className="cns-spec-item">
                           <span className="block mb-1">Transmisión</span>
-                          <span className="cns-spec-value">{modelo.specs.transmision}</span>
+                          <span className="cns-spec-value">{modelo.specs?.transmision || modelo.transmision || '-'}</span>
                         </div>
                       </div>
                     </div>
@@ -399,41 +423,41 @@ const Plantilla2 = ({ marca }) => {
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-                <a 
-                  href="https://wa.me/5492914277849" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-104 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto justify-center"
-                >
-                  <span>Agendar ahora</span>
-                  <ArrowRight className="w-5 h-5 group-hover:scale-[2] transition-transform" />
-                </a>
-                <a 
-                  href="https://wa.me/5492914517000" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg transition-all duration-300 w-full sm:w-auto justify-center hover:scale-104"
-                >
-                  <Phone className="w-5 h-5 group-hover:scale-150 transition-transform" />
-                  <span>(0291) 451-7000</span>
-                </a>
-              </div>
-
-              {/* Contact Options */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto pt-12 border-t border-white/20">
-                {/* WhatsApp */}
-                <a 
-                  href="https://wa.me/5492914277849" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-                >
-                  <MessageCircle className="w-6 h-6 text-white group-hover:scale-180 transition-transform" />
-                  <div className="text-left">
-                    <div className="text-sm text-white/60 font-medium">WhatsApp</div>
-                    <div className="text-white font-semibold">Consulta rápida</div>
-                  </div>
-                </a>
+                              <a 
+                                href="https://wa.me/5492914277849" 
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-104 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto justify-center"
+                              >
+                                <span>Agendar ahora</span>
+                                <ArrowRight className="w-5 h-5 group-hover:scale-[2] transition-transform" />
+                              </a>
+                              <a 
+                                href="https://wa.me/5492914277849" 
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg transition-all duration-300 w-full sm:w-auto justify-center hover:scale-104"
+                              >
+                                <Phone className="w-5 h-5 group-hover:scale-150 transition-transform" />
+                                <span>(291) 427-7849</span>
+                              </a>
+                            </div>
+              
+                            {/* Contact Options */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto pt-12 border-t border-white/20">
+                              {/* WhatsApp */}
+                              <a 
+                                href="https://wa.me/5492914277849" 
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                              >
+                                <MessageCircle className="w-6 h-6 text-white group-hover:scale-180 transition-transform" />
+                                <div className="text-left">
+                                  <div className="text-sm text-white/60 font-medium">WhatsApp</div>
+                                  <div className="text-white font-semibold">Consulta rápida</div>
+                                </div>
+                              </a>
 
                 {/* Dirección */}
                 <a 
