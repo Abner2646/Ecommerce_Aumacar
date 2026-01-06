@@ -144,7 +144,7 @@ const Home = () => {
         <div className="relative z-10 cns-container text-center px-4 md:px-8">
           <span className="cns-pill-badge">Performance & Excelencia</span>
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 text-balance leading-tight">
-            Bienvenido a Aumacar
+            Bienvenido a aumacar s.r.l
           </h1>
           <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto mb-12 leading-relaxed">
             Concesionaria oficial Subaru y Suzuki. Descubre la excelencia automotriz con las mejores marcas del mercado.
@@ -244,7 +244,7 @@ const Home = () => {
                 Financiamiento
               </h3>
               <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                Planes de financiamiento flexibles adaptados a tus necesidades con las mejores tasas del mercado
+                Planes de financiamiento adaptados a tus necesidades y a la mejor tasa del mercado
               </p>
             </div>
 

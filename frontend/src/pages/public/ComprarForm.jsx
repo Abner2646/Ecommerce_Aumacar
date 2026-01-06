@@ -349,7 +349,6 @@ const ComprarForm = () => {
                     >
                       <option value="">Seleccione una opción</option>
                       <option value="transferencia">Transferencia bancaria</option>
-                      <option value="tarjeta">Tarjeta de crédito/débito</option>
                       <option value="efectivo">Efectivo</option>
                       <option value="financiacion">Financiación</option>
                     </select>

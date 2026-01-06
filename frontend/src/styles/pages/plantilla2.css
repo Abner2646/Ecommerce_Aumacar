@@ -1,10 +1,48 @@
+/* Carga de fuente SuzukiPro */
+@font-face {
+  font-family: 'SuzukiPRORegular';
+  src: url('../../assets/fonts/SUZUKIPROREGULAR.OTF') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SuzukiPROBold';
+  src: url('../../assets/fonts/SUZUKIPROBOLD.OTF') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Botones 'Ver Detalles' rectangulares en plantilla2 */
 .plantilla2-root .cns-btn-secondary {
   border-radius: 0 !important;
 }
 /* Fuente exclusiva para Plantilla 2 */
 .plantilla2-root {
-  font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+  font-family: 'SuzukiPRORegular', system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+}
+
+/* Títulos principales más pesados */
+.plantilla2-root h1,
+.plantilla2-root h2,
+.plantilla2-root .text-5xl,
+.plantilla2-root .text-4xl,
+.plantilla2-root .text-3xl,
+.plantilla2-root .text-2xl {
+  font-family: 'SuzukiPROBold', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+}
+
+/* Texto descriptivo más ligero */
+.plantilla2-root p,
+.plantilla2-root .text-xl,
+.plantilla2-root .text-lg,
+.plantilla2-root .text-base {
+  font-family: 'SuzukiPRORegular', system-ui, -apple-system, sans-serif;
+  font-weight: 400;
 }
 /* Permite que el ícono del botón de teléfono en el hero sí cambie de color en hover */
 .plantilla2-root .cns-container .flex.justify-center > a.group[href^="tel"]:hover .w-6,
