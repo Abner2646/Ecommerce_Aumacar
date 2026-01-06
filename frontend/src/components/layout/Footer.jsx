@@ -14,7 +14,7 @@ const Footer = () => {
           <div className="cns-footer-column">
             <div className="cns-footer-logo-area">
               <p className="text-2xl md:text-3xl text-white font-bold mt-2">
-                aumacar S.R.L.
+                aumacar s.r.l
               </p>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs mt-6">

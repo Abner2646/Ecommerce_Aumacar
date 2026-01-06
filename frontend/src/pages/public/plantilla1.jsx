@@ -43,11 +43,11 @@ function Plantilla1({ marca }) {
   const caracteristicas = [
     {
       titulo: 'Tecnología Híbrida',
-      descripcion: 'Sistemas híbridos avanzados que combinan eficiencia y rendimiento sin compromisos.'
+      descripcion: 'Sistemas híbridos avanzados que combinan eficiencia y rendimiento.'
     },
     {
-      titulo: 'ALLGRIP 4x4',
-      descripcion: 'Sistema de tracción inteligente que se adapta automáticamente a cualquier terreno.'
+      titulo: 'Symmetrical AWD',
+      descripcion: 'Tracción Integral Simétrica que brinda mayor estabilidad, control y confianza en todo momento.'
     },
     {
       titulo: 'Seguridad Total',
@@ -92,7 +92,7 @@ function Plantilla1({ marca }) {
               {marca?.nombre}
             </h1>
             <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto mb-12 leading-relaxed">
-              Tecnología {marca?.nombre} para acompañarte en cada camino.
+              La mas alta eficiencia y una tracción total <br></br>para una confianza total.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button

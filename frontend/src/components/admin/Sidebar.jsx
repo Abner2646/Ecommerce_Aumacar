@@ -51,7 +51,7 @@ const Sidebar = () => {
       {/* Header del Sidebar */}
       <div className="adm-sidebar-header">
         <h1 className="adm-sidebar-title">
-          Aumacar Admin
+          aumacar s.r.l Admin
         </h1>
       </div>
 

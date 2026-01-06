@@ -1,3 +1,28 @@
+/* Carga de fuente Avenir Next LT Pro */
+@font-face {
+  font-family: 'AvenirNextLTPro-Regular';
+  src: url('../../assets/fonts/AvenirNextLTPro-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AvenirNextLTPro-Demi';
+  src: url('../../assets/fonts/AvenirNextLTPro-Demi.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AvenirNextLTPro-Bold';
+  src: url('../../assets/fonts/AvenirNextLTPro-Bold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Solo la lupa no cambia de color en hover */
 .plantilla1-root .group:hover .lupa-icon {
   color: #9ca3af !important;
@@ -14,7 +39,28 @@
 }
 /* Fuente exclusiva para Plantilla 1 */
 .plantilla1-root {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'AvenirNextLTPro-Regular', Helvetica Neue, -apple-system, 'system-ui', BlinkMacSystemFont, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+
+/* Títulos principales con Demi/Bold */
+.plantilla1-root h1,
+.plantilla1-root h2,
+.plantilla1-root .text-5xl,
+.plantilla1-root .text-4xl,
+.plantilla1-root .text-3xl,
+.plantilla1-root .text-2xl {
+  font-family: 'AvenirNextLTPro-Demi', Helvetica Neue, -apple-system, 'system-ui', BlinkMacSystemFont, Arial, Helvetica, sans-serif;
+  font-weight: 600;
+}
+
+/* Texto descriptivo ligero */
+.plantilla1-root p,
+.plantilla1-root .text-xl,
+.plantilla1-root .text-lg,
+.plantilla1-root .text-base {
+  font-family: 'AvenirNextLTPro-Regular', Helvetica Neue, -apple-system, 'system-ui', BlinkMacSystemFont, Arial, Helvetica, sans-serif;
+  font-weight: 400;
 }
 /* Permite que el ícono del botón de teléfono en el hero sí cambie de color en hover */
 .plantilla1-root .cns-container .flex.justify-center > a.group[href^="tel"]:hover .w-6,

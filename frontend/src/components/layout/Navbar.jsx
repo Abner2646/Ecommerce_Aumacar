@@ -118,7 +118,7 @@ const Navbar = () => {
             aria-hidden="true"
             className="cns-navbar-logo-symbol"
           />
-          <span className="cns-navbar-logo-text">aumacar S.R.L.</span>
+          <span className="cns-navbar-logo-text">aumacar s.r.l</span>
         </Link>
 
         {/* Navegación Desktop */}

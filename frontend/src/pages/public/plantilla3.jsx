@@ -43,7 +43,7 @@ const Plantilla3 = ({ marca }) => {
   const caracteristicas = [
     {
       titulo: 'Tecnología Híbrida',
-      descripcion: 'Sistemas híbridos avanzados que combinan eficiencia y rendimiento sin compromisos.'
+      descripcion: 'Sistemas híbridos avanzados que combinan eficiencia y rendimiento.'
     },
     {
       titulo: 'ALLGRIP 4x4',
