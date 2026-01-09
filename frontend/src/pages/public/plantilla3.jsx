@@ -1,8 +1,12 @@
+// /src/pages/public/plantilla3.jsx 
+
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useVehiculos } from '../../hooks/useVehiculos';
 import '../../styles/pages/plantilla3.css';
 import { MessageCircle } from 'lucide-react';
 import { Users, ArrowRight, Phone, MapPin, Mail } from 'react-feather';
+
 // Scroll suave y lento a una posición Y
 function smoothScrollTo(targetY, duration = 1200) {
   const startY = window.pageYOffset;
@@ -22,9 +26,11 @@ function smoothScrollTo(targetY, duration = 1200) {
 
 // Recibe la marca como prop
 const Plantilla3 = ({ marca }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('all');
   const contactoRef = useRef(null);
   const tecnologiaRef = useRef(null);
+  
   useEffect(() => {
     const handler = () => {
       if (contactoRef.current) {
@@ -42,20 +48,20 @@ const Plantilla3 = ({ marca }) => {
 
   const caracteristicas = [
     {
-      titulo: 'Tecnología Híbrida',
-      descripcion: 'Sistemas híbridos avanzados que combinan eficiencia y rendimiento.'
+      titulo: t('brandTemplates.technology.features.hybrid.title'),
+      descripcion: t('brandTemplates.technology.features.hybrid.description')
     },
     {
-      titulo: 'ALLGRIP 4x4',
-      descripcion: 'Sistema de tracción inteligente que se adapta automáticamente a cualquier terreno.'
+      titulo: t('brandTemplates.technology.features.awd.titleSuzuki'),
+      descripcion: t('brandTemplates.technology.features.awd.descriptionSuzuki')
     },
     {
-      titulo: 'Seguridad Total',
-      descripcion: 'Equipados con los sistemas de seguridad activa y pasiva más avanzados del mercado.'
+      titulo: t('brandTemplates.technology.features.safety.title'),
+      descripcion: t('brandTemplates.technology.features.safety.description')
     },
     {
-      titulo: 'Diseño Japonés',
-      descripcion: 'Estética funcional que combina tradición japonesa con modernidad contemporánea.'
+      titulo: t('brandTemplates.technology.features.design.title'),
+      descripcion: t('brandTemplates.technology.features.design.description')
     }
   ];
 
@@ -88,7 +94,7 @@ const Plantilla3 = ({ marca }) => {
 
         <div className="relative z-10 cns-container px-4 md:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <span className="cns-pill-badge">Performance & Eficiencia</span>
+            <span className="cns-pill-badge">{t('brandTemplates.hero.badge')}</span>
             <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
               {marca?.nombre}
             </h1>
@@ -107,13 +113,12 @@ const Plantilla3 = ({ marca }) => {
                   }
                 }}
               >
-                {/* Lupa Lucide */}
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:scale-130 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <circle cx="11" cy="11" r="8" />
                   <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
                 <div className="flex flex-col items-start">
-                  <span className="text-sm font-medium">Explorar Modelos</span>
+                  <span className="text-sm font-medium">{t('brandTemplates.hero.exploreModels')}</span>
                 </div>
               </button>
               <a 
@@ -123,10 +128,9 @@ const Plantilla3 = ({ marca }) => {
                 className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
               >
                 <MessageCircle size={24} className="group-hover:scale-130 transition-transform" />
-                {/* Solo el ícono crece en hover */}
                 <div className="flex flex-col items-start">
-                  <span className="text-sm font-medium">WhatsApp</span>
-                  <span className="text-sm font-normal">Consulta rápida</span>
+                  <span className="text-sm font-medium">{t('brandTemplates.hero.whatsapp')}</span>
+                  <span className="text-sm font-normal">{t('brandTemplates.hero.quickInquiry')}</span>
                 </div>
               </a>
             </div>
@@ -139,10 +143,10 @@ const Plantilla3 = ({ marca }) => {
         <div className="cns-container">
           <div className="text-center mb-16 lg:mb-20 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Mas vendidos en 2025
+              {t('brandTemplates.bestSellers.title')} {new Date().getFullYear()}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-              Descubre vehículos diseñados para cada aventura, desde la ciudad hasta el off-road
+              {t('brandTemplates.bestSellers.subtitle')}
             </p>
           </div>
 
@@ -171,32 +175,32 @@ const Plantilla3 = ({ marca }) => {
 
                   <div className="cns-specs-grid pt-4 border-t border-gray-200">
                     <div className="cns-spec-item">
-                      <span className="block mb-1">Motor</span>
+                      <span className="block mb-1">{t('templates.specs.motor')}</span>
                       <span className="cns-spec-value">{modelo.specs?.motor || 'N/D'}</span>
                     </div>
                     <div className="cns-spec-item">
-                      <span className="block mb-1">Potencia</span>
+                      <span className="block mb-1">{t('templates.specs.potencia')}</span>
                       <span className="cns-spec-value">{modelo.specs?.potencia || 'N/D'}</span>
                     </div>
                     <div className="cns-spec-item">
-                      <span className="block mb-1">Consumo</span>
+                      <span className="block mb-1">{t('templates.specs.consumo')}</span>
                       <span className="cns-spec-value">{modelo.specs?.consumo || 'N/D'}</span>
                     </div>
                     <div className="cns-spec-item">
-                      <span className="block mb-1">Transmisión</span>
+                      <span className="block mb-1">{t('templates.specs.transmision')}</span>
                       <span className="cns-spec-value">{modelo.specs?.transmision || 'N/D'}</span>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between pt-6 border-t border-gray-200">
                     <div>
-                      <span className="text-sm text-gray-500 block mb-1">Desde</span>
+                      <span className="text-sm text-gray-500 block mb-1">{t('templates.price.from')}</span>
                       <span className="cns-price text-2xl md:text-3xl font-bold">
                         ${Number(modelo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                       </span>
                     </div>
                     <button className="cns-btn-secondary">
-                      Ver Detalles →
+                      {t('templates.actions.viewDetails')}
                     </button>
                   </div>
                 </div>
@@ -215,10 +219,11 @@ const Plantilla3 = ({ marca }) => {
         <div className="cns-container relative z-10 flex items-center min-h-[400px] md:min-h-[500px] py-20">
           <div className="max-w-2xl">
              <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight">
-              Diseñado para<br />cualquier terreno
+              {t('brandTemplates.parallax.title')}<br/>
+              {t('brandTemplates.parallax.titleBreak')}
             </h2>
             <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed">
-                {marca?.nombre} se adapta a cada camino para brindarte seguridad, estabilidad y confianza, acompañándote en cada destino, sin importar las condiciones.
+                {marca?.nombre} {t('brandTemplates.parallax.subtitle')}
             </p>
             <button className="cns-btn-primary px-8 py-4" onClick={() => {
               if (tecnologiaRef.current) {
@@ -226,7 +231,7 @@ const Plantilla3 = ({ marca }) => {
                 smoothScrollTo(targetY);
               }
             }}>
-              Conoce {marca?.nombre}
+              {t('brandTemplates.parallax.cta')} {marca?.nombre}
             </button>
           </div>
         </div>
@@ -237,10 +242,10 @@ const Plantilla3 = ({ marca }) => {
         <div className="cns-container">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Tecnología {marca?.nombre}
+              {t('brandTemplates.technology.title')} {marca?.nombre}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-              Innovación que marca la diferencia en cada kilómetro
+              {t('brandTemplates.technology.subtitle')}
             </p>
           </div>
 
@@ -272,10 +277,10 @@ const Plantilla3 = ({ marca }) => {
         <div className="cns-container">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Línea Completa {marca?.nombre}
+              {t('brandTemplates.fullLine.title')} {marca?.nombre}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-              Encuentra el {marca?.nombre} perfecto para ti
+              {t('brandTemplates.fullLine.subtitle')} {marca?.nombre} {t('brandTemplates.fullLine.subtitleEnd')}
             </p>
           </div>
 
@@ -289,7 +294,7 @@ const Plantilla3 = ({ marca }) => {
                   : 'border-transparent text-gray-400 hover:text-gray-600'
               }`}
             >
-              Todos los Modelos
+              {t('brandTemplates.fullLine.tabs.allModels')}
             </button>
             <button
               onClick={() => setActiveTab('specs')}
@@ -299,7 +304,7 @@ const Plantilla3 = ({ marca }) => {
                   : 'border-transparent text-gray-400 hover:text-gray-600'
               }`}
             >
-              Especificaciones
+              {t('brandTemplates.fullLine.tabs.specifications')}
             </button>
           </div>
 
@@ -329,13 +334,13 @@ const Plantilla3 = ({ marca }) => {
                     </p>
                     <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                       <div>
-                        <span className="text-sm text-gray-500 block">Desde</span>
+                        <span className="text-sm text-gray-500 block">{t('templates.price.from')}</span>
                         <span className="text-2xl font-bold text-gray-900">
                           ${modelo.precio}
                         </span>
                       </div>
                       <span className="text-base text-gray-600 group-hover:text-gray-900 transition-colors font-medium">
-                        Ver más →
+                        {t('brandTemplates.fullLine.viewMore')}
                       </span>
                     </div>
                   </div>
@@ -366,30 +371,30 @@ const Plantilla3 = ({ marca }) => {
                     <div className="lg:col-span-4">
                       <div className="cns-specs-grid">
                         <div className="cns-spec-item">
-                          <span className="block mb-1">Motor</span>
+                          <span className="block mb-1">{t('templates.specs.motor')}</span>
                           <span className="cns-spec-value">{modelo.specs?.motor || modelo.motor || '-'}</span>
                         </div>
                         <div className="cns-spec-item">
-                          <span className="block mb-1">Potencia</span>
+                          <span className="block mb-1">{t('templates.specs.potencia')}</span>
                           <span className="cns-spec-value">{modelo.specs?.potencia || modelo.potencia || '-'}</span>
                         </div>
                         <div className="cns-spec-item">
-                          <span className="block mb-1">Consumo</span>
+                          <span className="block mb-1">{t('templates.specs.consumo')}</span>
                           <span className="cns-spec-value">{modelo.specs?.consumo || modelo.consumo || '-'}</span>
                         </div>
                         <div className="cns-spec-item">
-                          <span className="block mb-1">Transmisión</span>
+                          <span className="block mb-1">{t('templates.specs.transmision')}</span>
                           <span className="cns-spec-value">{modelo.specs?.transmision || modelo.transmision || '-'}</span>
                         </div>
                       </div>
                     </div>
                     <div className="lg:col-span-2 text-center lg:text-right">
-                      <span className="text-sm text-gray-500 block mb-1">Desde</span>
+                      <span className="text-sm text-gray-500 block mb-1">{t('templates.price.from')}</span>
                       <span className="text-2xl font-bold text-gray-900 block mb-4">
                         ${modelo.precio}
                       </span>
                       <button className="cns-btn-secondary w-full lg:w-auto">
-                        Más Info
+                        {t('templates.actions.moreInfo')}
                       </button>
                     </div>
                   </div>
@@ -402,20 +407,16 @@ const Plantilla3 = ({ marca }) => {
 
       {/* CTA Section Premium */}
       <section ref={contactoRef} id="contacto" className="relative cns-section min-h-[600px] md:min-h-[700px] flex items-center overflow-hidden">
-        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"></div>
 
         <div className="cns-container relative z-10">
           <div className="max-w-5xl mx-auto">
-            {/* Content */}
             <div className="text-center mb-12 md:mb-16">
-              {/* Heading y descripción nuevos */}
               <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
-                Agenda tu Test Drive
+                {t('brandTemplates.testDrive.title')}
               </h2>
               <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto">
-                Experimenta la diferencia {marca?.nombre}. Visita nuestro concesionario y descubre 
-                por qué millones de conductores confían en nosotros.
+                {t('brandTemplates.testDrive.subtitle')} {marca?.nombre}{t('brandTemplates.testDrive.subtitleEnd')}
               </p>
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <circle cx="11" cy="11" r="8" />
@@ -428,7 +429,7 @@ const Plantilla3 = ({ marca }) => {
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-104 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto justify-center"
                 >
-                  <span>Agendar ahora</span>
+                  <span>{t('templates.actions.scheduleNow')}</span>
                   <ArrowRight className="w-5 h-5 group-hover:scale-[2] transition-transform" />
                 </a>
                 <a 
@@ -438,13 +439,11 @@ const Plantilla3 = ({ marca }) => {
                   className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg transition-all duration-300 w-full sm:w-auto justify-center hover:scale-104"
                 >
                   <Phone className="w-5 h-5 group-hover:scale-150 transition-transform" />
-                  <span>(291) 427-7849</span>
+                  <span>{t('brandTemplates.testDrive.phone')}</span>
                 </a>
               </div>
 
-              {/* Contact Options */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto pt-12 border-t border-white/20">
-                {/* WhatsApp */}
                 <a 
                   href="https://wa.me/5492914277849" 
                   target="_blank"
@@ -453,12 +452,11 @@ const Plantilla3 = ({ marca }) => {
                 >
                   <MessageCircle className="w-6 h-6 text-white group-hover:scale-180 transition-transform" />
                   <div className="text-left">
-                    <div className="text-sm text-white/60 font-medium">WhatsApp</div>
-                    <div className="text-white font-semibold">Consulta rápida</div>
+                    <div className="text-sm text-white/60 font-medium">{t('brandTemplates.testDrive.contact.whatsapp')}</div>
+                    <div className="text-white font-semibold">{t('brandTemplates.testDrive.contact.whatsappSubtitle')}</div>
                   </div>
                 </a>
 
-                {/* Dirección */}
                 <a 
                   href="https://www.google.com/maps?q=Alvarado+802,+B8000+Bah%C3%ADa+Blanca,+Provincia+de+Buenos+Aires" 
                   target="_blank"
@@ -467,12 +465,11 @@ const Plantilla3 = ({ marca }) => {
                 >
                   <MapPin className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
                   <div className="text-left">
-                    <div className="text-sm text-white/60 font-medium">Visitanos</div>
-                    <div className="text-white font-semibold">Bahía Blanca</div>
+                    <div className="text-sm text-white/60 font-medium">{t('brandTemplates.testDrive.contact.location')}</div>
+                    <div className="text-white font-semibold">{t('brandTemplates.testDrive.contact.locationName')}</div>
                   </div>
                 </a>
 
-                {/* Email */}
                 <a 
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=ventasaumacar@gmail.com" 
                   target="_blank"
@@ -481,8 +478,8 @@ const Plantilla3 = ({ marca }) => {
                 >
                   <Mail className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
                   <div className="text-left">
-                    <div className="text-sm text-white/60 font-medium">Email</div>
-                    <div className="text-white font-semibold">Escríbenos</div>
+                    <div className="text-sm text-white/60 font-medium">{t('brandTemplates.testDrive.contact.email')}</div>
+                    <div className="text-white font-semibold">{t('brandTemplates.testDrive.contact.emailAction')}</div>
                   </div>
                 </a>
               </div>

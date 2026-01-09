@@ -1,4 +1,4 @@
-// /src/components/vehicle-templates/Template02.jsx
+// /src/components/vehicle-templates/Template02.jsx 
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -829,7 +829,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
       )}
 
       {/* DEBUG */}
-      {process.env.NODE_ENV === 'development' && (
+      {/*{process.env.NODE_ENV === 'development' && (
         <div className="fixed bottom-4 right-4 bg-white/10 backdrop-blur-md text-green-400 px-4 py-3 rounded-xl shadow-2xl text-xs font-mono z-50 border border-white/20">
           <div className="font-bold text-green-300 mb-2 pb-2 border-b border-white/20">
             🎨 Template02 Compacto
@@ -843,7 +843,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
             <div>Colores: <span className="text-white font-bold">{colores.length}</span></div>
           </div>
         </div>
-      )}
+      )}*/}
     </div>
   );
 }

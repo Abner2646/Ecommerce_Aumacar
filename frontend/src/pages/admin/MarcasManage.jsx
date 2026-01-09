@@ -154,36 +154,6 @@ const MarcasManage = () => {
                     {marca.descripcion}
                   </p>
                 )}
-
-                {/* Colores */}
-                <div className="adm-marca-colors">
-                  <div className="adm-marca-color-item">
-                    <span 
-                      className="adm-marca-color-swatch"
-                      style={{ backgroundColor: marca.colorPrimario }}
-                    ></span>
-                    <span className="text-xs text-gray-600">{marca.colorPrimario}</span>
-                  </div>
-                  <div className="adm-marca-color-item">
-                    <span 
-                      className="adm-marca-color-swatch"
-                      style={{ backgroundColor: marca.colorSecundario }}
-                    ></span>
-                    <span className="text-xs text-gray-600">{marca.colorSecundario}</span>
-                  </div>
-                </div>
-
-                {/* Stats */}
-                <div className="adm-marca-stats">
-                  <div className="adm-marca-stat">
-                    <i className="fa-solid fa-car text-gray-400"></i>
-                    <span>{marca.vehiculos?.length || 0} vehículos</span>
-                  </div>
-                  <div className="adm-marca-stat">
-                    <i className="fa-solid fa-arrow-up-1-9 text-gray-400"></i>
-                    <span>Orden: {marca.orden}</span>
-                  </div>
-                </div>
               </div>
 
               {/* Acciones */}

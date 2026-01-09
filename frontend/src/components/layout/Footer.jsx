@@ -18,7 +18,7 @@ const Footer = () => {
               </p>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs mt-6">
-              Tu concesionaria de confianza en Bahía Blanca. Excelencia automotriz desde hace más de 20 años.
+              Tu concesionaria de confianza en Bahía Blanca. Excelencia automotriz desde hace más de 30 años.
             </p>
             {/* Redes Sociales */}
             <div className="cns-footer-socials">
