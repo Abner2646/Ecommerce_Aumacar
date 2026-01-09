@@ -3,6 +3,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
+import React, { Suspense } from 'react';
+
+// Styles
+import './globals.css';
+import './styles/main.css';
 
 // Context
 import { AuthProvider } from './context/AuthContext.jsx';
@@ -11,11 +16,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import Layout from './components/layout/Layout.jsx';
 import AdminLayout from './components/layout/AdminLayout.jsx';
 
-// Styles
-import './globals.css';
-import './styles/main.css';
-
-import React, { Suspense } from 'react';
+// Pages
 import Home from './pages/public/Home.jsx';
 import Login from './pages/public/Login.jsx';
 import Plantilla1 from './pages/public/plantilla1.jsx';
@@ -30,9 +31,10 @@ import CaracteristicasManage from './pages/admin/CaracteristicasManage.jsx';
 import ColoresManage from './pages/admin/ColoresManage.jsx';
 import VehiculoInfo from './pages/public/VehiculoInfo.jsx';
 import ComprarForm from './pages/public/ComprarForm.jsx';
-import ClientesManage from './pages/admin/ClientesManage.jsx'
-const MarcaPage = React.lazy(() => import('./pages/public/MarcaPage.jsx'));
+import ClientesManage from './pages/admin/ClientesManage.jsx';
 
+// Lazy load
+const MarcaPage = React.lazy(() => import('./pages/public/MarcaPage.jsx'));
 
 // Query Client Configuration
 const queryClient = new QueryClient({
@@ -81,7 +83,6 @@ function App() {
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="colores" element={<ColoresManage />} />
-
               <Route path="clientes" element={<ClientesManage />} />
               
               {/* Vehículos */}

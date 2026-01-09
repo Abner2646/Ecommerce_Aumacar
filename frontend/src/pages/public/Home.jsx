@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { marcasApi } from '../../api/marcas.api';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
@@ -23,7 +24,9 @@ function smoothScrollTo(targetY, duration = 1200) {
 
 // Componente para renderizar las marcas dinámicamente
 function BrandCards() {
+  const { t } = useTranslation();
   const [marcas, setMarcas] = useState([]);
+  
   useEffect(() => {
     marcasApi.getAll().then(res => {
       setMarcas(res.marcas || []);
@@ -86,7 +89,7 @@ function BrandCards() {
           {marca.descripcion}
         </p>
         <div className="inline-flex items-center gap-2 text-white font-semibold">
-          <span className="text-lg">Explorar modelos</span>
+          <span className="text-lg">{t('home.brands.btnExploreModels')}</span>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
@@ -97,6 +100,8 @@ function BrandCards() {
 }
 
 const Home = () => {
+  const { t } = useTranslation();
+  
   // Ref para la sección de contacto
   const contactoRef = React.useRef(null);
 
@@ -142,12 +147,12 @@ const Home = () => {
         </div>
         
         <div className="relative z-10 cns-container text-center px-4 md:px-8">
-          <span className="cns-pill-badge">Performance & Excelencia</span>
+          <span className="cns-pill-badge">{t('home.hero.badge')}</span>
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 text-balance leading-tight">
-            Bienvenido a aumacar s.r.l
+            {t('home.hero.title')}
           </h1>
           <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto mb-12 leading-relaxed">
-            Concesionaria oficial Subaru y Suzuki. Descubre la excelencia automotriz con las mejores marcas del mercado.
+            {t('home.hero.subtitle')}
           </p>
           <div className="flex gap-3 justify-center flex-wrap mt-8">
             <button
@@ -161,13 +166,12 @@ const Home = () => {
                 }
               }}
             >
-              {/* Lupa Lucide */}
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 group-hover:scale-130 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <div className="flex flex-col items-start">
-                <span className="text-sm font-medium">Explorar Marcas</span>
+                <span className="text-sm font-medium">{t('home.hero.btnExploreBrands')}</span>
               </div>
             </button>
             <a 
@@ -177,10 +181,9 @@ const Home = () => {
               className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
             >
               <MessageCircle size={24} className="group-hover:scale-130 transition-transform" />
-                            {/* Solo el ícono crece en hover */}
               <div className="flex flex-col items-start">
-                <span className="text-sm font-medium">WhatsApp</span>
-                <span className="text-sm font-normal">Consulta rápida</span>
+                <span className="text-sm font-medium">{t('home.hero.btnWhatsApp')}</span>
+                <span className="text-sm font-normal">{t('home.hero.btnWhatsAppSubtitle')}</span>
               </div>
             </a>
           </div>
@@ -191,7 +194,7 @@ const Home = () => {
       <section id="marcas" className="cns-section">
         <div className="cns-container">
           <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
-            Selecciona tu Marca
+            {t('home.brands.title')}
           </h2>
           <div className="lnd-brand-selector grid grid-cols-1 sm:grid-cols-2 gap-8">
             {/* Render dinámico de marcas */}
@@ -200,20 +203,19 @@ const Home = () => {
         </div>
       </section>
 
-                <ClientesCercanos />
-
+      <ClientesCercanos />
 
       {/* Features Section Premium */}
       <section className="cns-section bg-gradient-to-b from-white via-gray-50 to-white">
         <div className="cns-container">
           {/* Section Header */}
           <div className="text-center mb-20">
-            <span className="cns-pill-badge mb-6">Nuestros Beneficios</span>
+            <span className="cns-pill-badge mb-6">{t('home.features.badge')}</span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-              Por qué elegirnos
+              {t('home.features.title')}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Compromiso con la excelencia en cada detalle de tu experiencia automotriz
+              {t('home.features.subtitle')}
             </p>
           </div>
           
@@ -226,10 +228,10 @@ const Home = () => {
                 </svg>
               </div>
               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5">
-                Garantía Oficial
+                {t('home.features.warranty.title')}
               </h3>
               <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                Todos nuestros vehículos cuentan con garantía de fábrica y servicio post-venta especializado
+                {t('home.features.warranty.description')}
               </p>
             </div>
 
@@ -241,10 +243,10 @@ const Home = () => {
                 </svg>
               </div>
               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5">
-                Financiamiento
+                {t('home.features.financing.title')}
               </h3>
               <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                Planes de financiamiento adaptados a tus necesidades y a la mejor tasa del mercado
+                {t('home.features.financing.description')}
               </p>
             </div>
 
@@ -256,10 +258,10 @@ const Home = () => {
                 </svg>
               </div>
               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5">
-                Servicio Técnico
+                {t('home.features.service.title')}
               </h3>
               <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                Centro de servicio autorizado con técnicos certificados y repuestos originales
+                {t('home.features.service.description')}
               </p>
             </div>
           </div>
@@ -279,28 +281,25 @@ const Home = () => {
               <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
                 <Users className="w-4 h-4 text-white" />
                 <span className="text-sm font-semibold text-white uppercase tracking-wider">
-                  Únete a nuestra familia
+                  {t('home.cta.badge')}
                 </span>
               </div>
 
               {/* Heading */}
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                ¿Listo para la
+                {t('home.cta.title')}
                 <br/>
                 <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
-                  Aventura de tu Vida?
+                  {t('home.cta.titleHighlight')}
                 </span>
               </h2>
 
               {/* Subtitle */}
               <p className="text-lg md:text-xl lg:text-2xl text-white/80 max-w-3xl mx-auto mb-12 leading-relaxed">
-                Visita nuestro concesionario o explora nuestro catálogo online.
+                {t('home.cta.subtitle')}
                 <br className="hidden sm:block" />
               </p>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
+              
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
                 <button
                   type="button"
@@ -313,7 +312,7 @@ const Home = () => {
                     }
                   }}
                 >
-                  <span>Explorar Catálogo</span>
+                  <span>{t('home.cta.btnExploreCatalog')}</span>
                   <ArrowRight className="w-5 h-5 group-hover:scale-[2] transition-transform" />
                 </button>
                 <a 
@@ -338,8 +337,8 @@ const Home = () => {
                 >
                   <MessageCircle className="w-6 h-6 text-white group-hover:scale-180 transition-transform" />
                   <div className="text-left">
-                    <div className="text-sm text-white/60 font-medium">WhatsApp</div>
-                    <div className="text-white font-semibold">Consulta rápida</div>
+                    <div className="text-sm text-white/60 font-medium">{t('home.hero.btnWhatsApp')}</div>
+                    <div className="text-white font-semibold">{t('home.cta.contactOptions.whatsapp')}</div>
                   </div>
                 </a>
 
@@ -352,24 +351,24 @@ const Home = () => {
                 >
                   <MapPin className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
                   <div className="text-left">
-                    <div className="text-sm text-white/60 font-medium">Visitanos</div>
-                    <div className="text-white font-semibold">Bahía Blanca</div>
+                    <div className="text-sm text-white/60 font-medium">{t('home.cta.contactOptions.location')}</div>
+                    <div className="text-white font-semibold">{t('home.cta.contactOptions.locationName')}</div>
                   </div>
                 </a>
 
                 {/* Email */}
-                  <a 
-                    href="https://mail.google.com/mail/?view=cm&fs=1&to=ventasaumacar@gmail.com" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-                  >
-                    <Mail className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
-                    <div className="text-left">
-                      <div className="text-sm text-white/60 font-medium">Email</div>
-                      <div className="text-white font-semibold">Escríbenos</div>
-                    </div>
-                  </a>
+                <a 
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=ventasaumacar@gmail.com" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-center gap-3 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                >
+                  <Mail className="w-6 h-6 text-white group-hover:scale-150 transition-transform" />
+                  <div className="text-left">
+                    <div className="text-sm text-white/60 font-medium">Email</div>
+                    <div className="text-white font-semibold">{t('home.cta.contactOptions.email')}</div>
+                  </div>
+                </a>
               </div>
             </div>
           </div>

@@ -166,7 +166,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
   };
 
   const onSubmit = async (data) => {
-    if (!data.nombre || !data.slug || !data.colorPrimario || !data.colorSecundario) {
+    if (!data.nombre || !data.slug) {
       alert('Por favor completa todos los campos obligatorios');
       return;
     }
@@ -177,34 +177,28 @@ const MarcaForm = ({ marca, onSuccess }) => {
     }
 
     try {
-      const hexColorRegex = /^#[0-9A-Fa-f]{6}$/;
-      if (data.colorPrimario && !hexColorRegex.test(data.colorPrimario)) {
-        alert('Color primario debe tener formato #RRGGBB');
-        return;
-      }
-      if (data.colorSecundario && !hexColorRegex.test(data.colorSecundario)) {
-        alert('Color secundario debe tener formato #RRGGBB');
-        return;
-      }
       if (!data.slug || !/^[a-z0-9-]+$/.test(data.slug)) {
         alert('Slug solo puede contener minúsculas, números y guiones');
         return;
       }
 
       const formData = new FormData();
-      if (data.nombre) formData.append('nombre', data.nombre);
-      if (data.slug) formData.append('slug', data.slug);
+      formData.append('nombre', data.nombre);
+      formData.append('slug', data.slug);
       if (data.descripcion) formData.append('descripcion', data.descripcion);
-      formData.append('activa', typeof data.activa === 'boolean' ? data.activa : Boolean(data.activa));
-      formData.append('orden', typeof data.orden === 'number' ? data.orden : Number(data.orden) || 0);
-      if (data.colorPrimario && hexColorRegex.test(data.colorPrimario)) formData.append('colorPrimario', data.colorPrimario);
-      if (data.colorSecundario && hexColorRegex.test(data.colorSecundario)) formData.append('colorSecundario', data.colorSecundario);
+      
+      // Campos ocultos con valores por defecto
+      formData.append('activa', true);
+      formData.append('orden', 0);
+      formData.append('colorPrimario', '#000000');
+      formData.append('colorSecundario', '#FFFFFF');
+      formData.append('plantilla', data.plantilla);
+      
       if (logoFile) formData.append('logo', logoFile);
       if (fotoPresentacionFile) formData.append('fotoPresentacion', fotoPresentacionFile);
       if (fotoDelMedioFile) formData.append('fotoDelMedio', fotoDelMedioFile);
       if (videoPresentacionFile) formData.append('videoPresentacion', videoPresentacionFile);
       if (videoPortadaFile) formData.append('videoPortada', videoPortadaFile);
-      if (data.plantilla) formData.append('plantilla', data.plantilla);
 
       if (isEditing) {
         await updateMarca.mutateAsync({ id: marca.id, data: formData });
@@ -228,6 +222,12 @@ const MarcaForm = ({ marca, onSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" encType="multipart/form-data">
+      {/* Campos ocultos que se envían automáticamente */}
+      <input type="hidden" {...register('activa')} />
+      <input type="hidden" {...register('orden')} />
+      <input type="hidden" {...register('colorPrimario')} />
+      <input type="hidden" {...register('colorSecundario')} />
+      
       {/* Foto del Medio */}
       <div>
         <label className="adm-form-label">Foto del Medio</label>
@@ -431,102 +431,15 @@ const MarcaForm = ({ marca, onSuccess }) => {
         />
       </div>
 
-      {/* Grid de 3 columnas para Orden, Activa y Plantilla */}
-      <div className="grid grid-cols-3 gap-4">
-        {/* Orden */}
-        <div>
-          <label className="adm-form-label">
-            Orden <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            {...register('orden', { valueAsNumber: true })}
-            className={`adm-form-input ${errors.orden ? 'adm-form-input-error' : ''}`}
-            min="0"
-          />
-          {errors.orden && (
-            <p className="adm-form-error">{String(errors.orden.message)}</p>
-          )}
-          <p className="text-xs text-gray-500 mt-2">
-            Orden de aparición en el sitio
-          </p>
-        </div>
-
-        {/* Activa */}
-        <div>
-          <label className="adm-form-label">Estado</label>
-          <div className="flex items-center h-[42px]">
-            <input
-              type="checkbox"
-              {...register('activa')}
-              className="adm-form-checkbox"
-              id="activa"
-            />
-            <label htmlFor="activa" className="ml-2 text-gray-700">
-              Marca activa
-            </label>
-          </div>
-        </div>
-
-        {/* Plantilla */}
-        <div>
-          <label className="adm-form-label">Plantilla</label>
-          <select {...register('plantilla', { valueAsNumber: true })} className="adm-form-input">
-            <option value={1}>Plantilla 1</option>
-            <option value={2}>Plantilla 2</option>
-            <option value={3}>Plantilla 3</option>
-          </select>
-          <p className="text-xs text-gray-500 mt-2">Elige el diseño que prefieras para la marca</p>
-        </div>
-      </div>
-
-      {/* Colores */}
-      <div className="grid grid-cols-2 gap-4">
-        {/* Color Primario */}
-        <div>
-          <label className="adm-form-label">
-            Color Primario <span className="text-red-500">*</span>
-          </label>
-          <div className="adm-color-picker">
-            <input
-              type="color"
-              {...register('colorPrimario')}
-              className="adm-color-input"
-            />
-            <input
-              type="text"
-              {...register('colorPrimario')}
-              className="adm-form-input"
-              placeholder="#000000"
-            />
-          </div>
-          <p className="text-xs text-gray-500 mt-2">
-            Color principal de la marca
-          </p>
-        </div>
-
-        {/* Color Secundario */}
-        <div>
-          <label className="adm-form-label">
-            Color Secundario <span className="text-red-500">*</span>
-          </label>
-          <div className="adm-color-picker">
-            <input
-              type="color"
-              {...register('colorSecundario')}
-              className="adm-color-input"
-            />
-            <input
-              type="text"
-              {...register('colorSecundario')}
-              className="adm-form-input"
-              placeholder="#FFFFFF"
-            />
-          </div>
-          <p className="text-xs text-gray-500 mt-2">
-            Color secundario de la marca
-          </p>
-        </div>
+      {/* Plantilla */}
+      <div>
+        <label className="adm-form-label">Plantilla</label>
+        <select {...register('plantilla', { valueAsNumber: true })} className="adm-form-input">
+          <option value={1}>Plantilla 1</option>
+          <option value={2}>Plantilla 2</option>
+          <option value={3}>Plantilla 3</option>
+        </select>
+        <p className="text-xs text-gray-500 mt-2">Elige el diseño que prefieras para la marca</p>
       </div>
 
       {/* Botones */}

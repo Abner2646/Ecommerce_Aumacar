@@ -1,8 +1,12 @@
+// /src/pages/public/MarcaPage.jsx
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { marcasApi } from '../../api/marcas.api';
 
 const MarcaPage = () => {
+  const { t } = useTranslation();
   const { slug } = useParams();
   const [marca, setMarca] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,14 +21,14 @@ const MarcaPage = () => {
         setLoading(false);
       })
       .catch(err => {
-        setError(err.message || 'Error al cargar la marca');
+        setError(err.message || t('marcaPage.error'));
         setLoading(false);
       });
-  }, [slug]);
+  }, [slug, t]);
 
-  if (loading) return <div>Cargando marca...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-white"><div className="text-2xl text-gray-400 font-light tracking-wider animate-pulse">{t('marcaPage.loading')}</div></div>;
   if (error) return <div style={{color:'red',padding:'2rem'}}>{error}</div>;
-  if (!marca) return <div>No se encontró la marca.</div>;
+  if (!marca) return <div className="min-h-screen flex items-center justify-center bg-white"><div className="text-2xl text-gray-600">{t('marcaPage.notFound')}</div></div>;
 
   // Selección de plantilla según marca.plantilla (número)
   let PlantillaComponent;
@@ -41,7 +45,7 @@ const MarcaPage = () => {
   }
 
   return (
-    <React.Suspense fallback={<div>Cargando plantilla...</div>}>
+    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white"><div className="text-2xl text-gray-400 font-light tracking-wider animate-pulse">{t('marcaPage.loadingTemplate')}</div></div>}>
       <PlantillaComponent marca={marca} />
     </React.Suspense>
   );
