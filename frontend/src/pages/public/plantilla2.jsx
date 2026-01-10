@@ -337,7 +337,7 @@ const Plantilla2 = ({ marca }) => {
                       <div>
                         <span className="text-sm text-gray-500 block">{t('templates.price.from')}</span>
                         <span className="text-2xl font-bold text-gray-900">
-                          ${modelo.precio}
+                          ${Number(modelo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                         </span>
                       </div>
                       <span className="text-base text-gray-600 group-hover:text-gray-900 transition-colors font-medium">
@@ -392,9 +392,12 @@ const Plantilla2 = ({ marca }) => {
                     <div className="lg:col-span-2 text-center lg:text-right">
                       <span className="text-sm text-gray-500 block mb-1">{t('templates.price.from')}</span>
                       <span className="text-2xl font-bold text-gray-900 block mb-4">
-                        ${modelo.precio}
+                        ${Number(modelo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                       </span>
-                      <button className="cns-btn-secondary w-full lg:w-auto">
+                      <button 
+                        className="cns-btn-secondary w-full lg:w-auto"
+                        onClick={() => window.location.href = `/vehiculo/${modelo.slug}`}
+                      >
                         {t('templates.actions.moreInfo')}
                       </button>
                     </div>
@@ -413,10 +416,10 @@ const Plantilla2 = ({ marca }) => {
         <div className="cns-container relative z-10">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12 md:mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
+              <h2 className="text-5xl md:text-6xl font-black text-white mb-8">
                 {t('brandTemplates.testDrive.title')}
               </h2>
-              <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto">
+              <p className="text-xl md:text-2xl font-semibold text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto">
                 {t('brandTemplates.testDrive.subtitle')} {marca?.nombre}{t('brandTemplates.testDrive.subtitleEnd')}
               </p>
               
@@ -425,7 +428,7 @@ const Plantilla2 = ({ marca }) => {
                   href="https://wa.me/5492914277849" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-xl font-bold text-lg hover:bg-gray-100 hover:scale-104 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto justify-center"
+                  className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-xl font-black text-lg hover:bg-gray-100 hover:scale-104 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto justify-center"
                 >
                   <span>{t('templates.actions.scheduleNow')}</span>
                   <ArrowRight className="w-5 h-5 group-hover:scale-[2] transition-transform" />
@@ -434,7 +437,7 @@ const Plantilla2 = ({ marca }) => {
                   href="https://wa.me/5492914277849" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg transition-all duration-300 w-full sm:w-auto justify-center hover:scale-104"
+                  className="group inline-flex items-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-black text-lg transition-all duration-300 w-full sm:w-auto justify-center hover:scale-104"
                 >
                   <Phone className="w-5 h-5 group-hover:scale-150 transition-transform" />
                   <span>{t('brandTemplates.testDrive.phone')}</span>

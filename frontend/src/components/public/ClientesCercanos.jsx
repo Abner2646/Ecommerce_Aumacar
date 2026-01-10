@@ -155,9 +155,8 @@ const ClientesCercanos = () => {
             {fotos.map((foto, index) => (
               <div 
                 key={foto.id}
-                onClick={() => abrirModal(foto, index)}
                 style={{ animationDelay: `${index * 150}ms` }}
-                className="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-3 cursor-pointer animate-fade-in-up"
+                className="group relative overflow-hidden rounded-3xl shadow-2xl transition-all duration-500 animate-fade-in-up"
               >
                 {/* Badge de verificación */}
                 {/*<div className="absolute top-6 right-6 z-10">
@@ -182,21 +181,11 @@ const ClientesCercanos = () => {
                     src={foto.urlImagen}
                     alt={foto.textoDescriptivo || foto.ciudad}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-full object-cover"
                   />
                   
                   {/* Overlay gradient mejorado */}
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900/95 via-gray-900/50 to-transparent"></div>
-                  
-                  {/* Overlay hover con CTA */}
-                  <div className="absolute inset-0 bg-gray-900/0 group-hover:bg-gray-900/70 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <div className="text-center transform scale-90 group-hover:scale-100 transition-transform duration-300">
-                      <button className="bg-white text-gray-900 px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors shadow-2xl">
-                        Ver en Detalle
-                      </button>
-                      <p className="text-white/80 text-sm mt-4">Click para ampliar</p>
-                    </div>
-                  </div>
                   
                   {/* Contenido de texto */}
                   <div className="absolute bottom-0 left-0 right-0 p-8">

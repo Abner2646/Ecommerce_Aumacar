@@ -348,7 +348,7 @@ function Plantilla1({ marca }) {
                       <div>
                         <span className="text-sm text-gray-500 block">{t('templates.price.from')}</span>
                         <span className="text-2xl font-bold text-gray-900">
-                          ${modelo.precio}
+                          ${Number(modelo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                         </span>
                       </div>
                       <span className="text-base text-gray-600 group-hover:text-gray-900 transition-colors font-medium">
@@ -403,9 +403,12 @@ function Plantilla1({ marca }) {
                     <div className="lg:col-span-2 text-center lg:text-right">
                       <span className="text-sm text-gray-500 block mb-1">{t('templates.price.from')}</span>
                       <span className="text-2xl font-bold text-gray-900 block mb-4">
-                        ${modelo.precio}
+                        ${Number(modelo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                       </span>
-                      <button className="cns-btn-secondary w-full lg:w-auto">
+                      <button 
+                        className="cns-btn-secondary w-full lg:w-auto"
+                        onClick={() => window.location.href = `/vehiculo/${modelo.slug}`}
+                      >
                         {t('templates.actions.moreInfo')}
                       </button>
                     </div>
