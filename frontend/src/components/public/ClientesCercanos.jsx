@@ -147,9 +147,9 @@ const ClientesCercanos = () => {
           </div>
 
           {/* Grid de Fotos - Optimizado para 1-2 fotos grandes */}
-          <div className={`grid gap-8 max-w-6xl mx-auto ${
+          <div className={`grid gap-8 max-w-5xl mx-auto ${
             fotos.length === 1 
-              ? 'grid-cols-1 max-w-4xl' 
+              ? 'grid-cols-1 max-w-3xl' 
               : 'grid-cols-1 md:grid-cols-2'
           }`}>
             {fotos.map((foto, index) => (
@@ -158,19 +158,11 @@ const ClientesCercanos = () => {
                 style={{ animationDelay: `${index * 150}ms` }}
                 className="group relative overflow-hidden rounded-3xl shadow-2xl transition-all duration-500 animate-fade-in-up"
               >
-                {/* Badge de verificación */}
-                {/*<div className="absolute top-6 right-6 z-10">
-                  <div className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg backdrop-blur-sm bg-opacity-95">
-                    <CheckCircle className="w-4 h-4" />
-                    Verificado
-                  </div>
-                </div>*/}
-
                 {/* Badge de reciente (si la foto tiene menos de 30 días) */}
                 {foto.esReciente && (
-                  <div className="absolute top-6 left-6 z-10">
-                    <span className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold animate-pulse shadow-lg">
-                      NUEVO
+                  <div className="absolute top-6 right-6 z-10">
+                    <span className="bg-blue-600/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-xs font-medium shadow-lg">
+                      Reciente
                     </span>
                   </div>
                 )}
@@ -184,32 +176,22 @@ const ClientesCercanos = () => {
                     className="w-full h-full object-cover"
                   />
                   
-                  {/* Overlay gradient mejorado */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/95 via-gray-900/50 to-transparent"></div>
+                  {/* Overlay gradient sutil */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/30 to-transparent"></div>
                   
                   {/* Contenido de texto */}
                   <div className="absolute bottom-0 left-0 right-0 p-8">
-                    {/* Estrellas de calificación (opcional) */}
-                    <div className="flex gap-1 mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star 
-                          key={i} 
-                          className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
-                    </div>
-
                     {/* Texto descriptivo */}
                     {foto.textoDescriptivo && (
-                      <p className="text-white text-2xl md:text-3xl font-bold mb-4 leading-tight drop-shadow-lg">
-                        "{foto.textoDescriptivo}"
+                      <p className="text-white text-xl md:text-2xl font-medium mb-3 leading-tight">
+                        {foto.textoDescriptivo}
                       </p>
                     )}
 
-                    {/* Nombre del cliente (si está disponible) */}
+                    {/* Nombre del cliente */}
                     {foto.nombreCliente && (
-                      <p className="text-white/90 text-lg font-semibold mb-3">
-                        — {foto.nombreCliente}
+                      <p className="text-white/80 text-sm font-medium mb-3">
+                        {foto.nombreCliente}
                       </p>
                     )}
 
