@@ -31,7 +31,7 @@ const resources = {
           },
           financing: {
             title: "Financiamiento",
-            description: "Planes de financiamiento flexibles adaptados a tus necesidades con las mejores tasas del mercado",
+            description: "Planes de financiamiento adaptados a tus necesidades con las mejores tasas del mercado",
           },
           service: {
             title: "Servicio Técnico",

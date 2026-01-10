@@ -3,11 +3,9 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const { verificarToken } = require('../middlewares/authMiddleware');
-const { validarLogin, validarRegistro, validarCambioPassword, validarResetPassword } = require('../middlewares/validationMiddleware');
+const { validarLogin } = require('../middlewares/validationMiddleware');
 
 // ==================== AUTENTICACIÓN ====================
-
-router.post('/register', validarRegistro, authController.register);
 
 router.post('/login', validarLogin, authController.login);
 

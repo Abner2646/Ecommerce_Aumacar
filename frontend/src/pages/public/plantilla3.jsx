@@ -151,12 +151,14 @@ const Plantilla3 = ({ marca }) => {
           </div>
 
           <div className="cns-vehicle-grid">
-            {modelos.slice(0, 3).map((modelo) => (
-              <article key={modelo.id} className="cns-vehicle-card group" onClick={() => window.location.href = `/vehiculo/${modelo.slug}`} style={{cursor: 'pointer'}}>
+            {isLoading && <div>Cargando autos...</div>}
+            {error && <div>Error al cargar autos</div>}
+            {modelos.filter(m => m.destacado).map((modelo) => (
+              <article key={modelo.id} className="cns-vehicle-card" onClick={() => window.location.href = `/vehiculo/${modelo.slug}`} style={{cursor: 'pointer'}}>
                 <div className="relative overflow-hidden">
                   <img 
-                    src={modelo.imagen}
-                    alt={modelo.nombre}
+                    src={modelo.imagenes?.[0]?.url || modelo.imagen || 'https://via.placeholder.com/400x300'}
+                    alt={modelo.modelo}
                     className="cns-card-image w-full aspect-[4/3] object-cover"
                   />
                   <div className="cns-badge">
@@ -166,29 +168,29 @@ const Plantilla3 = ({ marca }) => {
 
                 <div className="p-6 space-y-4">
                   <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
-                    {modelo.nombre}
+                    {modelo.modelo}
                   </h3>
                   
                   <p className="text-base md:text-lg text-gray-600 leading-relaxed min-h-[3rem]">
-                    {modelo.descripcion}
+                    {modelo.version || modelo.descripcion || ''}
                   </p>
 
                   <div className="cns-specs-grid pt-4 border-t border-gray-200">
                     <div className="cns-spec-item">
                       <span className="block mb-1">{t('templates.specs.motor')}</span>
-                      <span className="cns-spec-value">{modelo.specs?.motor || 'N/D'}</span>
+                      <span className="cns-spec-value">{modelo.motor}</span>
                     </div>
                     <div className="cns-spec-item">
                       <span className="block mb-1">{t('templates.specs.potencia')}</span>
-                      <span className="cns-spec-value">{modelo.specs?.potencia || 'N/D'}</span>
+                      <span className="cns-spec-value">{modelo.potencia || '-'}</span>
                     </div>
                     <div className="cns-spec-item">
                       <span className="block mb-1">{t('templates.specs.consumo')}</span>
-                      <span className="cns-spec-value">{modelo.specs?.consumo || 'N/D'}</span>
+                      <span className="cns-spec-value">{modelo.consumo || '-'}</span>
                     </div>
                     <div className="cns-spec-item">
                       <span className="block mb-1">{t('templates.specs.transmision')}</span>
-                      <span className="cns-spec-value">{modelo.specs?.transmision || 'N/D'}</span>
+                      <span className="cns-spec-value">{modelo.transmision || '-'}</span>
                     </div>
                   </div>
 
@@ -336,7 +338,7 @@ const Plantilla3 = ({ marca }) => {
                       <div>
                         <span className="text-sm text-gray-500 block">{t('templates.price.from')}</span>
                         <span className="text-2xl font-bold text-gray-900">
-                          ${modelo.precio}
+                          ${Number(modelo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                         </span>
                       </div>
                       <span className="text-base text-gray-600 group-hover:text-gray-900 transition-colors font-medium">
@@ -391,9 +393,12 @@ const Plantilla3 = ({ marca }) => {
                     <div className="lg:col-span-2 text-center lg:text-right">
                       <span className="text-sm text-gray-500 block mb-1">{t('templates.price.from')}</span>
                       <span className="text-2xl font-bold text-gray-900 block mb-4">
-                        ${modelo.precio}
+                        ${Number(modelo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                       </span>
-                      <button className="cns-btn-secondary w-full lg:w-auto">
+                      <button 
+                        className="cns-btn-secondary w-full lg:w-auto"
+                        onClick={() => window.location.href = `/vehiculo/${modelo.slug}`}
+                      >
                         {t('templates.actions.moreInfo')}
                       </button>
                     </div>

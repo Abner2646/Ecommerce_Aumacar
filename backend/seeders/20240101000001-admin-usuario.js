@@ -4,15 +4,15 @@ const bcrypt = require('bcryptjs');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash('admin123', salt);
+    const salt = await bcrypt.genSalt(12);
+    const hashedPassword = await bcrypt.hash('aumacar123', salt);
 
     await queryInterface.bulkInsert('usuarios', [
       {
-        email: 'admin@concesionaria.com',
+        email: 'aumacar@gmail.com',
         password: hashedPassword,
         nombre: 'Administrador',
-        apellido: 'Principal',
+        apellido: 'Aumacar',
         activo: true,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -22,7 +22,7 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete('usuarios', {
-      email: 'admin@concesionaria.com'
+      email: 'aumacar@gmail.com'
     });
   }
 };

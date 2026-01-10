@@ -259,7 +259,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
 
       {/* Foto Presentación */}
       <div>
-        <label className="adm-form-label">Foto Presentación</label>
+        <label className="adm-form-label">Foto Presentación (se ve desde la página principal)</label>
         {fotoPresentacionPreview && (
           <div className="adm-logo-preview mb-4">
             <img src={fotoPresentacionPreview} alt="Preview foto presentación" className="adm-logo-preview-img" />
@@ -288,7 +288,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
 
       {/* Video Presentación */}
       <div>
-        <label className="adm-form-label">Video Presentación</label>
+        <label className="adm-form-label">Video Presentación (se ve cuando se pone el mouse por encima en la foto de presentación)</label>
         {videoPresentacionPreview && (
           <div className="adm-logo-preview mb-4">
             <video src={videoPresentacionPreview} controls className="adm-logo-preview-img" style={{ maxHeight: 200 }} />
@@ -317,7 +317,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
 
       {/* Video Portada */}
       <div>
-        <label className="adm-form-label">Video Portada</label>
+        <label className="adm-form-label">Video Portada (se ve cuando entras a una marca)</label>
         {videoPortadaPreview && (
           <div className="adm-logo-preview mb-4">
             <video src={videoPortadaPreview} controls className="adm-logo-preview-img" style={{ maxHeight: 200 }} />
