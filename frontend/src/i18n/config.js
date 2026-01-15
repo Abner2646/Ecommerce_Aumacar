@@ -7,6 +7,37 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 const resources = {
   es: {
     translation: {
+      // ============ NAVBAR ============
+      navbar: {
+        ariaLabel: "Navegación principal",
+        logoAriaLabel: "aumacar - Ir al inicio",
+        brands: "Marcas",
+        contact: "Contacto",
+        openMenu: "Abrir menú",
+        closeMenu: "Cerrar menú",
+      },
+
+      // ============ FOOTER ============
+      footer: {
+        description: "Tu concesionaria de confianza en Bahía Blanca. Excelencia automotriz desde hace más de 30 años.",
+        navigation: {
+          title: "Navegación",
+          home: "Inicio",
+          contact: "Contacto",
+        },
+        contact: {
+          title: "Contacto",
+          viewLocation: "Ver ubicación en Google Maps",
+        },
+        hours: {
+          title: "Horarios",
+          weekdays: "Lunes a Viernes",
+          saturday: "Sábados",
+          sunday: "Domingos",
+          closed: "Cerrado",
+        },
+      },
+
       // ============ HOME ============
       home: {
         hero: {
@@ -328,6 +359,37 @@ const resources = {
   
   en: {
     translation: {
+      // ============ NAVBAR ============
+      navbar: {
+        ariaLabel: "Main navigation",
+        logoAriaLabel: "aumacar - Go to home",
+        brands: "Brands",
+        contact: "Contact",
+        openMenu: "Open menu",
+        closeMenu: "Close menu",
+      },
+
+      // ============ FOOTER ============
+      footer: {
+        description: "Your trusted dealership in Bahía Blanca. Automotive excellence for over 30 years.",
+        navigation: {
+          title: "Navigation",
+          home: "Home",
+          contact: "Contact",
+        },
+        contact: {
+          title: "Contact",
+          viewLocation: "View location on Google Maps",
+        },
+        hours: {
+          title: "Hours",
+          weekdays: "Monday to Friday",
+          saturday: "Saturdays",
+          sunday: "Sundays",
+          closed: "Closed",
+        },
+      },
+
       // ============ HOME ============
       home: {
         hero: {

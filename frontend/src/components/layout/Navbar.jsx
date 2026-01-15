@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import useScrolled from '../../hooks/useScrolled';
+import { marcasApi } from '../../api/marcas.api';
 
 // Importar símbolos del logo (ajustar rutas según tu estructura)
 import symbolLight from '../../assets/images/symbol-aumacar-light.png';
@@ -11,6 +13,7 @@ import symbolDark from '../../assets/images/symbol-aumacar-dark.png';
 const DROPDOWN_CLOSE_DELAY = 180; // ms antes de cerrar el dropdown
 
 const Navbar = () => {
+  const { t } = useTranslation();
   const isScrolled = useScrolled(80);
   const location = useLocation();
   
@@ -18,14 +21,21 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
+  const [marcas, setMarcas] = useState([]);
   
   // Refs para el dropdown
   const dropdownTimeoutRef = useRef(null);
   const dropdownRef = useRef(null);
 
+  // Fetch marcas
+  useEffect(() => {
+    marcasApi.getAll().then(res => {
+      setMarcas(res.marcas || []);
+    });
+  }, []);
+
   // Determinar si estamos en una página de marca (para marcar "Marcas" como activo)
-  const isInBrandPage = location.pathname.startsWith('/subaru') || 
-                         location.pathname.startsWith('/suzuki');
+  const isInBrandPage = location.pathname.startsWith('/marca/');
 
   // Limpiar timeout al desmontar
   useEffect(() => {
@@ -109,9 +119,9 @@ const Navbar = () => {
       className={`cns-navbar ${isScrolled ? 'cns-navbar--scrolled' : ''}`}
       role="banner"
     >
-      <nav className="cns-navbar-container" aria-label="Navegación principal">
+      <nav className="cns-navbar-container" aria-label={t('navbar.ariaLabel')}>
         {/* Logo */}
-        <Link to="/" className="cns-navbar-logo" aria-label="aumacar - Ir al inicio">
+        <Link to="/" className="cns-navbar-logo" aria-label={t('navbar.logoAriaLabel')}>
           <img 
             src={isScrolled ? symbolDark : symbolLight} 
             alt="" 
@@ -123,7 +133,53 @@ const Navbar = () => {
 
         {/* Navegación Desktop */}
         <div className="cns-navbar-nav">
+          {/* Dropdown Marcas */}
+          <div 
+            className="cns-navbar-dropdown"
+            onMouseEnter={handleDropdownEnter}
+            onMouseLeave={handleDropdownLeave}
+            ref={dropdownRef}
+          >
+            <button
+              className={getLinkClass(isInBrandPage)}
+              aria-expanded={isDropdownOpen}
+              aria-haspopup="true"
+            >
+              {t('navbar.brands')}
+              <svg 
+                className={`cns-navbar-dropdown-arrow ${isDropdownOpen ? 'cns-navbar-dropdown-arrow--open' : ''}`}
+                width="12" 
+                height="12" 
+                viewBox="0 0 12 12" 
+                fill="none"
+              >
+                <path 
+                  d="M2 4L6 8L10 4" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
 
+            {/* Dropdown Menu */}
+            <div 
+              className={`cns-navbar-dropdown-menu ${isDropdownOpen ? 'cns-navbar-dropdown-menu--open' : ''}`}
+              role="menu"
+            >
+              {marcas.map(marca => (
+                <a
+                  key={marca.id}
+                  href={`/marca/${marca.slug}`}
+                  className="cns-navbar-dropdown-item"
+                  role="menuitem"
+                >
+                  {marca.nombre}
+                </a>
+              ))}
+            </div>
+          </div>
 
           {/* Link Contacto */}
           <button
@@ -133,7 +189,7 @@ const Navbar = () => {
             }}
             style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
           >
-            Contacto
+            {t('navbar.contact')}
           </button>
         </div>
 
@@ -143,7 +199,7 @@ const Navbar = () => {
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-expanded={isMobileMenuOpen}
           aria-controls="mobile-menu"
-          aria-label={isMobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          aria-label={isMobileMenuOpen ? t('navbar.closeMenu') : t('navbar.openMenu')}
         >
           <span className="cns-navbar-hamburger-line"></span>
           <span className="cns-navbar-hamburger-line"></span>
@@ -157,7 +213,47 @@ const Navbar = () => {
           aria-hidden={!isMobileMenuOpen}
         >
           <div className="cns-navbar-mobile-content">
+            {/* Dropdown Marcas Mobile */}
+            <div className="cns-navbar-mobile-dropdown">
+              <button
+                className="cns-navbar-mobile-dropdown-trigger"
+                onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
+                aria-expanded={isMobileDropdownOpen}
+              >
+                <span>{t('navbar.brands')}</span>
+                <svg 
+                  className={`cns-navbar-dropdown-arrow ${isMobileDropdownOpen ? 'cns-navbar-dropdown-arrow--open' : ''}`}
+                  width="12" 
+                  height="12" 
+                  viewBox="0 0 12 12" 
+                  fill="none"
+                >
+                  <path 
+                    d="M2 4L6 8L10 4" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
 
+              {/* Dropdown Items Mobile */}
+              <div 
+                className={`cns-navbar-mobile-dropdown-menu ${isMobileDropdownOpen ? 'cns-navbar-mobile-dropdown-menu--open' : ''}`}
+              >
+                {marcas.map(marca => (
+                  <a
+                    key={marca.id}
+                    href={`/marca/${marca.slug}`}
+                    className="cns-navbar-mobile-dropdown-item"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {marca.nombre}
+                  </a>
+                ))}
+              </div>
+            </div>
 
             {/* Contacto */}
             <button
@@ -168,7 +264,7 @@ const Navbar = () => {
               }}
               style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
             >
-              Contacto
+              {t('navbar.contact')}
             </button>
           </div>
         </div>

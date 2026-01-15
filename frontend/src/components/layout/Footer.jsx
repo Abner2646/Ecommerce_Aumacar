@@ -1,11 +1,14 @@
 // /src/components/layout/Footer.jsx
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import useMarcasFooter from '../../hooks/useMarcasFooter';
 import { Instagram, Facebook, MapPin, Phone, MessageCircle } from 'lucide-react';
 import '../../styles/Footer.css';
 
 const Footer = () => {
+  const { t } = useTranslation();
   const marcas = useMarcasFooter();
+  
   return (
     <footer className="cns-footer">
       <div className="cns-container">
@@ -18,7 +21,7 @@ const Footer = () => {
               </p>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs mt-6">
-              Tu concesionaria de confianza en Bahía Blanca. Excelencia automotriz desde hace más de 30 años.
+              {t('footer.description')}
             </p>
             {/* Redes Sociales */}
             <div className="cns-footer-socials">
@@ -42,13 +45,14 @@ const Footer = () => {
               </a>
             </div>
           </div>
+
           {/* COLUMNA 2: Navegación Rápida */}
           <div className="cns-footer-column">
-            <h3 className="cns-footer-heading">Navegación</h3>
+            <h3 className="cns-footer-heading">{t('footer.navigation.title')}</h3>
             <ul className="cns-footer-links">
               <li>
                 <a href="/" className="cns-footer-link">
-                  Inicio
+                  {t('footer.navigation.home')}
                 </a>
               </li>
               {marcas.map(marca => (
@@ -60,7 +64,7 @@ const Footer = () => {
               ))}
               <li>
                 <a href="#contacto" className="cns-footer-link">
-                  Contacto
+                  {t('footer.navigation.contact')}
                 </a>
               </li>
             </ul>
@@ -68,7 +72,7 @@ const Footer = () => {
 
           {/* COLUMNA 3: Contacto */}
           <div className="cns-footer-column">
-            <h3 className="cns-footer-heading">Contacto</h3>
+            <h3 className="cns-footer-heading">{t('footer.contact.title')}</h3>
             
             <div className="cns-footer-contact-list">
               {/* Teléfono */}
@@ -101,7 +105,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cns-footer-contact-item group"
-                aria-label="Ver ubicación en Google Maps"
+                aria-label={t('footer.contact.viewLocation')}
               >
                 <MapPin className="cns-footer-icon group-hover:text-white" size={18} />
                 <div className="text-left">
@@ -114,37 +118,28 @@ const Footer = () => {
 
           {/* COLUMNA 4: Horarios */}
           <div className="cns-footer-column">
-            <h3 className="cns-footer-heading">Horarios</h3>
+            <h3 className="cns-footer-heading">{t('footer.hours.title')}</h3>
             <div className="space-y-3">
               <div>
-                <p className="text-gray-400 text-sm font-medium mb-1">Lunes a Viernes</p>
+                <p className="text-gray-400 text-sm font-medium mb-1">{t('footer.hours.weekdays')}</p>
                 <p className="text-gray-500 text-sm">9:00 - 18:00</p>
               </div>
               <div>
-                <p className="text-gray-400 text-sm font-medium mb-1">Sábados</p>
+                <p className="text-gray-400 text-sm font-medium mb-1">{t('footer.hours.saturday')}</p>
                 <p className="text-gray-500 text-sm">9:00 - 13:00</p>
               </div>
               <div>
-                <p className="text-gray-400 text-sm font-medium mb-1">Domingos</p>
-                <p className="text-gray-500 text-sm">Cerrado</p>
+                <p className="text-gray-400 text-sm font-medium mb-1">{t('footer.hours.sunday')}</p>
+                <p className="text-gray-500 text-sm">{t('footer.hours.closed')}</p>
               </div>
             </div>
           </div>
-
         </div>
 
         {/* Copyright / Bottom Bar Premium */}
         <div className="cns-footer-bottom">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright text removed as per request */}
-            <div className="flex gap-6 text-xs text-gray-500">
-              <a href="#privacidad" className="hover:text-gray-300 transition-colors">
-                Política de Privacidad
-              </a>
-              <a href="#terminos" className="hover:text-gray-300 transition-colors">
-                Términos y Condiciones
-              </a>
-            </div>
           </div>
         </div>
       </div>
