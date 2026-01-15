@@ -435,9 +435,9 @@ const MarcaForm = ({ marca, onSuccess }) => {
       <div>
         <label className="adm-form-label">Plantilla</label>
         <select {...register('plantilla', { valueAsNumber: true })} className="adm-form-input">
-          <option value={1}>Plantilla 1</option>
-          <option value={2}>Plantilla 2</option>
-          <option value={3}>Plantilla 3</option>
+          <option value={1}>Plantilla 1 (Subaru)</option>
+          <option value={2}>Plantilla 2 (Suzuki)</option>
+          <option value={3}>Plantilla 3 (Estándar) </option>
         </select>
         <p className="text-xs text-gray-500 mt-2">Elige el diseño que prefieras para la marca</p>
       </div>

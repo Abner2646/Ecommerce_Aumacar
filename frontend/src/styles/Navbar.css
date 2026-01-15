@@ -499,3 +499,125 @@
 .cns-navbar:not(.cns-navbar--scrolled) .cns-navbar-hamburger:focus-visible {
   outline-color: var(--color-white);
 }
+
+/* /src/styles/Navbar.css */
+
+/* Agregar/reemplazar estas clases */
+
+/* ==================== DROPDOWN DESKTOP ==================== */
+
+.cns-navbar-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.cns-navbar-dropdown-arrow {
+  display: inline-block;
+  margin-left: 0.375rem;
+  transition: transform var(--transition-base);
+  opacity: 0.6;
+}
+
+.cns-navbar-dropdown-arrow--open {
+  transform: rotate(180deg);
+}
+
+.cns-navbar-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.75rem;
+  min-width: 180px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-100);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity var(--transition-base), 
+              transform var(--transition-base), 
+              visibility var(--transition-base);
+  z-index: 50;
+  overflow: hidden;
+}
+
+.cns-navbar-dropdown-menu--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.cns-navbar-dropdown-item {
+  display: block;
+  padding: 0.625rem 1rem;
+  color: var(--color-gray-800);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast);
+  letter-spacing: 0.01em;
+}
+
+.cns-navbar-dropdown-item:hover {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-900);
+}
+
+.cns-navbar-dropdown-item:not(:last-child) {
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+/* ==================== DROPDOWN MOBILE ==================== */
+
+.cns-navbar-mobile-dropdown {
+  width: 100%;
+}
+
+.cns-navbar-mobile-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 0;
+  background: none;
+  border: none;
+  color: var(--color-white);
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.cns-navbar-mobile-dropdown-trigger:hover {
+  opacity: 0.85;
+}
+
+.cns-navbar-mobile-dropdown-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-base);
+}
+
+.cns-navbar-mobile-dropdown-menu--open {
+  max-height: 500px;
+}
+
+.cns-navbar-mobile-dropdown-item {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  color: var(--color-white);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 400;
+  opacity: 0.85;
+  transition: opacity var(--transition-fast),
+              padding-left var(--transition-fast);
+  letter-spacing: 0.01em;
+}
+
+.cns-navbar-mobile-dropdown-item:hover {
+  opacity: 1;
+  padding-left: 1.5rem;
+}
