@@ -136,7 +136,7 @@ export default function Template01({ vehiculo }) {
             </div>
 
             {/* Título principal */}
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight leading-none mb-4">
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-normal text-white tracking-tight leading-none mb-4" style={{ fontWeight: 400 }}>
               {modelo}
             </h1>
             
