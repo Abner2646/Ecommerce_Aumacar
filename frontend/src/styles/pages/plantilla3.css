@@ -5,6 +5,11 @@
 }
 /* Fuente exclusiva para Plantilla 3 */
 .plantilla3-root {
+  /* Solo el h1 menos bold */
+  .plantilla3-root h1 {
+    font-family: 'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+  }
   font-family: 'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 /* Permite que el ícono del botón de teléfono en el hero sí cambie de color en hover */

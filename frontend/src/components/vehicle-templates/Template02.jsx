@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function Template02({ vehiculo, caracteristicas: caracteristicasProp, colores: coloresProp }) {
+export default function Template02({ vehiculo, caracteristicas: caracteristicasProp, colores: coloresProp, plantillaMarca = 'plantilla1' }) {
   // ==================== TODOS LOS HOOKS PRIMERO ====================
   const navigate = useNavigate();
   const [colorSeleccionado, setColorSeleccionado] = useState(null);
@@ -199,9 +199,15 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
   };
 
   // ==================== RENDER ====================
+    // Determinar clase raíz según plantilla
+    let plantillaRootClass = '';
+    if (plantillaMarca === 'plantilla1') plantillaRootClass = 'plantilla1-root';
+    else if (plantillaMarca === 'plantilla2') plantillaRootClass = 'plantilla2-root';
+    else if (plantillaMarca === 'plantilla3') plantillaRootClass = 'plantilla3-root';
+    else plantillaRootClass = '';
   
   return (
-    <div className="template-02-magazine bg-black">
+    <div className={`${plantillaRootClass} template-02-magazine bg-black`}>
       <style>{`
         @keyframes pulse-ring {
           0% {
@@ -406,7 +412,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
 
         {/* Contenido centrado */}
         <div className="relative h-full flex flex-col items-center justify-center px-8">
-          <h1 className="text-7xl md:text-8xl lg:text-9xl font-bold text-white text-center tracking-tight mb-6">
+          <h1 className="text-7xl md:text-8xl lg:text-9xl font-normal text-white text-center tracking-tight mb-6" style={{ fontWeight: 400 }}>
             {modelo}
           </h1>
           

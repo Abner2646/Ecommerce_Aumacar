@@ -55,14 +55,19 @@
 }
 
 /* Texto descriptivo ligero */
-.plantilla1-root p,
-.plantilla1-root .text-xl,
-.plantilla1-root .text-lg,
-.plantilla1-root .text-base {
-  font-family: 'AvenirNextLTPro-Regular', Helvetica Neue, -apple-system, 'system-ui', BlinkMacSystemFont, Arial, Helvetica, sans-serif;
-  font-weight: 400;
+/* Solo el h1 menos bold */
+.plantilla1-root h1 {
+  font-family: 'AvenirNextLTPro-Demi', Helvetica Neue, -apple-system, 'system-ui', BlinkMacSystemFont, Arial, Helvetica, sans-serif;
+  font-weight: 500;
 }
-/* Permite que el ícono del botón de teléfono en el hero sí cambie de color en hover */
+
+.plantilla1-root h2,
+.plantilla1-root .text-5xl,
+.plantilla1-root .text-4xl,
+.plantilla1-root .text-3xl,
+.plantilla1-root .text-2xl {
+  font-family: 'AvenirNextLTPro-Demi', Helvetica Neue, -apple-system, 'system-ui', BlinkMacSystemFont, Arial, Helvetica, sans-serif;
+  font-weight: 600;
 .plantilla1-root .cns-container .flex.justify-center > a.group[href^="tel"]:hover .w-6,
 .plantilla1-root .cns-container .flex.justify-center > a.group[href^="tel"]:hover svg {
   color: #2563eb !important;
@@ -351,11 +356,6 @@
   transition: transform var(--transition-base);
 }
 
-.showcase-feature-card:hover {
-
-}
-
-.showcase-feature-icon {
   font-size: 4rem;
   margin-bottom: var(--space-lg);
   line-height: 1;
@@ -423,9 +423,6 @@
   transition: transform var(--transition-base);
 }
 
-.showcase-model-row:hover {
-
-}
 
 .showcase-model-image {
   aspect-ratio: 16/10;
@@ -454,7 +451,8 @@
   margin-bottom: var(--space-xs);
 }
 
-.showcase-model-category {
+/* Restored selector for info label */
+.showcase-model-info-label {
   display: inline-block;
   font-size: var(--font-size-small);
   color: var(--color-gray-600);

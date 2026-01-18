@@ -2,8 +2,16 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/pages/plantilla1.css';
+import '../../styles/plantilla2.css';
+import '../../styles/pages/plantilla3.css';
 
-export default function Template02({ vehiculo, caracteristicas: caracteristicasProp, colores: coloresProp }) {
+// Recibe prop plantillaMarca: 'plantilla1', 'plantilla2', 'plantilla3'
+import '../../styles/pages/plantilla1.css';
+import '../../styles/pages/plantilla2.css';
+import '../../styles/pages/plantilla3.css';
+
+export default function Template02({ vehiculo, caracteristicas: caracteristicasProp, colores: coloresProp, plantillaMarca = 'plantilla1' }) {
   // ==================== TODOS LOS HOOKS PRIMERO ====================
   const navigate = useNavigate();
   const [colorSeleccionado, setColorSeleccionado] = useState(null);
@@ -253,8 +261,15 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
 
   // ==================== RENDER ====================
   
+  // Determinar clase raíz según plantilla
+  let plantillaRootClass = '';
+  if (plantillaMarca === 'plantilla1') plantillaRootClass = 'plantilla1-root';
+  else if (plantillaMarca === 'plantilla2') plantillaRootClass = 'plantilla2-root';
+  else if (plantillaMarca === 'plantilla3') plantillaRootClass = 'plantilla3-root';
+  else plantillaRootClass = '';
+
   return (
-    <div className="template-02-tesla bg-black">
+    <div className={`${plantillaRootClass} template-02-tesla bg-black`}>
       <style>{`
         @keyframes pulse-ring {
           0% {
@@ -349,95 +364,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
           scrollbar-width: none;
         }
       `}</style>
-
-      {/* HERO CINEMATOGRÁFICO CON PRECIO */}
-      <section className="relative h-screen w-full overflow-hidden">
-        {videoUrl ? (
-          <>
-            <video
-              ref={videoRef}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src={videoUrl} type="video/mp4" />
-            </video>
-
-            {/* Control de volumen */}
-            <div className="absolute bottom-8 left-8 z-20">
-              <button
-                onClick={toggleMute}
-                className="group relative"
-                aria-label={videoMuted ? "Activar sonido" : "Silenciar"}
-              >
-                {videoMuted && showUnmuteHint && (
-                  <div className="absolute inset-0 rounded-full bg-white/30 pulse-ring" />
-                )}
-                
-                <div className="relative flex items-center gap-3 px-5 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
-                  {videoMuted ? (
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
-                    </svg>
-                  ) : (
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                    </svg>
-                  )}
-                  
-                  <span className="text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {videoMuted ? 'Activar audio' : 'Silenciar'}
-                  </span>
-                </div>
-              </button>
-            </div>
-          </>
-        ) : imagenPrincipal ? (
-          <div 
-            className="absolute inset-0 w-full h-full bg-cover bg-center"
-            style={{ backgroundImage: `url(${imagenPrincipal})` }}
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black" />
-        )}
-
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
-
-        {/* Contenido centrado */}
-        <div className="relative h-full flex flex-col items-center justify-center px-8">
-          <h1 className="text-7xl md:text-8xl lg:text-9xl font-bold text-white text-center tracking-tight mb-6">
-            {modelo}
-          </h1>
-          
-          {/* Precio chiquito */}
-          <div className="flex items-center gap-4 text-white/80">
-            <div className="text-lg md:text-xl font-light tracking-wider">
-              Desde ${precioFormateado}
-            </div>
-            {precioUsdFormateado && (
-              <>
-                <span className="text-white/40">•</span>
-                <div className="text-lg md:text-xl font-light tracking-wider">
-                  USD ${precioUsdFormateado}
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-          <div className="flex flex-col items-center gap-3">
-            <div className="text-xs text-white/70 uppercase tracking-widest">Explorar</div>
-            <svg className="w-6 h-6 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          </div>
-        </div>
-      </section>
+      {/* ...existing code... */}
 
       {/* GALERÍA FULLSCREEN CINEMATOGRÁFICA */}
       <section className="relative bg-black">
@@ -570,6 +497,12 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
         )}
       </section>
 
+      {/* TÍTULO PRINCIPAL VEHÍCULO */}
+      <div className="w-full flex justify-center items-center pt-12 pb-4">
+        <h1 className="text-7xl md:text-8xl lg:text-9xl font-normal text-white text-center tracking-tight mb-6" style={{ fontWeight: 400 }}>
+          {nombre}
+        </h1>
+      </div>
       {/* ESPECIFICACIONES */}
       {specs.length > 0 && (
         <section className="fade-in-section py-24 md:py-32 px-8 md:px-16 lg:px-24 bg-black">
