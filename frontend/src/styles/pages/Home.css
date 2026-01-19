@@ -1,3 +1,39 @@
+@media (max-width: 767px) {
+  /* Clientes Cerca de Ti - Overlay de foto */
+  .group .absolute.bottom-0.left-0.right-0.p-8 {
+    padding: 1.1rem !important;
+  }
+  .group .absolute.bottom-0.left-0.right-0.p-8 p.text-white {
+    font-size: 1rem !important;
+  }
+  .group .absolute.bottom-0.left-0.right-0.p-8 p.text-white\/80 {
+    font-size: 0.85rem !important;
+  }
+  .group .absolute.bottom-0.left-0.right-0.p-8 .flex.items-center.gap-3 span,
+  .group .absolute.bottom-0.left-0.right-0.p-8 .flex.items-center.gap-3 svg {
+    font-size: 0.85rem !important;
+    height: 1rem !important;
+    width: 1rem !important;
+  }
+  .group .absolute.bottom-0.left-0.right-0.p-8 span.px-4.py-1\.5 {
+    font-size: 0.8rem !important;
+    padding: 0.2rem 0.7rem !important;
+  }
+}
+@media (max-width: 767px) {
+  .lnd-brand-card h3 {
+    font-size: 1.1rem !important;
+  }
+  .lnd-brand-card p {
+    font-size: 0.85rem !important;
+  }
+  .lnd-brand-card .inline-flex span,
+  .lnd-brand-card .inline-flex svg {
+    font-size: 0.9rem !important;
+    height: 1rem !important;
+    width: 1rem !important;
+  }
+}
 /* Fondo negro con transición para secciones al hacer hover en video */
 .bg-black {
   background-color: #000 !important;

@@ -67,27 +67,16 @@ const Plantilla3 = ({ marca }) => {
 
   return (
     <main className="bg-white plantilla3-root">
-      
       {/* ==================== HERO SECTION PREMIUM ==================== */}
-      <section className="relative min-h-[600px] md:min-h-[700px] flex items-center">
-        <div className="absolute inset-0 overflow-hidden" style={{maxHeight: '700px', maxWidth: '100vw'}}>
+      <section className="relative min-h-screen flex items-center">
+        <div className="absolute inset-0 overflow-hidden">
           <video
             src={marca?.videoPortada}
             autoPlay
             loop
             muted
             playsInline
-            style={{
-              width: '100vw',
-              height: '700px',
-              objectFit: 'cover',
-              objectPosition: 'center',
-              maxWidth: '100vw',
-              maxHeight: '700px',
-              display: 'block',
-              background: '#000',
-              filter: 'brightness(0.8) contrast(1.1)'
-            }}
+            style={{ width: '100vw', height: '100vh', objectFit: 'cover', objectPosition: 'center', display: 'block', background: '#000', filter: 'brightness(0.8) contrast(1.1)' }}
           />
           <div className="cns-hero-overlay"></div>
         </div>
@@ -142,7 +131,7 @@ const Plantilla3 = ({ marca }) => {
       <section className="cns-section" id="mas-vendidos">
         <div className="cns-container">
           <div className="text-center mb-16 lg:mb-20 max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <h2 className="font-bold text-gray-900 mb-6" style={{ fontSize: '50px' }}>
               {t('brandTemplates.bestSellers.title')} {new Date().getFullYear()}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
@@ -167,7 +156,7 @@ const Plantilla3 = ({ marca }) => {
                 </div>
 
                 <div className="p-6 space-y-4">
-                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
+                  <h3 className="font-bold text-gray-900" style={{ fontSize: '30px' }}>
                     {modelo.modelo}
                   </h3>
                   
@@ -197,11 +186,11 @@ const Plantilla3 = ({ marca }) => {
                   <div className="flex items-center justify-between pt-6 border-t border-gray-200">
                     <div>
                       <span className="text-sm text-gray-500 block mb-1">{t('templates.price.from')}</span>
-                      <span className="cns-price text-2xl md:text-3xl font-bold">
+                      <span className="cns-price font-bold" style={{ fontSize: '30px' }}>
                         ${Number(modelo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                       </span>
                     </div>
-                    <button className="cns-btn-secondary">
+                    <button className="cns-btn-secondary px-4 py-2" style={{ minWidth: 'unset', height: '32px', fontSize: '12px', marginTop: '20px' }}>
                       {t('templates.actions.viewDetails')}
                     </button>
                   </div>
@@ -213,7 +202,7 @@ const Plantilla3 = ({ marca }) => {
       </section>
 
       {/* ==================== PARALLAX SECTION PREMIUM ==================== */}
-      <section className="cns-parallax">
+      <section className="cns-parallax hidden md:block">
         <div className="cns-parallax-bg" style={{ backgroundImage: `url(${marca?.fotoDelMedio})` }}>
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/70 to-gray-900/40"></div>
@@ -328,7 +317,7 @@ const Plantilla3 = ({ marca }) => {
                     </div>
                   </div>
                   <div className="p-6">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                    <h3 className="font-bold text-gray-900 mb-3" style={{ fontSize: '30px' }}>
                       {modelo.modelo}
                     </h3>
                     <p className="text-base text-gray-600 mb-4 leading-relaxed min-h-[3rem]">
@@ -337,11 +326,11 @@ const Plantilla3 = ({ marca }) => {
                     <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                       <div>
                         <span className="text-sm text-gray-500 block">{t('templates.price.from')}</span>
-                        <span className="text-2xl font-bold text-gray-900">
+                        <span className="font-bold text-gray-900" style={{ fontSize: '24px' }}>
                           ${Number(modelo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                         </span>
                       </div>
-                      <span className="text-base text-gray-600 group-hover:text-gray-900 transition-colors font-medium">
+                      <span className="text-base text-gray-600 group-hover:text-gray-900 transition-colors font-medium" style={{ marginTop: '20px', display: 'inline-block' }}>
                         {t('brandTemplates.fullLine.viewMore')}
                       </span>
                     </div>
@@ -365,7 +354,7 @@ const Plantilla3 = ({ marca }) => {
                       />
                     </div>
                     <div className="lg:col-span-3">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
                         {modelo.modelo || modelo.nombre}
                       </h3>
                       <span className="text-sm text-gray-500 font-medium">{modelo.categoria}</span>
@@ -392,7 +381,7 @@ const Plantilla3 = ({ marca }) => {
                     </div>
                     <div className="lg:col-span-2 text-center lg:text-right">
                       <span className="text-sm text-gray-500 block mb-1">{t('templates.price.from')}</span>
-                      <span className="text-2xl font-bold text-gray-900 block mb-4">
+                      <span className="text-xl font-bold text-gray-900 block mb-4">
                         ${Number(modelo.precio).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                       </span>
                       <button 

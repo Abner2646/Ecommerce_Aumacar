@@ -1,3 +1,215 @@
+/* ========== SIDEBAR DRAWER MOBILE ========== */
+@media (max-width: 767px) {
+  .adm-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80vw;
+    max-width: 320px;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 2px 0 16px rgba(0,0,0,0.15);
+    z-index: 2000;
+  }
+  .adm-sidebar.open {
+    transform: translateX(0);
+  }
+  .adm-sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.3);
+    z-index: 1999;
+    display: none;
+  }
+  .adm-sidebar-backdrop.open {
+    display: block;
+  }
+  .adm-sidebar-toggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2100;
+    background: var(--color-gray-900);
+    color: var(--color-white);
+    border: none;
+    border-radius: 0.5rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    cursor: pointer;
+  }
+  .adm-main {
+    margin-left: 0 !important;
+    width: 100vw;
+    min-width: 0;
+    padding: 0;
+  }
+}
+/* ==================== RESPONSIVE ADMIN MOBILE & TABLET ==================== */
+@media (max-width: 767px) {
+  .adm-layout {
+    flex-direction: column;
+  }
+  .adm-sidebar {
+    position: static;
+    width: 100vw;
+    height: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    min-width: 0;
+    max-width: 100vw;
+    z-index: 1000;
+  }
+  .adm-sidebar-header, .adm-user-info, .adm-sidebar-footer {
+    padding: 0.5rem 1rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .adm-main {
+    margin-left: 0 !important;
+    width: 100vw;
+    min-width: 0;
+    padding: 0;
+  }
+  .adm-content {
+    padding: 1rem !important;
+    max-width: 100vw;
+  }
+  .adm-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .adm-page-title {
+    font-size: 1.2rem !important;
+  }
+  .adm-table-th, .adm-table-td {
+    padding: 0.5rem !important;
+    font-size: 0.85rem !important;
+  }
+  .adm-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .adm-table-header, .adm-table-body, .adm-table-row {
+    display: block;
+    width: 100%;
+  }
+  .adm-table-row {
+    border-bottom: 1px solid var(--color-gray-100);
+    margin-bottom: 0.5rem;
+  }
+  .adm-form-label, .adm-form-input, .adm-form-input-error {
+    font-size: 0.95rem !important;
+  }
+  .adm-form-input, .adm-form-input-error {
+    padding: 0.5rem !important;
+  }
+  .adm-modal {
+    max-width: 98vw !important;
+    padding: 0.5rem !important;
+  }
+  .adm-modal-header, .adm-modal-body {
+    padding: 0.5rem !important;
+  }
+  .adm-preview-modal {
+    max-width: 98vw !important;
+    padding: 0.5rem !important;
+  }
+  .adm-preview-header, .adm-preview-body {
+    padding: 0.5rem !important;
+    gap: 0.5rem !important;
+  }
+  .adm-preview-body {
+    grid-template-columns: 1fr !important;
+  }
+  .adm-marcas-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .adm-marca-card-header, .adm-marca-card-body, .adm-marca-card-footer {
+    padding: 0.5rem !important;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem !important;
+  }
+  .adm-marca-logo, .adm-marca-logo-placeholder {
+    max-width: 80px !important;
+    max-height: 50px !important;
+  }
+  .adm-btn, .adm-btn-primary, .adm-btn-secondary, .adm-btn-danger {
+    font-size: 0.95rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+  .adm-quick-actions-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+  .adm-quick-action-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem !important;
+    padding: 0.5rem !important;
+  }
+  .adm-quick-action-title {
+    font-size: 1rem !important;
+  }
+  .adm-quick-action-description {
+    font-size: 0.85rem !important;
+  }
+  .adm-dashboard-vehiculo-img, .adm-dashboard-vehiculo-placeholder {
+    height: 100px !important;
+  }
+  .adm-summary-card {
+    padding: 0.5rem !important;
+  }
+  .adm-stat-card-static {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem !important;
+    padding: 0.5rem !important;
+  }
+  .adm-stat-icon {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .adm-preview-thumbnail {
+    width: 50px !important;
+    height: 35px !important;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 768px) {
+  .adm-sidebar {
+    width: 180px !important;
+  }
+  .adm-main {
+    margin-left: 180px !important;
+  }
+  .adm-content {
+    padding: 1.5rem !important;
+  }
+  .adm-page-title {
+    font-size: 1.5rem !important;
+  }
+  .adm-table-th, .adm-table-td {
+    font-size: 0.95rem !important;
+  }
+  .adm-marcas-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
 /* /src/styles/pages/Admin.css */
 
 /* ==================== LAYOUT ADMIN ==================== */

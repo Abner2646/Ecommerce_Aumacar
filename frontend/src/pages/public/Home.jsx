@@ -38,7 +38,7 @@ function BrandCards() {
     <a
       key={marca.id}
       href={`/marca/${marca.slug}`}
-      className="lnd-brand-card w-full max-w-[560px] min-h-[560px] md:min-h-[560px] aspect-[4/3] mx-auto"
+      className="lnd-brand-card w-full max-w-[95vw] h-[100px] md:max-w-[700px] md:min-h-[400px] md:aspect-[16/7] mx-auto"
       onMouseEnter={e => {
         const video = e.currentTarget.querySelector('.brand-video');
         const img = e.currentTarget.querySelector('.brand-img');
@@ -82,16 +82,16 @@ function BrandCards() {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/20"></div>
       </div>
-      <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12">
-        <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">
+      <div className="relative z-10 h-full flex flex-col justify-end p-3 md:p-12">
+        <h3 className="text-2xl md:text-5xl font-bold text-white mb-2 md:mb-4">
           {marca.nombre}
         </h3>
-        <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
+        <p className="text-sm md:text-xl text-white/90 mb-4 md:mb-8 leading-relaxed line-clamp-2">
           {marca.descripcion}
         </p>
-        <div className="inline-flex items-center gap-2 text-white font-semibold">
-          <span className="text-lg">{t('home.brands.btnExploreModels')}</span>
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="inline-flex items-center gap-1 md:gap-2 text-white font-semibold">
+          <span className="text-base md:text-lg">{t('home.brands.btnExploreModels')}</span>
+          <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </div>
@@ -122,7 +122,7 @@ const Home = () => {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section Premium */}
-      <section className="relative min-h-[600px] md:min-h-[700px] flex items-center justify-center bg-gray-900">
+      <section className="relative min-h-screen flex items-center justify-center bg-gray-900">
         <div className="absolute inset-0 overflow-hidden">
           <video
             ref={el => {
@@ -141,18 +141,17 @@ const Home = () => {
             autoPlay
             muted
             playsInline
-            className="w-full h-full object-cover"
-            style={{ filter: 'brightness(0.8) contrast(1.1)' }}
+            style={{ width: '100vw', height: '100vh', objectFit: 'cover', objectPosition: 'center', display: 'block', background: '#000', filter: 'brightness(0.8) contrast(1.1)' }}
           />
           <div className="cns-hero-overlay"></div>
         </div>
         
         <div className="relative z-10 cns-container text-center px-4 md:px-8">
           <span className="cns-pill-badge">{t('home.hero.badge')}</span>
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 text-balance leading-tight">
+          <h1 className="text-[2.7rem] md:text-[3.6rem] font-bold text-white mb-6 text-balance leading-tight">
             {t('home.hero.title')}
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto mb-12 leading-relaxed">
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-12 leading-relaxed">
             {t('home.hero.subtitle')}
           </p>
           <div className="flex gap-3 justify-center flex-wrap mt-8">
