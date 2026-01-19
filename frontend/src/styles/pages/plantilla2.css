@@ -1,3 +1,35 @@
+/* ==================== RESPONSIVE MOBILE (max-width: 767px) ==================== */
+@media (max-width: 767px) {
+  .plantilla2-root h1 {
+    font-size: 2.2rem !important;
+    line-height: 2.5rem !important;
+  }
+  .plantilla2-root h2 {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+  }
+  .plantilla2-root .text-2xl, .plantilla2-root .text-3xl, .plantilla2-root .text-4xl, .plantilla2-root .text-5xl {
+    font-size: 1.2rem !important;
+    line-height: 1.5rem !important;
+  }
+  .plantilla2-root .spec-card {
+    padding: 1rem !important;
+  }
+  .plantilla2-root .grid {
+    grid-template-columns: 1fr !important;
+  }
+  .plantilla2-root .px-8 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  .plantilla2-root .py-24 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+  .plantilla2-root .mb-16 {
+    margin-bottom: 1.5rem !important;
+  }
+}
 /* Carga de fuente SuzukiPro */
 @font-face {
   font-family: 'SuzukiPRORegular';

@@ -515,7 +515,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
                   Galería
                 </h3>
-                <h2 className="text-4xl md:text-5xl font-bold text-white">
+                <h2 className="text-[2.1rem] md:text-[2.7rem] font-bold text-white">
                   Explora cada detalle
                 </h2>
               </div>
@@ -759,11 +759,11 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
         </div>
 
         <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl md:text-7xl font-bold text-white mb-12 leading-tight">
+              <h2 className="text-[2.7rem] md:text-[4.2rem] font-bold text-white mb-12 leading-tight">
             Hacé que sea tuyo
           </h2>
           
-          <p className="text-xl md:text-2xl text-gray-400 font-light mb-16 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-400 font-light mb-16 max-w-2xl mx-auto">
             Comenzá el proceso de compra o contactá a nuestro equipo para una experiencia personalizada.
           </p>
 

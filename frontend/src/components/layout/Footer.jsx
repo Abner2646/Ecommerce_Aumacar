@@ -11,7 +11,7 @@ const Footer = () => {
   
   return (
     <footer className="cns-footer">
-      <div className="cns-container">
+      <div className="cns-container" style={{ marginTop: '30px' }}>
         <div className="cns-footer-grid">
           {/* COLUMNA 1: Logo y Redes */}
           <div className="cns-footer-column">
@@ -62,11 +62,11 @@ const Footer = () => {
                   </a>
                 </li>
               ))}
-              <li>
-                <a href="#contacto" className="cns-footer-link">
-                  {t('footer.navigation.contact')}
-                </a>
-              </li>
+                {/* <li>
+                  <a href="#contacto" className="cns-footer-link">
+                    {t('footer.navigation.contact')}
+                  </a>
+                </li> */}
             </ul>
           </div>
 

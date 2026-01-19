@@ -30,7 +30,10 @@ const Navbar = () => {
   // Fetch marcas
   useEffect(() => {
     marcasApi.getAll().then(res => {
+      console.log('DEBUG marcasApi.getAll() response:', res);
       setMarcas(res.marcas || []);
+    }).catch(err => {
+      console.error('Error al obtener marcas:', err);
     });
   }, []);
 
@@ -213,59 +216,31 @@ const Navbar = () => {
           aria-hidden={!isMobileMenuOpen}
         >
           <div className="cns-navbar-mobile-content">
-            {/* Dropdown Marcas Mobile */}
-            <div className="cns-navbar-mobile-dropdown">
-              <button
-                className="cns-navbar-mobile-dropdown-trigger"
-                onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
-                aria-expanded={isMobileDropdownOpen}
-              >
-                <span>{t('navbar.brands')}</span>
-                <svg 
-                  className={`cns-navbar-dropdown-arrow ${isMobileDropdownOpen ? 'cns-navbar-dropdown-arrow--open' : ''}`}
-                  width="12" 
-                  height="12" 
-                  viewBox="0 0 12 12" 
-                  fill="none"
-                >
-                  <path 
-                    d="M2 4L6 8L10 4" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-
-              {/* Dropdown Items Mobile */}
-              <div 
-                className={`cns-navbar-mobile-dropdown-menu ${isMobileDropdownOpen ? 'cns-navbar-mobile-dropdown-menu--open' : ''}`}
-              >
-                {marcas.map(marca => (
-                  <a
-                    key={marca.id}
-                    href={`/marca/${marca.slug}`}
-                    className="cns-navbar-mobile-dropdown-item"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {marca.nombre}
-                  </a>
-                ))}
-              </div>
-            </div>
 
             {/* Contacto */}
-            <button
-              className="cns-navbar-mobile-link"
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent('scrollToContacto'));
-                setIsMobileMenuOpen(false);
-              }}
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-            >
-              {t('navbar.contact')}
-            </button>
+            <div className="cns-navbar-mobile-list" style={{marginTop: 16}}>
+              {marcas.map(marca => (
+                <a
+                  key={marca.id}
+                  href={`/marca/${marca.slug}`}
+                  className="cns-navbar-mobile-link"
+                  style={{ display: 'block', width: '100%', textAlign: 'left', marginBottom: 8, fontWeight: 'bold', color: '#111', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {marca.nombre}
+                </a>
+              ))}
+              <button
+                className="cns-navbar-mobile-link"
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent('scrollToContacto'));
+                  setIsMobileMenuOpen(false);
+                }}
+                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', width: '100%', textAlign: 'left', marginBottom: 8 }}
+              >
+                {t('navbar.contact')}
+              </button>
+            </div>
           </div>
         </div>
       </nav>
