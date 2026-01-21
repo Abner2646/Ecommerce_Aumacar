@@ -1,5 +1,68 @@
 /* /src/styles/pages/Admin.css */
 
+/* ==================== BOTÓN HAMBURGUESA (Solo Mobile) ==================== */
+
+.adm-hamburger {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1001;
+  width: 48px;
+  height: 48px;
+  background-color: var(--color-gray-900);
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-white);
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.adm-hamburger:hover {
+  background-color: var(--color-gray-800);
+}
+
+.adm-hamburger:active {
+  transform: scale(0.95);
+}
+
+/* Desktop: ocultar hamburguesa */
+@media (min-width: 1024px) {
+  .adm-hamburger {
+    display: none;
+  }
+}
+
+/* ==================== OVERLAY (Solo Mobile) ==================== */
+
+.adm-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Desktop: no mostrar overlay */
+@media (min-width: 1024px) {
+  .adm-sidebar-overlay {
+    display: none;
+  }
+}
+
 /* ==================== LAYOUT ADMIN ==================== */
 
 .adm-layout {
@@ -10,8 +73,22 @@
 
 .adm-main {
   flex: 1;
-  margin-left: 280px;
   overflow-y: auto;
+}
+
+/* Desktop: margen izquierdo para el sidebar fijo */
+@media (min-width: 1024px) {
+  .adm-main {
+    margin-left: 280px;
+  }
+}
+
+/* Mobile: sin margen, sidebar es overlay */
+@media (max-width: 1023px) {
+  .adm-main {
+    margin-left: 0;
+    width: 100%;
+  }
 }
 
 .adm-content {
@@ -20,17 +97,11 @@
   margin: 0 auto;
 }
 
-@media (max-width: 1024px) {
-  .adm-main {
-    margin-left: 0;
-  }
-  
+/* Mobile: reducir padding del contenido */
+@media (max-width: 1023px) {
   .adm-content {
     padding: var(--space-lg);
-  }
-  
-  .adm-sidebar {
-
+    padding-top: 80px; /* Espacio para el botón hamburguesa */
   }
 }
 
@@ -47,10 +118,33 @@
   display: flex;
   flex-direction: column;
   z-index: 1000;
+  overflow-y: auto;
+  transition: transform var(--transition-base);
 }
 
+/* Mobile: Sidebar oculta por defecto */
+@media (max-width: 1023px) {
+  .adm-sidebar {
+    transform: translateX(-100%);
+    box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.3);
+  }
+
+  .adm-sidebar-open {
+    transform: translateX(0);
+  }
+}
+
+/* Desktop: Sidebar siempre visible, posición fija */
+@media (min-width: 1024px) {
+  .adm-sidebar {
+    position: fixed;
+    transform: translateX(0) !important;
+  }
+}
+
+/* ==================== SIDEBAR HEADER ==================== */
+
 .adm-sidebar-header {
-  /* CAMBIO: Reduje el padding vertical de xl a md para subir todo */
   padding: var(--space-md) var(--space-lg);
   border-bottom: 1px solid var(--color-gray-800);
 }
@@ -62,17 +156,17 @@
   margin: 0;
 }
 
+/* ==================== USER INFO ==================== */
+
 .adm-user-info {
   display: flex;
   align-items: center;
   gap: var(--space-md);
-  /* CAMBIO: Reduje el padding de lg a md para ganar espacio */
   padding: var(--space-md) var(--space-lg);
   border-bottom: 1px solid var(--color-gray-800);
 }
 
 .adm-user-avatar {
-  /* CAMBIO OPCIONAL: Reduje ligeramente el avatar (de 48 a 40px) para que sea más sutil */
   width: 40px;
   height: 40px;
   border-radius: var(--radius-full);
@@ -109,9 +203,10 @@
   margin: 0;
 }
 
+/* ==================== NAVEGACIÓN ==================== */
+
 .adm-nav {
   flex: 1;
-  /* CAMBIO: Reduje el padding superior/inferior del nav de lg a sm */
   padding: var(--space-sm) 0;
   overflow-y: auto;
 }
@@ -120,7 +215,6 @@
   display: flex;
   align-items: center;
   gap: var(--space-md);
-  /* CAMBIO: Ajusté el padding vertical de los links para que entren más items */
   padding: var(--space-sm) var(--space-lg);
   color: var(--color-gray-300);
   text-decoration: none;
@@ -145,8 +239,9 @@
   text-align: center;
 }
 
+/* ==================== SIDEBAR FOOTER ==================== */
+
 .adm-sidebar-footer {
-  /* CAMBIO: Reduje el padding del contenedor del footer */
   padding: var(--space-md);
   border-top: 1px solid var(--color-gray-800);
 }
@@ -157,7 +252,6 @@
   justify-content: center;
   gap: var(--space-sm);
   width: 100%;
-  /* CAMBIO: Reduje el padding interno del botón para hacerlo "más chico" */
   padding: var(--space-sm);
   background-color: transparent;
   color: var(--color-gray-300);
@@ -165,7 +259,7 @@
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-base);
-  font-size: 0.875rem; /* Letra un poco más chica también */
+  font-size: 0.875rem;
 }
 
 .adm-logout-btn:hover {
@@ -197,6 +291,24 @@
   gap: var(--space-md);
 }
 
+/* Mobile: Page header responsive */
+@media (max-width: 768px) {
+  .adm-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .adm-page-title {
+    font-size: 1.5rem;
+  }
+
+  .adm-page-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
 /* ==================== BUTTONS ==================== */
 
 .adm-btn {
@@ -220,7 +332,6 @@
 
 .adm-btn-primary:hover:not(:disabled) {
   background-color: var(--color-gray-800);
-
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
@@ -249,6 +360,14 @@
   cursor: not-allowed;
 }
 
+/* Mobile: botones full width */
+@media (max-width: 768px) {
+  .adm-page-actions .adm-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* ==================== DATA TABLE ==================== */
 
 .adm-table-container {
@@ -258,9 +377,23 @@
   overflow: hidden;
 }
 
+/* Mobile: tabla con scroll horizontal */
+@media (max-width: 768px) {
+  .adm-table-container {
+    overflow-x: auto;
+  }
+}
+
 .adm-table {
   width: 100%;
   border-collapse: collapse;
+}
+
+/* Mobile: tabla con min-width para scroll */
+@media (max-width: 768px) {
+  .adm-table {
+    min-width: 600px;
+  }
 }
 
 .adm-table-header {
@@ -276,6 +409,14 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-bottom: 2px solid var(--color-gray-200);
+}
+
+/* Mobile: reducir padding en headers */
+@media (max-width: 768px) {
+  .adm-table-th {
+    padding: var(--space-sm) var(--space-md);
+    font-size: 0.75rem;
+  }
 }
 
 .adm-table-sort-btn {
@@ -321,6 +462,14 @@
   color: var(--color-gray-800);
 }
 
+/* Mobile: reducir padding en celdas */
+@media (max-width: 768px) {
+  .adm-table-td {
+    padding: var(--space-sm) var(--space-md);
+    font-size: 0.875rem;
+  }
+}
+
 .adm-table-actions {
   display: flex;
   gap: var(--space-sm);
@@ -341,7 +490,6 @@
 }
 
 .adm-action-btn:hover {
-
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
@@ -373,6 +521,14 @@
   background-color: var(--color-white);
   border-radius: var(--radius-lg);
   text-align: center;
+}
+
+/* Mobile: reducir padding en estados vacíos */
+@media (max-width: 768px) {
+  .adm-table-loading,
+  .adm-table-empty {
+    padding: var(--space-2xl) var(--space-lg);
+  }
 }
 
 .adm-vehiculo-table-image {
@@ -413,6 +569,15 @@
   padding: var(--space-lg);
 }
 
+/* Mobile: modal ocupa más pantalla */
+@media (max-width: 768px) {
+  .adm-modal-overlay {
+    padding: var(--space-sm);
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+}
+
 .adm-modal {
   background-color: var(--color-white);
   border-radius: var(--radius-lg);
@@ -420,6 +585,14 @@
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile: modal full width, más alto */
+@media (max-width: 768px) {
+  .adm-modal {
+    max-height: none;
+    margin: var(--space-sm) 0;
+  }
 }
 
 .adm-modal-header {
@@ -430,11 +603,25 @@
   border-bottom: 1px solid var(--color-gray-200);
 }
 
+/* Mobile: reducir padding en header */
+@media (max-width: 768px) {
+  .adm-modal-header {
+    padding: var(--space-lg);
+  }
+}
+
 .adm-modal-title {
   font-size: 1.5rem;
   font-weight: var(--font-weight-bold);
   color: var(--color-gray-900);
   margin: 0;
+}
+
+/* Mobile: título más pequeño */
+@media (max-width: 768px) {
+  .adm-modal-title {
+    font-size: 1.25rem;
+  }
 }
 
 .adm-modal-close {
@@ -458,6 +645,13 @@
 
 .adm-modal-body {
   padding: var(--space-xl);
+}
+
+/* Mobile: reducir padding en body */
+@media (max-width: 768px) {
+  .adm-modal-body {
+    padding: var(--space-lg);
+  }
 }
 
 /* ==================== FORMS ==================== */
@@ -548,6 +742,13 @@
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
+/* Mobile: reducir padding en filtros */
+@media (max-width: 768px) {
+  .adm-filters {
+    padding: var(--space-lg);
+  }
+}
+
 /* ==================== DASHBOARD ==================== */
 
 .adm-stat-card-static {
@@ -559,6 +760,14 @@
   border-radius: var(--radius-lg);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   border: 2px solid var(--color-gray-200);
+}
+
+/* Mobile: stat cards más compactos */
+@media (max-width: 768px) {
+  .adm-stat-card-static {
+    padding: var(--space-lg);
+    gap: var(--space-md);
+  }
 }
 
 .adm-stat-icon-wrapper {
@@ -575,6 +784,14 @@
   color: var(--color-white);
 }
 
+/* Mobile: íconos más pequeños */
+@media (max-width: 768px) {
+  .adm-stat-icon {
+    width: 48px;
+    height: 48px;
+  }
+}
+
 .adm-stat-content {
   flex: 1;
 }
@@ -585,6 +802,13 @@
   margin: 0 0 4px 0;
 }
 
+/* Mobile: labels más pequeños */
+@media (max-width: 768px) {
+  .adm-stat-label {
+    font-size: 0.75rem;
+  }
+}
+
 .adm-stat-value {
   font-size: 2rem;
   font-weight: var(--font-weight-bold);
@@ -592,10 +816,24 @@
   margin: 0;
 }
 
+/* Mobile: valores más pequeños */
+@media (max-width: 768px) {
+  .adm-stat-value {
+    font-size: 1.5rem;
+  }
+}
+
 .adm-stat-description {
   font-size: 0.875rem;
   color: var(--color-gray-500);
   margin: 4px 0 0 0;
+}
+
+/* Mobile: descripciones más pequeñas */
+@media (max-width: 768px) {
+  .adm-stat-description {
+    font-size: 0.75rem;
+  }
 }
 
 /* Quick Actions - RESPONSIVE GRID */
@@ -632,7 +870,6 @@
 
 .adm-quick-action-card:hover {
   border-color: var(--color-gray-400);
-
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
@@ -682,7 +919,6 @@
 }
 
 .adm-quick-action-card:hover .adm-quick-action-arrow {
-
   color: var(--color-gray-600);
 }
 
@@ -720,7 +956,6 @@
 
 .adm-dashboard-vehiculo-card:hover {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-
 }
 
 .adm-dashboard-vehiculo-img {
@@ -745,6 +980,13 @@
   border: 1px solid var(--color-gray-200);
 }
 
+/* Mobile: summary cards más compactos */
+@media (max-width: 768px) {
+  .adm-summary-card {
+    padding: var(--space-lg);
+  }
+}
+
 .adm-summary-title {
   font-size: 1.125rem;
   font-weight: var(--font-weight-semibold);
@@ -752,6 +994,13 @@
   margin-bottom: var(--space-lg);
   display: flex;
   align-items: center;
+}
+
+/* Mobile: título más pequeño */
+@media (max-width: 768px) {
+  .adm-summary-title {
+    font-size: 1rem;
+  }
 }
 
 /* ==================== CONFIRM DIALOG ==================== */
@@ -766,6 +1015,13 @@
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
+/* Mobile: confirm dialog más compacto */
+@media (max-width: 768px) {
+  .adm-confirm-dialog {
+    padding: var(--space-xl);
+  }
+}
+
 .adm-confirm-icon-wrapper {
   margin-bottom: var(--space-lg);
 }
@@ -775,6 +1031,13 @@
   font-weight: var(--font-weight-bold);
   color: var(--color-gray-900);
   margin: 0 0 var(--space-md) 0;
+}
+
+/* Mobile: título más pequeño */
+@media (max-width: 768px) {
+  .adm-confirm-title {
+    font-size: 1.25rem;
+  }
 }
 
 .adm-confirm-message {
@@ -787,6 +1050,17 @@
 .adm-confirm-buttons {
   display: flex;
   gap: var(--space-md);
+}
+
+/* Mobile: botones en columna */
+@media (max-width: 768px) {
+  .adm-confirm-buttons {
+    flex-direction: column-reverse;
+  }
+  
+  .adm-confirm-buttons .adm-btn {
+    width: 100%;
+  }
 }
 
 /* ==================== PREVIEW MODAL ==================== */
@@ -811,11 +1085,25 @@
   border-bottom: 1px solid var(--color-gray-200);
 }
 
+/* Mobile: reducir padding en preview header */
+@media (max-width: 768px) {
+  .adm-preview-header {
+    padding: var(--space-lg);
+  }
+}
+
 .adm-preview-title {
   font-size: 1.5rem;
   font-weight: var(--font-weight-bold);
   color: var(--color-gray-900);
   margin: 0;
+}
+
+/* Mobile: título más pequeño */
+@media (max-width: 768px) {
+  .adm-preview-title {
+    font-size: 1.125rem;
+  }
 }
 
 .adm-preview-body {
@@ -826,9 +1114,12 @@
   overflow-y: auto;
 }
 
+/* Mobile/Tablet: una columna */
 @media (max-width: 1024px) {
   .adm-preview-body {
     grid-template-columns: 1fr;
+    padding: var(--space-lg);
+    gap: var(--space-lg);
   }
 }
 
@@ -855,7 +1146,6 @@
 .adm-preview-nav-btn {
   position: absolute;
   top: 50%;
-
   width: 48px;
   height: 48px;
   display: flex;
@@ -883,11 +1173,26 @@
   right: var(--space-md);
 }
 
+/* Mobile: botones más pequeños */
+@media (max-width: 768px) {
+  .adm-preview-nav-btn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .adm-preview-nav-prev {
+    left: var(--space-sm);
+  }
+  
+  .adm-preview-nav-next {
+    right: var(--space-sm);
+  }
+}
+
 .adm-preview-image-counter {
   position: absolute;
   bottom: var(--space-md);
   left: 50%;
-
   padding: 6px 16px;
   background-color: rgba(0, 0, 0, 0.7);
   color: var(--color-white);
@@ -954,6 +1259,14 @@
   margin-bottom: var(--space-lg);
 }
 
+/* Mobile: price section en columna */
+@media (max-width: 768px) {
+  .adm-preview-price-section {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+}
+
 .adm-preview-spec {
   display: flex;
   align-items: center;
@@ -1012,6 +1325,13 @@
   border-bottom: 1px solid var(--color-gray-200);
 }
 
+/* Mobile: reducir padding en login header */
+@media (max-width: 768px) {
+  .adm-login-header {
+    padding: var(--space-2xl) var(--space-lg) var(--space-lg);
+  }
+}
+
 .adm-login-icon {
   width: 80px;
   height: 80px;
@@ -1024,11 +1344,26 @@
   border-radius: var(--radius-full);
 }
 
+/* Mobile: ícono más pequeño */
+@media (max-width: 768px) {
+  .adm-login-icon {
+    width: 64px;
+    height: 64px;
+  }
+}
+
 .adm-login-title {
   font-size: 1.75rem;
   font-weight: var(--font-weight-bold);
   color: var(--color-gray-900);
   margin: 0 0 var(--space-sm) 0;
+}
+
+/* Mobile: título más pequeño */
+@media (max-width: 768px) {
+  .adm-login-title {
+    font-size: 1.5rem;
+  }
 }
 
 .adm-login-subtitle {
@@ -1044,6 +1379,13 @@
   gap: var(--space-lg);
 }
 
+/* Mobile: reducir padding en form */
+@media (max-width: 768px) {
+  .adm-login-form {
+    padding: var(--space-xl);
+  }
+}
+
 .adm-login-input-wrapper {
   position: relative;
 }
@@ -1052,7 +1394,6 @@
   position: absolute;
   left: var(--space-md);
   top: 50%;
-
   color: var(--color-gray-400);
   font-size: 1rem;
   pointer-events: none;
@@ -1069,6 +1410,13 @@
   text-align: center;
 }
 
+/* Mobile: reducir padding en footer */
+@media (max-width: 768px) {
+  .adm-login-footer {
+    padding: var(--space-md) var(--space-lg);
+  }
+}
+
 /* ==================== MARCAS ==================== */
 
 .adm-marcas-grid {
@@ -1080,6 +1428,7 @@
 @media (max-width: 768px) {
   .adm-marcas-grid {
     grid-template-columns: 1fr;
+    gap: var(--space-lg);
   }
 }
 
@@ -1095,7 +1444,6 @@
 
 .adm-marca-card:hover {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-
 }
 
 .adm-marca-card-header {
@@ -1138,6 +1486,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+}
+
+/* Mobile: reducir padding en card body */
+@media (max-width: 768px) {
+  .adm-marca-card-body {
+    padding: var(--space-lg);
+  }
 }
 
 .adm-marca-card-title {
@@ -1192,6 +1547,14 @@
   border-top: 1px solid var(--color-gray-200);
 }
 
+/* Mobile: stats en columna */
+@media (max-width: 768px) {
+  .adm-marca-stats {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+}
+
 .adm-marca-stat {
   display: flex;
   align-items: center;
@@ -1206,6 +1569,17 @@
   padding: var(--space-lg);
   border-top: 1px solid var(--color-gray-200);
   background-color: var(--color-gray-50);
+}
+
+/* Mobile: botones en columna */
+@media (max-width: 768px) {
+  .adm-marca-card-footer {
+    flex-direction: column;
+  }
+  
+  .adm-marca-card-footer .adm-btn {
+    width: 100%;
+  }
 }
 
 .adm-logo-preview {
@@ -1285,6 +1659,14 @@
   align-items: center;
 }
 
+/* Mobile: color picker en columna */
+@media (max-width: 768px) {
+  .adm-color-picker {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
 .adm-color-input {
   width: 60px;
   height: 42px;
@@ -1292,6 +1674,13 @@
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-base);
+}
+
+/* Mobile: color input full width */
+@media (max-width: 768px) {
+  .adm-color-input {
+    width: 100%;
+  }
 }
 
 .adm-color-input:hover {
@@ -1310,4 +1699,3 @@
   border-radius: var(--radius-md);
   border: 1px solid var(--color-gray-200);
 }
-

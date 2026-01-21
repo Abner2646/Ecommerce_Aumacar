@@ -1,4 +1,4 @@
-// /src/components/vehicle-templates/Template01.jsx 
+// /src/components/vehicle-templates/Template02.jsx
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -79,7 +79,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentSlide]); // Removí mediaItems.length de dependencias para evitar error
+  }, [currentSlide]);
 
   // ==================== VALIDACIÓN (DESPUÉS DE HOOKS) ====================
   if (!vehiculo) {
@@ -256,6 +256,27 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
   return (
     <div className="template-02-tesla bg-black">
       <style>{`
+        /* ==================== BASE STYLES ==================== */
+        
+        .hero-section {
+          height: 100vh !important;
+          min-height: 600px !important;
+        }
+
+        .gallery-container {
+          height: 100vh !important;
+        }
+        
+        .gallery-image {
+          object-fit: cover !important;
+        }
+        
+        .gallery-video {
+          object-fit: cover !important;
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        
         @keyframes pulse-ring {
           0% {
             transform: scale(1);
@@ -348,10 +369,34 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
           -ms-overflow-style: none;
           scrollbar-width: none;
         }
+
+        /* ==================== MOBILE OVERRIDES ==================== */
+        
+        @media (max-width: 768px) {
+          .hero-section {
+            height: 70vh !important;
+            min-height: 500px !important;
+          }
+
+          .gallery-container {
+            height: 60vh !important;
+            min-height: 400px !important;
+          }
+          
+          .gallery-image {
+            object-fit: contain !important;
+            background: #000 !important;
+          }
+          
+          .gallery-video {
+            object-fit: contain !important;
+            background: #000 !important;
+          }
+        }
       `}</style>
 
       {/* HERO CINEMATOGRÁFICO CON PRECIO */}
-      <section className="relative h-screen w-full overflow-hidden">
+      <section className="hero-section relative w-full overflow-hidden">
         {videoUrl ? (
           <>
             <video
@@ -366,7 +411,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
             </video>
 
             {/* Control de volumen */}
-            <div className="absolute bottom-8 left-8 z-20">
+            <div className="absolute bottom-4 md:bottom-8 left-4 md:left-8 z-20">
               <button
                 onClick={toggleMute}
                 className="group relative"
@@ -376,19 +421,19 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
                   <div className="absolute inset-0 rounded-full bg-white/30 pulse-ring" />
                 )}
                 
-                <div className="relative flex items-center gap-3 px-5 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
+                <div className="relative flex items-center gap-2 md:gap-3 px-3 md:px-5 py-2 md:py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
                   {videoMuted ? (
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
                     </svg>
                   ) : (
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                     </svg>
                   )}
                   
-                  <span className="text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="hidden md:inline text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {videoMuted ? 'Activar audio' : 'Silenciar'}
                   </span>
                 </div>
@@ -407,20 +452,20 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
 
         {/* Contenido centrado */}
-        <div className="relative h-full flex flex-col items-center justify-center px-8">
-          <h1 className="text-7xl md:text-8xl lg:text-9xl font-bold text-white text-center tracking-tight mb-6">
+        <div className="relative h-full flex flex-col items-center justify-center px-4 md:px-8">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white text-center tracking-tight mb-4 md:mb-6">
             {modelo}
           </h1>
           
-          {/* Precio chiquito */}
-          <div className="flex items-center gap-4 text-white/80">
-            <div className="text-lg md:text-xl font-light tracking-wider">
+          {/* Precio */}
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-white/80">
+            <div className="text-base md:text-lg lg:text-xl font-light tracking-wider">
               Desde ${precioFormateado}
             </div>
             {precioUsdFormateado && (
               <>
-                <span className="text-white/40">•</span>
-                <div className="text-lg md:text-xl font-light tracking-wider">
+                <span className="hidden md:inline text-white/40">•</span>
+                <div className="text-base md:text-lg lg:text-xl font-light tracking-wider">
                   USD ${precioUsdFormateado}
                 </div>
               </>
@@ -428,37 +473,49 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-          <div className="flex flex-col items-center gap-3">
+        {/* Scroll indicator - SOLO DESKTOP */}
+        <div className="hidden md:flex absolute bottom-6 md:bottom-12 left-1/2 -translate-x-1/2">
+          <div className="flex flex-col items-center gap-2 md:gap-3">
             <div className="text-xs text-white/70 uppercase tracking-widest">Explorar</div>
-            <svg className="w-6 h-6 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 md:w-6 md:h-6 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </div>
         </div>
       </section>
 
-      {/* GALERÍA FULLSCREEN CINEMATOGRÁFICA */}
+      {/* SCROLL INDICATOR - FLOTANTE ENTRE SECCIONES (Solo Mobile) */}
+      <div className="md:hidden relative bg-black">
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2 z-30">
+          <div className="flex flex-col items-center gap-2">
+            <div className="text-xs text-white/70 uppercase tracking-widest">Explorar</div>
+            <svg className="w-5 h-5 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* GALERÍA ADAPTABLE */}
       <section className="relative bg-black">
         {/* Selector de colores - flotante sobre slider */}
         {colores.length > 0 && (
-          <div className="absolute top-8 left-1/2 -translate-x-1/2 z-30 w-full px-8">
-            <div className="flex items-center justify-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
+          <div className="absolute top-4 md:top-8 left-1/2 -translate-x-1/2 z-30 w-full px-4 md:px-8">
+            <div className="flex items-center justify-center gap-2 md:gap-3 overflow-x-auto pb-3 md:pb-4 scrollbar-hide">
               {/* Botón "Todas" */}
               <button
                 onClick={() => setColorSeleccionado(null)}
-                className={`color-tab flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${
+                className={`color-tab flex-shrink-0 flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full backdrop-blur-md transition-all duration-300 ${
                   colorSeleccionado === null
                     ? 'bg-white text-black shadow-2xl'
                     : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
                 }`}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6" />
                 </svg>
-                <span className="text-sm font-bold uppercase tracking-wider">
+                <span className="text-xs md:text-sm font-bold uppercase tracking-wider">
                   Todas
                 </span>
               </button>
@@ -474,19 +531,19 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
                   <button
                     key={color.colorId}
                     onClick={() => setColorSeleccionado(color.colorId)}
-                    className={`color-tab flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${
+                    className={`color-tab flex-shrink-0 flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full backdrop-blur-md transition-all duration-300 ${
                       isSelected
                         ? 'bg-white text-black shadow-2xl'
                         : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
                     }`}
                   >
                     <div
-                      className={`w-6 h-6 rounded-full border-2 transition-all duration-300 ${
+                      className={`w-5 h-5 md:w-6 md:h-6 rounded-full border-2 transition-all duration-300 ${
                         isSelected ? 'border-black scale-110' : 'border-white/40'
                       }`}
                       style={{ backgroundColor: color.codigoHex }}
                     />
-                    <span className="text-sm font-bold uppercase tracking-wider">
+                    <span className="text-xs md:text-sm font-bold uppercase tracking-wider">
                       {color.nombre}
                     </span>
                   </button>
@@ -496,10 +553,10 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
           </div>
         )}
 
-        {/* Slider fullscreen */}
+        {/* Slider adaptable */}
         {mediaItems.length > 0 ? (
           <div 
-            className="relative w-full h-screen overflow-hidden"
+            className="gallery-container relative w-full overflow-hidden"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -514,25 +571,25 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
                   }`}
                 >
                   {item.type === 'image' ? (
-                    <div className="relative w-full h-full group">
+                    <div className="relative w-full h-full group flex items-center justify-center bg-black">
                       <img
                         src={item.url}
                         alt={`${modelo} - Imagen ${index + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        style={{ objectFit: 'cover' }}
+                        className="gallery-image w-full h-full transition-transform duration-700 group-hover:scale-105"
                       />
                     </div>
                   ) : (
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover"
-                      style={{ objectFit: 'cover' }}
-                    >
-                      <source src={item.url} type="video/mp4" />
-                    </video>
+                    <div className="relative w-full h-full flex items-center justify-center bg-black">
+                      <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="gallery-video w-full h-full"
+                      >
+                        <source src={item.url} type="video/mp4" />
+                      </video>
+                    </div>
                   )}
                 </div>
               ))}
@@ -543,28 +600,46 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
               <>
                 <button
                   onClick={prevSlide}
-                  className="slider-nav-button absolute left-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
+                  className="slider-nav-button absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
                   aria-label="Imagen anterior"
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
 
                 <button
                   onClick={nextSlide}
-                  className="slider-nav-button absolute right-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
+                  className="slider-nav-button absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
                   aria-label="Imagen siguiente"
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
               </>
             )}
+
+            {/* Indicador de slides */}
+            {mediaItems.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                {mediaItems.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === currentSlide 
+                        ? 'bg-white w-8' 
+                        : 'bg-white/40 hover:bg-white/60'
+                    }`}
+                    aria-label={`Ir a imagen ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         ) : (
-          <div className="h-screen flex items-center justify-center text-white/60 text-xl">
+          <div className="h-96 md:h-screen flex items-center justify-center text-white/60 text-lg md:text-xl px-4 text-center">
             No hay imágenes disponibles para este color
           </div>
         )}
@@ -572,52 +647,53 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
 
       {/* ESPECIFICACIONES */}
       {specs.length > 0 && (
-        <section className="fade-in-section py-24 md:py-32 px-8 md:px-16 lg:px-24 bg-black">
+        <section className="fade-in-section py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-16 xl:px-24 bg-black">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-4">
+            <div className="text-center mb-12 md:mb-16">
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-3 md:mb-4">
                 Performance
               </h3>
-              <h2 className="text-5xl md:text-6xl font-bold text-white">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
                 Especificaciones
               </h2>
             </div>
 
-            <div className="grid gap-4 md:gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))' }}>
+            {/* Mobile: 2 columnas, Tablet: 3 columnas, Desktop: auto-fit */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3 md:gap-4 lg:gap-6">
               {specs.map((spec, index) => (
                 <div
                   key={index}
-                  className={`spec-card relative p-6 rounded-2xl border-2 transition-all duration-400 ${
+                  className={`spec-card relative p-4 md:p-6 rounded-xl md:rounded-2xl border-2 transition-all duration-400 ${
                     spec.highlight
                       ? 'bg-white text-black border-white shadow-2xl'
                       : 'bg-white/5 border-white/10 hover:border-white/30 hover:bg-white/10 text-white'
                   }`}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <div className={`spec-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
+                  <div className={`spec-icon w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-4 ${
                     spec.highlight 
                       ? 'bg-black/10 text-black' 
                       : 'bg-white/10 text-white'
                   }`}>
-                    <div className="w-6 h-6">
+                    <div className="w-5 h-5 md:w-6 md:h-6">
                       {spec.icon}
                     </div>
                   </div>
 
-                  <div className={`text-xs font-semibold uppercase tracking-wider mb-2 ${
+                  <div className={`text-xs font-semibold uppercase tracking-wider mb-1 md:mb-2 ${
                     spec.highlight ? 'text-black/70' : 'text-white/70'
                   }`}>
                     {spec.label}
                   </div>
 
-                  <div className={`text-xl md:text-2xl font-bold ${
+                  <div className={`text-lg md:text-xl lg:text-2xl font-bold ${
                     spec.highlight ? 'text-black' : 'text-white'
                   }`}>
                     {spec.value}
                   </div>
 
                   {spec.highlight && (
-                    <div className="absolute top-4 right-4">
+                    <div className="absolute top-3 md:top-4 right-3 md:right-4">
                       <div className="w-2 h-2 bg-black rounded-full animate-pulse" />
                     </div>
                   )}
@@ -630,26 +706,27 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
 
       {/* CARACTERÍSTICAS */}
       {caracteristicas.length > 0 && (
-        <section className="fade-in-section py-24 md:py-32 px-8 md:px-16 lg:px-24 bg-black border-t border-white/10">
+        <section className="fade-in-section py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-16 xl:px-24 bg-black border-t border-white/10">
           <div className="max-w-5xl mx-auto">
-            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-16 md:mb-24 text-center">
+            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-12 md:mb-16 lg:mb-24 text-center">
               Equipamiento
             </h3>
 
-            <div className="grid md:grid-cols-2 gap-x-16 gap-y-6">
+            {/* Mobile: 1 columna, Desktop: 2 columnas */}
+            <div className="grid md:grid-cols-2 gap-4 md:gap-x-16 md:gap-y-6">
               {caracteristicas.map((carac, index) => (
                 <div 
                   key={carac.id || index}
-                  className="flex items-start gap-4 pb-6 border-b border-white/10 transition-all duration-300 hover:border-white/30"
+                  className="flex items-start gap-3 md:gap-4 pb-4 md:pb-6 border-b border-white/10 transition-all duration-300 hover:border-white/30"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   {/* Checkmark */}
-                  <svg className="flex-shrink-0 w-5 h-5 text-white mt-1" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="flex-shrink-0 w-5 h-5 text-white mt-0.5 md:mt-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   
                   {/* Texto */}
-                  <span className="text-lg text-gray-300">
+                  <span className="text-base md:text-lg text-gray-300">
                     {carac.nombre || carac}
                   </span>
                 </div>
@@ -660,7 +737,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
       )}
 
       {/* CTA FINAL */}
-      <section className="fade-in-section relative py-32 md:py-48 px-8 bg-black border-t border-white/10 overflow-hidden">
+      <section className="fade-in-section relative py-20 md:py-32 lg:py-48 px-4 md:px-8 bg-black border-t border-white/10 overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
             backgroundImage: `repeating-linear-gradient(
@@ -674,15 +751,15 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
         </div>
 
         <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl md:text-7xl font-bold text-white mb-12 leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-8 md:mb-12 leading-tight">
             Hacé que sea tuyo
           </h2>
           
-          <p className="text-xl md:text-2xl text-gray-400 font-light mb-16 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-400 font-light mb-12 md:mb-16 max-w-2xl mx-auto px-4">
             Comenzá el proceso de compra o contactá a nuestro equipo para una experiencia personalizada.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center max-w-2xl mx-auto">
+          <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center max-w-2xl mx-auto">
             <button
               onClick={() => {
                 navigate(`/comprar/${id}`);
@@ -692,7 +769,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
                   }
                 }, 50);
               }}
-              className="flex-1 px-12 py-6 text-base font-bold text-black bg-white hover:bg-gray-100 transition-all duration-300 tracking-wider uppercase hover:scale-105"
+              className="w-full sm:flex-1 px-8 md:px-12 py-4 md:py-6 text-sm md:text-base font-bold text-black bg-white hover:bg-gray-100 transition-all duration-300 tracking-wider uppercase hover:scale-105"
             >
               Comprar ahora
             </button>
@@ -701,29 +778,13 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
               href={`https://wa.me/5492914277849?text=Hola%20quiero%20información%20sobre%20el%20${encodeURIComponent(modelo)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 px-12 py-6 text-base font-bold text-white bg-transparent border-2 border-white hover:bg-white/10 transition-all duration-300 text-center tracking-wider uppercase hover:scale-105"
+              className="w-full sm:flex-1 px-8 md:px-12 py-4 md:py-6 text-sm md:text-base font-bold text-white bg-transparent border-2 border-white hover:bg-white/10 transition-all duration-300 text-center tracking-wider uppercase hover:scale-105"
             >
               Contactar
             </a>
           </div>
         </div>
       </section>
-
-      {/* DEBUG */}
-      {/*{process.env.NODE_ENV === 'development' && (
-        <div className="fixed bottom-4 right-4 bg-white/10 backdrop-blur-md text-green-400 px-4 py-3 rounded-xl shadow-2xl text-xs font-mono z-50 border border-white/20">
-          <div className="font-bold text-green-300 mb-2 pb-2 border-b border-white/20">
-            🎨 Template02 Tesla
-          </div>
-          <div className="space-y-1">
-            <div>Slide: <span className="text-white font-bold">{currentSlide + 1}/{mediaItems.length}</span></div>
-            <div>Color: <span className="text-white font-bold">{colorSeleccionado || 'todas'}</span></div>
-            <div>Muted: <span className="text-white font-bold">{videoMuted ? 'Sí' : 'No'}</span></div>
-            <div>Características: <span className="text-white font-bold">{caracteristicas.length}</span></div>
-            <div>Colores: <span className="text-white font-bold">{colores.length}</span></div>
-          </div>
-        </div>
-      )}*/}
     </div>
   );
 }

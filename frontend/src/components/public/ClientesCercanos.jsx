@@ -1,7 +1,7 @@
-// src/components/public/ClientesCercanos.jsx
+// src/components/public/ClientesCercanos.jsx 
 
 import { useState, useEffect } from 'react';
-import { MapPin, CheckCircle, X, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { MapPin, CheckCircle, X, ChevronLeft, ChevronRight, Star, AlertCircle } from 'lucide-react';
 
 const ClientesCercanos = () => {
   const [fotos, setFotos] = useState([]);
@@ -13,46 +13,65 @@ const ClientesCercanos = () => {
 
   useEffect(() => {
     const obtenerFotosCercanas = async () => {
+      console.log('[ClientesCercanos] Iniciando obtención de fotos...');
+      
       // Verificar si el navegador soporta geolocalización
       if (!("geolocation" in navigator)) {
+        console.error('[ClientesCercanos] Navegador no soporta geolocalización');
         setError("Tu navegador no soporta geolocalización");
         setLoading(false);
         return;
       }
 
       try {
+        console.log('[ClientesCercanos] Solicitando ubicación...');
+        
         // Obtener ubicación del usuario
         const position = await new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject, {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 0
+            enableHighAccuracy: false, // Cambiado a false para ser más rápido
+            timeout: 15000, // Aumentado a 15 segundos
+            maximumAge: 300000 // Cache de 5 minutos
           });
         });
 
         const { latitude, longitude } = position.coords;
+        console.log('[ClientesCercanos] Ubicación obtenida:', { latitude, longitude });
         setUbicacion({ latitud: latitude, longitud: longitude });
 
         // Obtener fotos cercanas (radio de 250km)
         const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
-        const response = await fetch(
-          `${API_URL}/fotos-clientes-region/coordenadas?latitud=${latitude}&longitud=${longitude}&radio=250`
-        );
+        const url = `${API_URL}/fotos-clientes-region/coordenadas?latitud=${latitude}&longitud=${longitude}&radio=250`;
+        console.log('[ClientesCercanos] Llamando API:', url);
+        
+        const response = await fetch(url);
 
         if (!response.ok) {
-          throw new Error('Error al obtener fotos');
+          throw new Error(`Error HTTP: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log('[ClientesCercanos] Fotos recibidas:', data.fotos?.length || 0);
         setFotos(data.fotos || []);
       } catch (err) {
+        console.error('[ClientesCercanos] Error:', err);
+        
         if (err.code === 1) {
-          setError("Permiso de ubicación denegado");
+          console.warn('[ClientesCercanos] Permiso de ubicación denegado');
+          setError("PERMISO_DENEGADO");
+        } else if (err.code === 2) {
+          console.warn('[ClientesCercanos] Ubicación no disponible');
+          setError("UBICACION_NO_DISPONIBLE");
+        } else if (err.code === 3) {
+          console.warn('[ClientesCercanos] Timeout al obtener ubicación');
+          setError("TIMEOUT");
         } else {
-          setError("No se pudo obtener la ubicación");
+          console.error('[ClientesCercanos] Error de red o API:', err.message);
+          setError("ERROR_API");
         }
       } finally {
         setLoading(false);
+        console.log('[ClientesCercanos] Carga finalizada');
       }
     };
 
@@ -119,7 +138,15 @@ const ClientesCercanos = () => {
     );
   }
 
-  // NO RENDERIZAR SI NO HAY FOTOS
+  // NO RENDERIZAR SI HAY ERROR O NO HAY FOTOS
+  // Logging para debug
+  if (error) {
+    console.log('[ClientesCercanos] Error detectado, no renderizando:', error);
+  }
+  if (!fotos || fotos.length === 0) {
+    console.log('[ClientesCercanos] Sin fotos, no renderizando. Total fotos:', fotos?.length);
+  }
+  
   if (error || !fotos || fotos.length === 0) {
     return null;
   }
@@ -156,7 +183,8 @@ const ClientesCercanos = () => {
               <div 
                 key={foto.id}
                 style={{ animationDelay: `${index * 150}ms` }}
-                className="group relative overflow-hidden rounded-3xl shadow-2xl transition-all duration-500 animate-fade-in-up"
+                className="group relative overflow-hidden rounded-3xl shadow-2xl transition-all duration-500 animate-fade-in-up cursor-pointer hover:shadow-3xl hover:scale-[1.02]"
+                onClick={() => abrirModal(foto, index)}
               >
                 {/* Badge de reciente (si la foto tiene menos de 30 días) */}
                 {foto.esReciente && (
@@ -173,7 +201,7 @@ const ClientesCercanos = () => {
                     src={foto.urlImagen}
                     alt={foto.textoDescriptivo || foto.ciudad}
                     loading="lazy"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   
                   {/* Overlay gradient sutil */}

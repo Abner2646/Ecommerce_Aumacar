@@ -1,4 +1,4 @@
-// /src/components/layout/AdminLayout.jsx
+// /src/components/layout/AdminLayout.jsx 
 
 import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';

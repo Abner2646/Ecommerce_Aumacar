@@ -1,4 +1,4 @@
-// /src/components/vehicle-templates/Template03.jsx 
+// /src/components/vehicle-templates/Template03.jsx
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -395,7 +395,7 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
       `}</style>
 
       {/* ============================================ */}
-      {/* SECCIÓN 1: HERO VIDEO (IGUAL TEMPLATE02) */}
+      {/* SECCIÓN 1: HERO VIDEO */}
       {/* ============================================ */}
       <section className="relative h-screen w-full overflow-hidden">
         {videoUrl ? (
@@ -411,8 +411,8 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
               <source src={videoUrl} type="video/mp4" />
             </video>
 
-            {/* Control de volumen */}
-            <div className="absolute bottom-8 left-8 z-20">
+            {/* Control de volumen - RESPONSIVE */}
+            <div className="absolute bottom-4 md:bottom-8 left-4 md:left-8 z-20">
               <button
                 onClick={toggleMute}
                 className="group relative"
@@ -422,19 +422,20 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                   <div className="absolute inset-0 rounded-full bg-white/30 pulse-ring" />
                 )}
                 
-                <div className="relative flex items-center gap-3 px-5 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
+                <div className="relative flex items-center gap-2 md:gap-3 px-3 md:px-5 py-2 md:py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
                   {videoMuted ? (
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
                     </svg>
                   ) : (
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                     </svg>
                   )}
                   
-                  <span className="text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {/* Texto solo en desktop */}
+                  <span className="hidden md:inline text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {videoMuted ? 'Activar audio' : 'Silenciar'}
                   </span>
                 </div>
@@ -453,20 +454,20 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
 
         {/* Contenido centrado */}
-        <div className="relative h-full flex flex-col items-center justify-center px-8">
-          <h1 className="text-7xl md:text-8xl lg:text-9xl font-bold text-white text-center tracking-tight mb-6">
+        <div className="relative h-full flex flex-col items-center justify-center px-4 md:px-8">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white text-center tracking-tight mb-4 md:mb-6">
             {modelo}
           </h1>
           
           {/* Precio */}
-          <div className="flex items-center gap-4 text-white/80">
-            <div className="text-lg md:text-xl font-light tracking-wider">
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-white/80">
+            <div className="text-base md:text-lg lg:text-xl font-light tracking-wider">
               Desde ${precioFormateado}
             </div>
             {precioUsdFormateado && (
               <>
-                <span className="text-white/40">•</span>
-                <div className="text-lg md:text-xl font-light tracking-wider">
+                <span className="hidden md:inline text-white/40">•</span>
+                <div className="text-base md:text-lg lg:text-xl font-light tracking-wider">
                   USD ${precioUsdFormateado}
                 </div>
               </>
@@ -474,35 +475,47 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-          <div className="flex flex-col items-center gap-3">
+        {/* Scroll indicator - SOLO DESKTOP */}
+        <div className="hidden md:flex absolute bottom-6 md:bottom-12 left-1/2 -translate-x-1/2">
+          <div className="flex flex-col items-center gap-2 md:gap-3">
             <div className="text-xs text-white/70 uppercase tracking-widest">Explorar</div>
-            <svg className="w-6 h-6 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 md:w-6 md:h-6 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </div>
         </div>
       </section>
 
+      {/* SCROLL INDICATOR - FLOTANTE ENTRE SECCIONES (Solo Mobile) */}
+      <div className="md:hidden relative bg-black">
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2 z-30">
+          <div className="flex flex-col items-center gap-2">
+            <div className="text-xs text-white/70 uppercase tracking-widest">Explorar</div>
+            <svg className="w-5 h-5 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
       {/* ============================================ */}
-      {/* SECCIÓN 2: GALERÍA SALTEADAS (3 IMÁGENES) */}
+      {/* SECCIÓN 2: GALERÍA SALTEADAS (3 IMÁGENES) - MÁS ESPACIADAS */}
       {/* ============================================ */}
       {imagenesSalteadas.length >= 3 && (
         <section ref={parallaxSectionRef} className="fade-in-section relative py-32 md:py-48 bg-black overflow-hidden">
-          <div className="max-w-7xl mx-auto px-8 md:px-16">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
             {/* Header */}
-            <div className="text-center mb-24">
+            <div className="text-center mb-20 md:mb-32">
               <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-4">
                 Diseño
               </h3>
-              <h2 className="text-4xl md:text-5xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
                 Pensado para vos y tu familia
               </h2>
             </div>
 
-            {/* Layout Zigzag - 3 imágenes */}
-            <div className="relative space-y-0">
+            {/* Layout Zigzag - 3 imágenes CON MUCHO MÁS ESPACIO */}
+            <div className="relative space-y-16 md:space-y-32">
               {/* Imagen 1 - Izquierda arriba */}
               <div className="relative z-10 w-full md:w-2/3 lg:w-1/2">
                 <div className="staggered-image rounded-lg overflow-hidden shadow-2xl">
@@ -514,9 +527,9 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                 </div>
               </div>
 
-              {/* Imagen 2 - Derecha centro (con parallax) - Superposición 10% */}
+              {/* Imagen 2 - Derecha centro (con parallax) */}
               <div 
-                className="relative z-20 w-full md:w-2/3 lg:w-1/2 ml-auto -mt-[10%]"
+                className="relative z-20 w-full md:w-2/3 lg:w-1/2 ml-auto"
                 style={{ transform: `translateY(${parallaxOffset}px)` }}
               >
                 <div className="staggered-image rounded-lg overflow-hidden shadow-2xl">
@@ -528,8 +541,8 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                 </div>
               </div>
 
-              {/* Imagen 3 - Izquierda abajo - Superposición 10% */}
-              <div className="relative z-10 w-full md:w-2/3 lg:w-1/2 -mt-[10%]">
+              {/* Imagen 3 - Izquierda abajo */}
+              <div className="relative z-10 w-full md:w-2/3 lg:w-1/2">
                 <div className="staggered-image rounded-lg overflow-hidden shadow-2xl">
                   <img
                     src={imagenesSalteadas[2].url}
@@ -562,35 +575,35 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
           <div className="absolute inset-0 bg-black/70" />
 
           {/* Contenido */}
-          <div className="relative h-full flex items-center justify-center px-8">
+          <div className="relative h-full flex items-center justify-center px-4 md:px-8">
             <div className="max-w-6xl w-full">
-              <div className="text-center mb-16">
+              <div className="text-center mb-12 md:mb-16">
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">
                   Equipamiento
                 </h3>
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6">
                   Todo lo que necesitás
                 </h2>
-                <p className="text-lg text-gray-300 font-light max-w-2xl mx-auto">
+                <p className="text-base md:text-lg lg:text-xl text-gray-300 font-light max-w-2xl mx-auto">
                   Tecnología, seguridad y confort para cada viaje
                 </p>
               </div>
 
-              {/* Grid de características con backdrop-blur */}
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+              {/* Grid de características con backdrop-blur - RESPONSIVE */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-5xl mx-auto">
                 {caracteristicas.map((carac, index) => (
                   <div 
                     key={carac.id || index}
-                    className="flex items-center gap-4 px-6 py-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                    className="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-lg md:rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
                     style={{ animationDelay: `${index * 0.02}s` }}
                   >
                     {/* Checkmark */}
-                    <svg className="flex-shrink-0 w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="flex-shrink-0 w-4 h-4 md:w-5 md:h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                     
                     {/* Texto */}
-                    <span className="text-sm md:text-base text-white font-light">
+                    <span className="text-xs md:text-sm lg:text-base text-white font-light">
                       {carac.nombre || carac}
                     </span>
                   </div>
@@ -605,29 +618,29 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
       {/* SECCIÓN 4: GALERÍA GENERAL CON COLORES */}
       {/* ============================================ */}
       <section className="fade-in-section bg-black py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-8 md:px-16">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
           {/* Selector de colores */}
           {colores.length > 0 && (
-            <div className="mb-20">
-              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-8 text-center">
+            <div className="mb-16 md:mb-20">
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-6 md:mb-8 text-center">
                 Colores Disponibles
               </h3>
               
-              <div className="flex items-center justify-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
+              <div className="flex items-center justify-center gap-2 md:gap-3 overflow-x-auto pb-3 md:pb-4 scrollbar-hide">
                 {/* Botón "Todas" */}
                 <button
                   onClick={() => setColorSeleccionado(null)}
-                  className={`color-tab flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${
+                  className={`color-tab flex-shrink-0 flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full backdrop-blur-md transition-all duration-300 ${
                     colorSeleccionado === null
                       ? 'bg-white text-black shadow-2xl'
                       : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
                   }`}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6" />
                   </svg>
-                  <span className="text-sm font-bold uppercase tracking-wider">
+                  <span className="text-xs md:text-sm font-bold uppercase tracking-wider">
                     Todas
                   </span>
                 </button>
@@ -643,19 +656,19 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                     <button
                       key={color.colorId}
                       onClick={() => setColorSeleccionado(color.colorId)}
-                      className={`color-tab flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${
+                      className={`color-tab flex-shrink-0 flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full backdrop-blur-md transition-all duration-300 ${
                         isSelected
                           ? 'bg-white text-black shadow-2xl'
                           : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
                       }`}
                     >
                       <div
-                        className={`w-6 h-6 rounded-full border-2 transition-all duration-300 ${
+                        className={`w-5 h-5 md:w-6 md:h-6 rounded-full border-2 transition-all duration-300 ${
                           isSelected ? 'border-black scale-110' : 'border-white/40'
                         }`}
                         style={{ backgroundColor: color.codigoHex }}
                       />
-                      <span className="text-sm font-bold uppercase tracking-wider">
+                      <span className="text-xs md:text-sm font-bold uppercase tracking-wider">
                         {color.nombre}
                       </span>
                     </button>
@@ -667,19 +680,19 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
 
           {/* Galería de imágenes */}
           {imagenesOrdenadas.length > 0 ? (
-            <div className="space-y-12">
+            <div className="space-y-8 md:space-y-12">
               {/* Header de galería */}
-              <div className="text-center space-y-4">
+              <div className="text-center space-y-3 md:space-y-4">
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
                   Galería
                 </h3>
-                <h2 className="text-4xl md:text-5xl font-bold text-white">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
                   Conocelo en detalle
                 </h2>
               </div>
 
               {/* Grid de imágenes - 2 por fila (estilo Porsche) */}
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid md:grid-cols-2 gap-6 md:gap-8">
                 {imagenesOrdenadas.slice(0, 2).map((imagen, index) => (
                   <div
                     key={imagen.id}
@@ -694,8 +707,8 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                     
                     {/* Icono de expandir en hover */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
-                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 md:p-4">
+                        <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
                         </svg>
                       </div>
@@ -706,7 +719,7 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
 
               {/* Imágenes expandidas */}
               {showAllImages && imagenesOrdenadas.length > 2 && (
-                <div className="expanded-images grid md:grid-cols-2 gap-8">
+                <div className="expanded-images grid md:grid-cols-2 gap-6 md:gap-8">
                   {imagenesOrdenadas.slice(2).map((imagen, index) => (
                     <div
                       key={imagen.id}
@@ -721,8 +734,8 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                       
                       {/* Icono de expandir en hover */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                        <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
-                          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 md:p-4">
+                          <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
                           </svg>
                         </div>
@@ -734,16 +747,16 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
 
               {/* Botón Ver más / Ver menos */}
               {imagenesOrdenadas.length > 2 && (
-                <div className="text-center pt-8">
+                <div className="text-center pt-6 md:pt-8">
                   <button
                     onClick={() => setShowAllImages(!showAllImages)}
-                    className="inline-flex items-center gap-3 px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 rounded-full text-white transition-all duration-300"
+                    className="inline-flex items-center gap-2 md:gap-3 px-6 md:px-8 py-3 md:py-4 bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 rounded-full text-white transition-all duration-300"
                   >
-                    <span className="text-sm font-bold uppercase tracking-wider">
+                    <span className="text-xs md:text-sm font-bold uppercase tracking-wider">
                       {showAllImages ? 'Ver menos' : `Ver más (${imagenesOrdenadas.length - 2} imágenes)`}
                     </span>
                     <svg 
-                      className={`w-5 h-5 transition-transform duration-300 ${showAllImages ? 'rotate-180' : ''}`}
+                      className={`w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 ${showAllImages ? 'rotate-180' : ''}`}
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"
@@ -755,7 +768,7 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
               )}
             </div>
           ) : (
-            <div className="text-center py-24 text-white/60 text-xl">
+            <div className="text-center py-20 md:py-24 text-white/60 text-lg md:text-xl px-4">
               No hay imágenes disponibles para este color
             </div>
           )}
@@ -779,28 +792,28 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
           <div className="absolute inset-0 bg-black/60" />
           
           {/* Contenido centrado */}
-          <div className="relative h-full flex items-center justify-center px-8">
-            <div className="max-w-4xl text-center space-y-8">
+          <div className="relative h-full flex items-center justify-center px-4 md:px-8">
+            <div className="max-w-4xl text-center space-y-6 md:space-y-8">
               <div className="text-xs font-bold text-gray-400 uppercase tracking-[0.3em]">
                 {modelo}
               </div>
               
-              <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight">
+              <h2 className="text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight">
                 Aventura y <br/>
                 <span className="text-gray-300">confiabilidad</span>
               </h2>
               
-              <p className="text-xl md:text-2xl text-gray-300 font-light max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base md:text-lg lg:text-xl xl:text-2xl text-gray-300 font-light max-w-2xl mx-auto leading-relaxed">
                 Diseñado para acompañarte en cada viaje, con la tecnología 
                 y seguridad que vos y tu familia merecen.
               </p>
               
               {/* Stats pequeños */}
               {specs.length > 0 && (
-                <div className="flex justify-center gap-12 pt-8">
+                <div className="flex justify-center gap-8 md:gap-12 pt-6 md:pt-8">
                   {specs.slice(0, 3).map((spec, idx) => (
                     <div key={idx} className="text-center">
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">
+                      <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-1">
                         {spec.value}
                       </div>
                       <div className="text-xs text-gray-400 uppercase tracking-wider">
@@ -819,33 +832,33 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
       {/* SECCIÓN 6: ESPECIFICACIONES COMPACTAS */}
       {/* ============================================ */}
       {specs.length > 0 && (
-        <section className="fade-in-section py-20 md:py-24 px-8 md:px-16 bg-black border-t border-white/10">
+        <section className="fade-in-section py-16 md:py-20 lg:py-24 px-4 md:px-8 lg:px-16 bg-black border-t border-white/10">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-4">
+            <div className="text-center mb-12 md:mb-16">
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-3 md:mb-4">
                 Performance
               </h3>
-              <h2 className="text-4xl md:text-5xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
                 Detalles Técnicos
               </h2>
             </div>
 
-            {/* Grid compacto de especificaciones - CENTRADO */}
+            {/* Grid compacto de especificaciones - CENTRADO Y RESPONSIVE */}
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '3rem', maxWidth: 'fit-content' }}>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-8 md:gap-12 lg:gap-16 max-w-fit">
                 {specs.map((spec, index) => (
                   <div
                     key={index}
-                    className="spec-card text-center space-y-3 flex flex-col items-center"
+                    className="spec-card text-center space-y-2 md:space-y-3 flex flex-col items-center"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
                     {/* Icono */}
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center ${
                       spec.highlight
                         ? 'bg-white text-black'
                         : 'bg-white/10 text-white'
                     }`}>
-                      <div className="w-6 h-6">
+                      <div className="w-5 h-5 md:w-6 md:h-6">
                         {spec.icon}
                       </div>
                     </div>
@@ -856,7 +869,7 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                     </div>
 
                     {/* Value */}
-                    <div className="text-xl md:text-2xl font-bold text-white">
+                    <div className="text-lg md:text-xl lg:text-2xl font-bold text-white">
                       {spec.value}
                     </div>
                   </div>
@@ -887,26 +900,27 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
           {/* Overlay sutil */}
           <div className="absolute inset-0 bg-black/20" />
 
-          {/* Control de volumen */}
-          <div className="absolute bottom-8 left-8 z-20">
+          {/* Control de volumen - RESPONSIVE */}
+          <div className="absolute bottom-4 md:bottom-8 left-4 md:left-8 z-20">
             <button
               onClick={toggleMute2}
               className="group relative"
               aria-label={video2Muted ? "Activar sonido" : "Silenciar"}
             >
-              <div className="relative flex items-center gap-3 px-5 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
+              <div className="relative flex items-center gap-2 md:gap-3 px-3 md:px-5 py-2 md:py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
                 {video2Muted ? (
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
                   </svg>
                 ) : (
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                   </svg>
                 )}
                 
-                <span className="text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Texto solo en desktop */}
+                <span className="hidden md:inline text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   {video2Muted ? 'Activar audio' : 'Silenciar'}
                 </span>
               </div>
@@ -918,7 +932,7 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
       {/* ============================================ */}
       {/* SECCIÓN 8: CTA FINAL */}
       {/* ============================================ */}
-      <section className="fade-in-section relative py-32 md:py-48 px-8 bg-black border-t border-white/10 overflow-hidden">
+      <section className="fade-in-section relative py-20 md:py-32 lg:py-48 px-4 md:px-8 bg-black border-t border-white/10 overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
             backgroundImage: `repeating-linear-gradient(
@@ -932,15 +946,15 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
         </div>
 
         <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl md:text-7xl font-bold text-white mb-12 leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-8 md:mb-12 leading-tight">
             Hacé que sea tuyo
           </h2>
           
-          <p className="text-xl md:text-2xl text-gray-400 font-light mb-16 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-400 font-light mb-12 md:mb-16 max-w-2xl mx-auto px-4">
             Comenzá el proceso de compra o contactá a nuestro equipo para una experiencia personalizada.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center max-w-2xl mx-auto">
+          <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center max-w-2xl mx-auto">
             <button
               onClick={() => {
                 navigate(`/comprar/${id}`);
@@ -950,7 +964,7 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                   }
                 }, 50);
               }}
-              className="flex-1 px-12 py-6 text-base font-bold text-black bg-white hover:bg-gray-100 transition-all duration-300 tracking-wider uppercase hover:scale-105"
+              className="w-full sm:flex-1 px-8 md:px-12 py-4 md:py-6 text-sm md:text-base font-bold text-black bg-white hover:bg-gray-100 transition-all duration-300 tracking-wider uppercase hover:scale-105"
             >
               Comprar ahora
             </button>
@@ -959,7 +973,7 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
               href={`https://wa.me/5492914277849?text=Hola%20quiero%20información%20sobre%20el%20${encodeURIComponent(modelo)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 px-12 py-6 text-base font-bold text-white bg-transparent border-2 border-white hover:bg-white/10 transition-all duration-300 text-center tracking-wider uppercase hover:scale-105"
+              className="w-full sm:flex-1 px-8 md:px-12 py-4 md:py-6 text-sm md:text-base font-bold text-white bg-transparent border-2 border-white hover:bg-white/10 transition-all duration-300 text-center tracking-wider uppercase hover:scale-105"
             >
               Contactar
             </a>
@@ -978,10 +992,10 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
           {/* Botón cerrar */}
           <button
             onClick={() => setModalImage(null)}
-            className="absolute top-8 right-8 z-10 w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full text-white transition-all duration-300"
+            className="absolute top-4 right-4 md:top-8 md:right-8 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full text-white transition-all duration-300"
             aria-label="Cerrar"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -999,30 +1013,13 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
           </div>
 
           {/* Hint para cerrar */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center">
-            <p className="text-sm text-white/70 uppercase tracking-wider">
+          <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 text-center px-4">
+            <p className="text-xs md:text-sm text-white/70 uppercase tracking-wider">
               Presiona ESC o haz clic fuera para cerrar
             </p>
           </div>
         </div>
       )}
-
-      {/* DEBUG */}
-      {/*{process.env.NODE_ENV === 'development' && (
-        <div className="fixed bottom-4 right-4 bg-white/10 backdrop-blur-md text-green-400 px-4 py-3 rounded-xl shadow-2xl text-xs font-mono z-50 border border-white/20">
-          <div className="font-bold text-green-300 mb-2 pb-2 border-b border-white/20">
-            🎨 Template03 Dynamic
-          </div>
-          <div className="space-y-1">
-            <div>Color: <span className="text-white font-bold">{colorSeleccionado || 'todas'}</span></div>
-            <div>Expandido: <span className="text-white font-bold">{showAllImages ? 'Sí' : 'No'}</span></div>
-            <div>Modal: <span className="text-white font-bold">{modalImage ? 'Abierto' : 'Cerrado'}</span></div>
-            <div>Parallax: <span className="text-white font-bold">{parallaxOffset.toFixed(1)}px</span></div>
-            <div>Videos: <span className="text-white font-bold">{videos.length}</span></div>
-            <div>Imágenes: <span className="text-white font-bold">{imagenesOrdenadas.length}</span></div>
-          </div>
-        </div>
-      )}*/}
     </div>
   );
 }

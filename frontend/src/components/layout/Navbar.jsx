@@ -1,4 +1,4 @@
-// /src/components/layout/Navbar.jsx
+// /src/components/layout/Navbar.jsx 
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
@@ -31,6 +31,8 @@ const Navbar = () => {
   useEffect(() => {
     marcasApi.getAll().then(res => {
       setMarcas(res.marcas || []);
+    }).catch(err => {
+      console.error('Error loading marcas:', err);
     });
   }, []);
 
@@ -101,6 +103,7 @@ const Navbar = () => {
       if (e.key === 'Escape') {
         setIsDropdownOpen(false);
         setIsMobileMenuOpen(false);
+        setIsMobileDropdownOpen(false);
       }
     };
 
@@ -216,15 +219,15 @@ const Navbar = () => {
             {/* Dropdown Marcas Mobile */}
             <div className="cns-navbar-mobile-dropdown">
               <button
-                className="cns-navbar-mobile-dropdown-trigger"
+                className={`cns-navbar-mobile-dropdown-trigger ${isInBrandPage ? 'cns-navbar-mobile-link--active' : ''}`}
                 onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
                 aria-expanded={isMobileDropdownOpen}
               >
                 <span>{t('navbar.brands')}</span>
                 <svg 
                   className={`cns-navbar-dropdown-arrow ${isMobileDropdownOpen ? 'cns-navbar-dropdown-arrow--open' : ''}`}
-                  width="12" 
-                  height="12" 
+                  width="16" 
+                  height="16" 
                   viewBox="0 0 12 12" 
                   fill="none"
                 >
@@ -247,7 +250,10 @@ const Navbar = () => {
                     key={marca.id}
                     href={`/marca/${marca.slug}`}
                     className="cns-navbar-mobile-dropdown-item"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsMobileDropdownOpen(false);
+                    }}
                   >
                     {marca.nombre}
                   </a>
@@ -262,7 +268,6 @@ const Navbar = () => {
                 window.dispatchEvent(new CustomEvent('scrollToContacto'));
                 setIsMobileMenuOpen(false);
               }}
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
             >
               {t('navbar.contact')}
             </button>

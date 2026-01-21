@@ -347,7 +347,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
       `}</style>
 
       {/* ============================================ */}
-      {/* SECCIÓN 1: HERO CINEMATOGRÁFICO (SIN CAMBIOS) */}
+      {/* SECCIÓN 1: HERO CINEMATOGRÁFICO */}
       {/* ============================================ */}
       <section className="relative h-screen w-full overflow-hidden">
         {videoUrl ? (
@@ -363,8 +363,8 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
               <source src={videoUrl} type="video/mp4" />
             </video>
 
-            {/* Control de volumen */}
-            <div className="absolute bottom-8 left-8 z-20">
+            {/* Control de volumen - RESPONSIVE */}
+            <div className="absolute bottom-4 md:bottom-8 left-4 md:left-8 z-20">
               <button
                 onClick={toggleMute}
                 className="group relative"
@@ -374,19 +374,20 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
                   <div className="absolute inset-0 rounded-full bg-white/30 pulse-ring" />
                 )}
                 
-                <div className="relative flex items-center gap-3 px-5 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
+                <div className="relative flex items-center gap-2 md:gap-3 px-3 md:px-5 py-2 md:py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
                   {videoMuted ? (
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
                     </svg>
                   ) : (
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                     </svg>
                   )}
                   
-                  <span className="text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {/* Texto solo en desktop */}
+                  <span className="hidden md:inline text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {videoMuted ? 'Activar audio' : 'Silenciar'}
                   </span>
                 </div>
@@ -405,20 +406,20 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
 
         {/* Contenido centrado */}
-        <div className="relative h-full flex flex-col items-center justify-center px-8">
-          <h1 className="text-7xl md:text-8xl lg:text-9xl font-bold text-white text-center tracking-tight mb-6">
+        <div className="relative h-full flex flex-col items-center justify-center px-4 md:px-8">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white text-center tracking-tight mb-4 md:mb-6">
             {modelo}
           </h1>
           
-          {/* Precio chiquito */}
-          <div className="flex items-center gap-4 text-white/80">
-            <div className="text-lg md:text-xl font-light tracking-wider">
+          {/* Precio */}
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-white/80">
+            <div className="text-base md:text-lg lg:text-xl font-light tracking-wider">
               Desde ${precioFormateado}
             </div>
             {precioUsdFormateado && (
               <>
-                <span className="text-white/40">•</span>
-                <div className="text-lg md:text-xl font-light tracking-wider">
+                <span className="hidden md:inline text-white/40">•</span>
+                <div className="text-base md:text-lg lg:text-xl font-light tracking-wider">
                   USD ${precioUsdFormateado}
                 </div>
               </>
@@ -426,16 +427,28 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-          <div className="flex flex-col items-center gap-3">
+        {/* Scroll indicator - SOLO DESKTOP */}
+        <div className="hidden md:flex absolute bottom-6 md:bottom-12 left-1/2 -translate-x-1/2">
+          <div className="flex flex-col items-center gap-2 md:gap-3">
             <div className="text-xs text-white/70 uppercase tracking-widest">Explorar</div>
-            <svg className="w-6 h-6 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 md:w-6 md:h-6 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </div>
         </div>
       </section>
+
+      {/* SCROLL INDICATOR - FLOTANTE ENTRE SECCIONES (Solo Mobile) */}
+      <div className="md:hidden relative bg-black">
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2 z-30">
+          <div className="flex flex-col items-center gap-2">
+            <div className="text-xs text-white/70 uppercase tracking-widest">Explorar</div>
+            <svg className="w-5 h-5 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </div>
+        </div>
+      </div>
 
       {/* ============================================ */}
       {/* SECCIÓN 2: GALERÍA COMPACTA CON EXPANDIR */}
