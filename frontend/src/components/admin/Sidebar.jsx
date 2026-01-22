@@ -1,11 +1,14 @@
 // /src/components/admin/Sidebar.jsx
 
+
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import React, { useState } from 'react';
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -38,7 +41,6 @@ const Sidebar = () => {
       icon: 'fa-palette',
       label: 'Colores'
     },
-    // ========== AGREGAR ESTA LÍNEA ==========
     {
       path: '/admin/clientes',
       icon: 'fa-users',
@@ -46,53 +48,82 @@ const Sidebar = () => {
     }
   ];
 
+  // Detectar mobile
+  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
+
+  // Cerrar sidebar al navegar
+  const handleNavClick = () => {
+    if (isMobile) setOpen(false);
+  };
+
+  // Botón hamburguesa sólo en mobile
+  // El botón y el backdrop sólo se muestran en mobile
   return (
-    <aside className="adm-sidebar">
-      {/* Header del Sidebar */}
-      <div className="adm-sidebar-header">
-        <h1 className="adm-sidebar-title">
-          aumacar s.r.l Admin
-        </h1>
-      </div>
-
-      {/* Usuario */}
-      <div className="adm-user-info">
-        <div className="adm-user-avatar">
-          <i className="fa-solid fa-user"></i>
+    <>
+      <button
+        className="adm-sidebar-toggle"
+        aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+        aria-expanded={open}
+        aria-controls="adm-sidebar"
+        style={{ display: isMobile ? 'flex' : 'none' }}
+        onClick={() => setOpen(!open)}
+      >
+        <i className={`fa-solid ${open ? 'fa-xmark' : 'fa-bars'}`}></i>
+      </button>
+      <div
+        className={`adm-sidebar-backdrop${open ? ' open' : ''}`}
+        style={{ display: isMobile && open ? 'block' : 'none' }}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+      <aside id="adm-sidebar" className={`adm-sidebar${open ? ' open' : ''}`}>
+        {/* Header del Sidebar */}
+        <div className="adm-sidebar-header">
+          <h1 className="adm-sidebar-title">
+            aumacar s.r.l Admin
+          </h1>
         </div>
-        <div className="adm-user-details">
-          <p className="adm-user-name">{user?.nombre || 'Admin'}</p>
-          <p className="adm-user-email">{user?.email || ''}</p>
-        </div>
-      </div>
 
-      {/* Navegación */}
-      <nav className="adm-nav">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) =>
-              `adm-nav-link ${isActive ? 'adm-nav-link-active' : ''}`
-            }
+        {/* Usuario */}
+        <div className="adm-user-info">
+          <div className="adm-user-avatar">
+            <i className="fa-solid fa-user"></i>
+          </div>
+          <div className="adm-user-details">
+            <p className="adm-user-name">{user?.nombre || 'Admin'}</p>
+            <p className="adm-user-email">{user?.email || ''}</p>
+          </div>
+        </div>
+
+        {/* Navegación */}
+        <nav className="adm-nav">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                `adm-nav-link ${isActive ? 'adm-nav-link-active' : ''}`
+              }
+              onClick={handleNavClick}
+            >
+              <i className={`fa-solid ${item.icon} adm-nav-icon`}></i>
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Logout */}
+        <div className="adm-sidebar-footer">
+          <button
+            onClick={handleLogout}
+            className="adm-logout-btn"
           >
-            <i className={`fa-solid ${item.icon} adm-nav-icon`}></i>
-            <span>{item.label}</span>
-          </NavLink>
-        ))}
-      </nav>
-
-      {/* Logout */}
-      <div className="adm-sidebar-footer">
-        <button
-          onClick={handleLogout}
-          className="adm-logout-btn"
-        >
-          <i className="fa-solid fa-right-from-bracket"></i>
-          <span>Cerrar Sesión</span>
-        </button>
-      </div>
-    </aside>
+            <i className="fa-solid fa-right-from-bracket"></i>
+            <span>Cerrar Sesión</span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 };
 
