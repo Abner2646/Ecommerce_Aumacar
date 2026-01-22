@@ -209,16 +209,34 @@ const Navbar = () => {
           <span className="cns-navbar-hamburger-line"></span>
         </button>
 
+        {/* Mobile Menu Backdrop */}
+        {isMobileMenuOpen && (
+          <div
+            className="cns-navbar-mobile-backdrop"
+            style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.35)', zIndex: 1000 }}
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+        )}
         {/* Mobile Menu */}
         <div 
           id="mobile-menu"
           className={`cns-navbar-mobile ${isMobileMenuOpen ? 'cns-navbar-mobile--open' : ''}`}
           aria-hidden={!isMobileMenuOpen}
+          style={{ zIndex: 1001 }}
         >
           <div className="cns-navbar-mobile-content">
-
+            {/* Botón cerrar (X) */}
+            <button
+              className="cns-navbar-mobile-close"
+              aria-label={t('navbar.closeMenu')}
+              style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', fontSize: 28, color: '#222', zIndex: 1002 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              ×
+            </button>
             {/* Contacto */}
-            <div className="cns-navbar-mobile-list" style={{marginTop: 16}}>
+            <div className="cns-navbar-mobile-list" style={{marginTop: 48}}>
               {marcas.map(marca => (
                 <a
                   key={marca.id}
