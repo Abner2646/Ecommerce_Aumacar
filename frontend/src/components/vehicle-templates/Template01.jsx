@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import '../../styles/vehicle-templates.css';
 import '../../styles/pages/plantilla1.css';
-import '../../styles/plantilla2.css';
+import '../../styles/pages/plantilla2.css';
 import '../../styles/pages/plantilla3.css';
 
 // Recibe prop plantillaMarca: 'plantilla1', 'plantilla2', 'plantilla3'
@@ -499,7 +501,10 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
 
       {/* TÍTULO PRINCIPAL VEHÍCULO */}
       <div className="w-full flex justify-center items-center pt-12 pb-4">
-        <h1 className="text-7xl md:text-8xl lg:text-9xl font-normal text-white text-center tracking-tight mb-6" style={{ fontWeight: 400 }}>
+        <h1
+          className={`nombre-vehiculo text-7xl md:text-8xl lg:text-9xl font-normal text-white text-center tracking-tight mb-6 plantilla-marca-${plantillaMarca}`}
+          style={{ fontWeight: 400 }}
+        >
           {nombre}
         </h1>
       </div>
