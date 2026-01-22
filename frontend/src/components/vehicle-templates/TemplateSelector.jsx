@@ -23,11 +23,13 @@ export default function TemplateSelector({ vehiculo }) {
   const TemplateComponent = TEMPLATES[templateNumber] || Template01;
   
   // ✅ Pasar todos los datos necesarios como props
-  // Determinar el nombre de la plantilla para la tipografía
+  // Determinar el nombre de la plantilla para la tipografía según la marca
   let plantillaMarca = 'plantilla1';
-  if (vehiculo.plantilla === 2) plantillaMarca = 'plantilla2';
-  else if (vehiculo.plantilla === 3) plantillaMarca = 'plantilla3';
-  // Si en el futuro hay más plantillas, agregar aquí
+  if (vehiculo.marca && vehiculo.marca.plantilla) {
+    if (vehiculo.marca.plantilla === 2 || vehiculo.marca.plantilla === '2') plantillaMarca = 'plantilla2';
+    else if (vehiculo.marca.plantilla === 3 || vehiculo.marca.plantilla === '3') plantillaMarca = 'plantilla3';
+    // Si en el futuro hay más plantillas, agregar aquí
+  }
 
   return (
     <TemplateComponent 

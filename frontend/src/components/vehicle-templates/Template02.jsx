@@ -1,3 +1,4 @@
+import '../../styles/vehicle-templates.css';
 // /src/components/vehicle-templates/Template02.jsx 
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -412,7 +413,10 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
 
         {/* Contenido centrado */}
         <div className="relative h-full flex flex-col items-center justify-center px-8">
-          <h1 className="text-7xl md:text-8xl lg:text-9xl font-normal text-white text-center tracking-tight mb-6" style={{ fontWeight: 400 }}>
+          <h1
+            className={`nombre-vehiculo text-7xl md:text-8xl lg:text-9xl font-normal text-white text-center tracking-tight mb-6 plantilla-marca-${plantillaMarca}`}
+            style={{ fontWeight: 400 }}
+          >
             {modelo}
           </h1>
           

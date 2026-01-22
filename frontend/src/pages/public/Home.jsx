@@ -38,13 +38,15 @@ function BrandCards() {
     <a
       key={marca.id}
       href={`/marca/${marca.slug}`}
-      className="lnd-brand-card w-full max-w-[95vw] h-[100px] md:max-w-[700px] md:min-h-[400px] md:aspect-[16/7] mx-auto"
+      className="lnd-brand-card w-full max-w-[95vw] h-[100px] md:max-w-[700px] md:min-h-[400px] md:aspect-[16/7] mx-auto group"
       onMouseEnter={e => {
         const video = e.currentTarget.querySelector('.brand-video');
         const img = e.currentTarget.querySelector('.brand-img');
         if (video) {
           video.style.display = 'block';
           video.play();
+          video.style.transform = 'scale(1.08)';
+          video.style.transition = 'transform 0.5s cubic-bezier(0.4,0,0.2,1)';
         }
         if (img) {
           img.style.display = 'none';
@@ -57,6 +59,7 @@ function BrandCards() {
           video.pause();
           video.currentTime = 0;
           video.style.display = 'none';
+          video.style.transform = 'scale(1)';
         }
         if (img) {
           img.style.display = 'block';
@@ -68,12 +71,12 @@ function BrandCards() {
           src={marca.fotoPresentacion}
           alt={marca.nombre}
           className="w-full h-full object-cover brand-img"
-          style={{ filter: 'saturate(1.1)', display: 'block', position: 'absolute', inset: 0 }}
+          style={{ filter: 'saturate(1.1)', display: 'block', position: 'absolute', inset: 0, transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)' }}
         />
         {marca.videoPresentacion && (
           <video
             className="w-full h-full object-cover brand-video"
-            style={{ filter: 'saturate(1.1)', position: 'absolute', inset: 0, display: 'none' }}
+            style={{ filter: 'saturate(1.1)', position: 'absolute', inset: 0, display: 'none', transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)' }}
             src={marca.videoPresentacion}
             muted
             playsInline
