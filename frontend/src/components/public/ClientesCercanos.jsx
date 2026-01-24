@@ -1,6 +1,6 @@
 // src/components/public/ClientesCercanos.jsx
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, CheckCircle, X, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
 const ClientesCercanos = () => {
@@ -10,18 +10,19 @@ const ClientesCercanos = () => {
   const [ubicacion, setUbicacion] = useState(null);
   const [fotoSeleccionada, setFotoSeleccionada] = useState(null);
   const [indiceActual, setIndiceActual] = useState(0);
+  const [timeoutError, setTimeoutError] = useState(false);
+  const timeoutRef = useRef(null);
+  const [intentos, setIntentos] = useState(0);
 
   useEffect(() => {
-    const obtenerFotosCercanas = async () => {
-      // Verificar si el navegador soporta geolocalización
+    let cancelado = false;
+    const obtenerFotosCercanas = async (reintento = 0) => {
       if (!("geolocation" in navigator)) {
         setError("Tu navegador no soporta geolocalización");
         setLoading(false);
         return;
       }
-
       try {
-        // Obtener ubicación del usuario
         const position = await new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject, {
             enableHighAccuracy: true,
@@ -29,34 +30,55 @@ const ClientesCercanos = () => {
             maximumAge: 0
           });
         });
-
         const { latitude, longitude } = position.coords;
         setUbicacion({ latitud: latitude, longitud: longitude });
-
-        // Obtener fotos cercanas (radio de 250km)
         const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
-        const response = await fetch(
-          `${API_URL}/fotos-clientes-region/coordenadas?latitud=${latitude}&longitud=${longitude}&radio=250`
-        );
-
+        const url = `${API_URL}/fotos-clientes-region/coordenadas?latitud=${latitude}&longitud=${longitude}&radio=250`;
+        const response = await fetch(url);
         if (!response.ok) {
-          throw new Error('Error al obtener fotos');
+          const errorText = await response.text();
+          if (response.status === 429) {
+            setError("Límite de la API alcanzado (rate limit)");
+          } else if (response.status === 403) {
+            setError("Acceso prohibido a la API (forbidden)");
+          } else {
+            setError(`Error al obtener fotos: ${response.status}`);
+          }
+          setLoading(false);
+          return;
         }
-
         const data = await response.json();
         setFotos(data.fotos || []);
       } catch (err) {
-        if (err.code === 1) {
-          setError("Permiso de ubicación denegado");
+        if (reintento < 2 && !cancelado) {
+          setTimeout(() => {
+            setIntentos(prev => prev + 1);
+            obtenerFotosCercanas(reintento + 1);
+          }, 2000);
         } else {
-          setError("No se pudo obtener la ubicación");
+          if (err.code === 1) {
+            setError("Permiso de ubicación denegado");
+          } else {
+            setError("No se pudo obtener la ubicación o hubo un error de red");
+          }
+          setLoading(false);
         }
       } finally {
-        setLoading(false);
+        if (!cancelado && !error) setLoading(false);
       }
     };
 
-    obtenerFotosCercanas();
+    timeoutRef.current = setTimeout(() => {
+      if (loading) {
+        setTimeoutError(true);
+      }
+    }, 7000);
+
+    obtenerFotosCercanas(0);
+    return () => {
+      clearTimeout(timeoutRef.current);
+      cancelado = true;
+    };
   }, []);
 
   // Función para abrir modal
@@ -195,8 +217,8 @@ const ClientesCercanos = () => {
                       </p>
                     )}
 
-                    {/* Ubicación y distancia */}
-                    <div className="flex items-center gap-3 text-white/90 text-base">
+                    {/* Ubicación y distancia - Responsive */}
+                    <div className="text-white/90 text-base">
                       <div className="flex items-center gap-2">
                         <MapPin className="w-5 h-5" />
                         <span className="font-medium">
@@ -204,9 +226,9 @@ const ClientesCercanos = () => {
                           {foto.provincia && `, ${foto.provincia}`}
                         </span>
                       </div>
-                      {foto.distanciaKm && (
-                        <span className="px-4 py-1.5 bg-white/25 backdrop-blur-md rounded-full text-sm font-semibold border border-white/30">
-                          A {Math.round(foto.distanciaKm)} km de ti
+                        {foto.distanciaKm && (
+                          <span className="inline mt-2 ml-[3px] px-4 py-1.5 bg-white/25 backdrop-blur-md rounded-full text-sm font-semibold border border-white/30 md:ml-6 md:relative md:top-[10px]">
+                            A {Math.round(foto.distanciaKm)} km de ti
                         </span>
                       )}
                     </div>

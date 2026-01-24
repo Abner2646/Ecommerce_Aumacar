@@ -1,3 +1,177 @@
+@media (max-width: 767px) {
+  .adm-table-container {
+    width: 100vw !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.3rem;
+    scrollbar-color: #bbb #eee;
+    scrollbar-width: thin;
+  }
+  .adm-table-container::-webkit-scrollbar {
+    height: 7px;
+    background: #eee;
+  }
+  .adm-table-container::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 4px;
+  }
+  .adm-table {
+    min-width: 650px;
+    font-size: 0.82rem;
+  }
+  .adm-table-th, .adm-table-td {
+    padding: 0.22rem 0.18rem;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .adm-table-header {
+    font-size: 0.88rem;
+  }
+  .adm-table-row i.fa-solid {
+    font-size: 1.05rem !important;
+  }
+  .adm-table-row .font-semibold {
+    font-size: 0.93rem;
+  }
+  .adm-table-row .text-sm {
+    font-size: 0.76rem;
+  }
+  .adm-badge, .adm-badge-gray, .adm-badge-success, .adm-badge-danger {
+    font-size: 0.72rem !important;
+    padding: 0.13em 0.48em !important;
+  }
+}
+@media (max-width: 767px) {
+  .adm-table-container {
+    width: 100vw !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.3rem;
+    scrollbar-color: #bbb #eee;
+    scrollbar-width: thin;
+  }
+  .adm-table-container::-webkit-scrollbar {
+    height: 7px;
+    background: #eee;
+  }
+  .adm-table-container::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 4px;
+  }
+  .adm-table {
+    min-width: 440px;
+    font-size: 0.78rem;
+  }
+  .adm-table-th, .adm-table-td {
+    padding: 0.18rem 0.12rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+  .adm-table-header {
+    font-size: 0.82rem;
+  }
+  .adm-table-row i.fa-solid {
+    font-size: 0.92rem !important;
+  }
+  .adm-table-row .font-semibold {
+    font-size: 0.85rem;
+  }
+  .adm-table-row .text-sm {
+    font-size: 0.7rem;
+  }
+  .adm-badge, .adm-badge-gray, .adm-badge-success, .adm-badge-danger {
+    font-size: 0.65rem !important;
+    padding: 0.09em 0.38em !important;
+  }
+}
+@media (max-width: 767px) {
+  .adm-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.3rem;
+  }
+  .adm-table {
+    min-width: 440px;
+    font-size: 0.78rem;
+  }
+  .adm-table-th, .adm-table-td {
+    padding: 0.18rem 0.12rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+  .adm-table-header {
+    font-size: 0.82rem;
+  }
+  .adm-table-row i.fa-solid {
+    font-size: 0.92rem !important;
+  }
+  .adm-table-row .font-semibold {
+    font-size: 0.85rem;
+  }
+  .adm-table-row .text-sm {
+    font-size: 0.7rem;
+  }
+  .adm-badge, .adm-badge-gray, .adm-badge-success, .adm-badge-danger {
+    font-size: 0.65rem !important;
+    padding: 0.09em 0.38em !important;
+  }
+}
+@media (max-width: 767px) {
+  .adm-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+  }
+  .adm-table {
+    min-width: 520px;
+    font-size: 0.85rem;
+  }
+  .adm-table-th, .adm-table-td {
+    padding: 0.32rem 0.2rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .adm-table-header {
+    font-size: 0.9rem;
+  }
+  .adm-table-row i.fa-solid {
+    font-size: 1.1rem !important;
+  }
+  .adm-table-row .font-semibold {
+    font-size: 0.95rem;
+  }
+  .adm-table-row .text-sm {
+    font-size: 0.78rem;
+  }
+  .adm-badge, .adm-badge-gray, .adm-badge-success, .adm-badge-danger {
+    font-size: 0.75rem !important;
+    padding: 0.15em 0.6em !important;
+  }
+}
+@media (max-width: 767px) {
+  .adm-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+  }
+  .adm-table {
+    min-width: 600px;
+    font-size: 0.92rem;
+  }
+  .adm-table-th, .adm-table-td {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.92rem;
+    white-space: nowrap;
+  }
+  .adm-table-header {
+    font-size: 0.95rem;
+  }
+}
 /* ========== SIDEBAR DRAWER MOBILE ========== */
 @media (max-width: 767px) {
   .adm-sidebar {
@@ -10,10 +184,13 @@
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
     box-shadow: 2px 0 16px rgba(0,0,0,0.15);
-    z-index: 2000;
+    z-index: 3000;
+    pointer-events: auto;
   }
   .adm-sidebar.open {
     transform: translateX(0);
+    z-index: 3001;
+    pointer-events: auto;
   }
   .adm-sidebar-backdrop {
     position: fixed;
@@ -22,11 +199,13 @@
     width: 100vw;
     height: 100vh;
     background: rgba(0,0,0,0.3);
-    z-index: 1999;
+    z-index: 2000;
     display: none;
+    pointer-events: none;
   }
   .adm-sidebar-backdrop.open {
     display: block;
+    pointer-events: none;
   }
   .adm-sidebar-toggle {
     position: fixed;
