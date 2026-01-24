@@ -51,9 +51,11 @@ const Sidebar = () => {
   // Detectar mobile
   const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
 
-  // Cerrar sidebar al navegar
+  // Cerrar sidebar al navegar (delay en mobile para evitar conflicto con React Router)
   const handleNavClick = () => {
-    if (isMobile) setOpen(false);
+    if (isMobile) {
+      setTimeout(() => setOpen(false), 150);
+    }
   };
 
   // Botón hamburguesa sólo en mobile
@@ -70,13 +72,16 @@ const Sidebar = () => {
       >
         <i className={`fa-solid ${open ? 'fa-xmark' : 'fa-bars'}`}></i>
       </button>
-      <div
-        className={`adm-sidebar-backdrop${open ? ' open' : ''}`}
-        style={{ display: isMobile && open ? 'block' : 'none' }}
-        onClick={() => setOpen(false)}
-        aria-hidden="true"
-      />
-      <aside id="adm-sidebar" className={`adm-sidebar${open ? ' open' : ''}`}>
+      {/* Backdrop primero en el DOM, pointer-events solo cuando abierto */}
+      {isMobile && (
+        <div
+          className={`adm-sidebar-backdrop${open ? ' open' : ''}`}
+          style={{ display: open ? 'block' : 'none', pointerEvents: open ? 'auto' : 'none' }}
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+      <aside id="adm-sidebar" className={`adm-sidebar${open ? ' open' : ''}`} style={{ pointerEvents: 'auto', zIndex: 3001 }}>
         {/* Header del Sidebar */}
         <div className="adm-sidebar-header">
           <h1 className="adm-sidebar-title">

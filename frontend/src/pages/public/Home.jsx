@@ -92,7 +92,7 @@ function BrandCards() {
         <p className="text-sm md:text-xl text-white/90 mb-4 md:mb-8 leading-relaxed line-clamp-2">
           {marca.descripcion}
         </p>
-        <div className="inline-flex items-center gap-1 md:gap-2 text-white font-semibold">
+        <div className="flex flex-row items-center gap-1 md:gap-2 text-white font-semibold">
           <span className="text-base md:text-lg">{t('home.brands.btnExploreModels')}</span>
           <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -144,8 +144,25 @@ const Home = () => {
             autoPlay
             muted
             playsInline
-            style={{ width: '100vw', height: '100vh', objectFit: 'cover', objectPosition: 'center', display: 'block', background: '#000', filter: 'brightness(0.8) contrast(1.1)' }}
+            className="w-screen h-screen object-cover object-center block bg-black brightness-[.8] contrast-[1.1] mobile-video-fix"
+            style={{}}
           />
+          {/* Overlay gradiente y blur laterales mobile */}
+          <div className="cns-hero-overlay pointer-events-none z-10"></div>
+          <div className="pointer-events-none z-20 absolute inset-0 hidden md:block" style={{background: 'linear-gradient(90deg,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 20%,rgba(0,0,0,0) 80%,rgba(0,0,0,0.25) 100%)'}}></div>
+          <div className="pointer-events-none z-20 absolute inset-0 md:hidden flex">
+            <div className="w-1/6 h-full bg-gradient-to-r from-black/60 via-transparent to-transparent blur-sm"></div>
+            <div className="flex-1"></div>
+            <div className="w-1/6 h-full bg-gradient-to-l from-black/60 via-transparent to-transparent blur-sm"></div>
+          </div>
+          <style>{`
+            @media (max-width: 768px) {
+              .mobile-video-fix {
+                object-position: center 40%!important;
+                transform: scale(0.97) scaleY(1.10);
+              }
+            }
+          `}</style>
           <div className="cns-hero-overlay"></div>
         </div>
         

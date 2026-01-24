@@ -69,7 +69,7 @@ const ColoresManage = () => {
   const isSubmitting = createColor.isPending || updateColor.isPending;
 
   return (
-    <div>
+    <div className="mt-0 md:mt-0 sm:mt-0 lg:mt-0 xl:mt-0 2xl:mt-0 mt-[50px]">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
