@@ -3,6 +3,7 @@ frontend/src/assets/videos/
 frontend/src/assets/audios/
 frontend/src/assets/images/
 node_modules/
+**/node_modules/
 build/
 dist/
 .next/
@@ -64,3 +65,4 @@ coverage/
 *.tmp
 tmp/
 temp/
+**/.env

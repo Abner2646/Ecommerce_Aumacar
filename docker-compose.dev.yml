@@ -23,7 +23,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: aumacar_backend
     restart: unless-stopped
     environment:
@@ -35,13 +35,16 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
-      secretOrPrivateKey: ${JWT_SECRET}
-      JWT_EXPIRES_IN: 1h
+      JWT_EXPIRE: ${JWT_EXPIRE}
+      SESSION_SECRET: ${SESSION_SECRET}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
     ports:
-      - "0.0.0.0:${BACKEND_PORT}:${BACKEND_PORT}"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     volumes:
       - ./backend:/app
-      - /app/node_modules
       - aumacar_backend_node_modules:/app/node_modules
     depends_on:
       database:
@@ -52,11 +55,11 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: aumacar_frontend
     restart: unless-stopped
     environment:
-      - REACT_APP_API_URL=http://backend:${BACKEND_PORT}/api
+      - REACT_APP_API_URL=http://localhost:${BACKEND_PORT}/api
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
       - FAST_REFRESH=true
@@ -65,10 +68,9 @@ services:
       - WDS_SOCKET_PATH=/ws
       - HOST=0.0.0.0
     ports:
-      - "3000:3000"
+      - "${FRONTEND_PORT}:3000"
     volumes:
       - ./frontend:/app
-      - /app/node_modules
       - aumacar_frontend_node_modules:/app/node_modules
     depends_on:
       - backend
@@ -76,25 +78,24 @@ services:
       - aumacar_network
     stdin_open: true
     tty: true
+    command: sh -c "(node_modules/.bin/react-scripts --version >/dev/null 2>&1 || npm install --legacy-peer-deps --no-audit) && npm start"
 
-  nginx:
-    image: nginx:alpine
-    container_name: aumacar_nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    depends_on:
-      - frontend
-      - backend
-    networks:
-      - aumacar_network
 
+
+  pgadmin:
+      image: dpage/pgadmin4
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: admin
+      ports:
+        - "8080:80"
+      depends_on:
+        - database
+      networks:
+        - aumacar_network
 
 volumes:
   aumacar_postgres_data:
-  aumacar_redis_data:
   aumacar_frontend_node_modules:
   aumacar_backend_node_modules:
 
