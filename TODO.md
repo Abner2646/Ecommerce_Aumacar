@@ -1,2 +1,4 @@
 - Comprar dominio
 - Configurar certbot
+- Que se corran las migraciones al buildear
+- Resolver el tema de que se corran los seeders, igualmente el user y contra de admin deberian estar en el .env 
