@@ -21,8 +21,7 @@ RUN npm install -g nodemon
 # Copy source code
 COPY . .
 
-# Expose ports (app and debugging)
-EXPOSE 3001 9229
+EXPOSE 3001
 
 # Command with nodemon for hot reload
 CMD ["npm", "run", "dev"]

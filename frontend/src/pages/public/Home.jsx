@@ -140,7 +140,7 @@ const Home = () => {
                 };
               }
             }}
-            src={require('../../assets/videos/Subaru Forester e-Boxer HEV 2026.mp4')}
+            src={`${process.env.PUBLIC_URL}/videos/Subaru Forester e-Boxer HEV 2026.mp4`}
             autoPlay
             muted
             playsInline
