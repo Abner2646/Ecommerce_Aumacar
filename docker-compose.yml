@@ -27,7 +27,7 @@ services:
     container_name: aumacar_backend
     restart: unless-stopped
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: ${BACKEND_PORT}
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
@@ -35,14 +35,14 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
-      secretOrPrivateKey: ${JWT_SECRET}
-      JWT_EXPIRES_IN: 1h
+      JWT_EXPIRE: ${JWT_EXPIRE}
+      SESSION_SECRET: ${SESSION_SECRET}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
     ports:
-      - "0.0.0.0:${BACKEND_PORT}:${BACKEND_PORT}"
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-      - aumacar_backend_node_modules:/app/node_modules
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     depends_on:
       database:
         condition: service_healthy
@@ -53,29 +53,16 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: /api
     container_name: aumacar_frontend
     restart: unless-stopped
-    environment:
-      - REACT_APP_API_URL=http://backend:${BACKEND_PORT}/api
-      - CHOKIDAR_USEPOLLING=true
-      - WATCHPACK_POLLING=true
-      - FAST_REFRESH=true
-      - WDS_SOCKET_HOST=localhost
-      - WDS_SOCKET_PORT=3000
-      - WDS_SOCKET_PATH=/ws
-      - HOST=0.0.0.0
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-      - aumacar_frontend_node_modules:/app/node_modules
+      - "3000:80"
     depends_on:
       - backend
     networks:
       - aumacar_network
-    stdin_open: true
-    tty: true
 
   nginx:
     image: nginx:alpine
@@ -91,12 +78,8 @@ services:
     networks:
       - aumacar_network
 
-
 volumes:
   aumacar_postgres_data:
-  aumacar_redis_data:
-  aumacar_frontend_node_modules:
-  aumacar_backend_node_modules:
 
 networks:
   aumacar_network:

@@ -1,0 +1,2 @@
+- Comprar dominio
+- Configurar certbot
