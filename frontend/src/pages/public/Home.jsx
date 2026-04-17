@@ -5,6 +5,7 @@ import { marcasApi } from '../../api/marcas.api';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
 import ClientesCercanos from '../../components/public/ClientesCercanos';
+import heroVideo from '../../assets/videos/Subaru Forester e-Boxer HEV 2026.mp4';
 // Scroll suave y lento a una posición Y
 function smoothScrollTo(targetY, duration = 1200) {
   const startY = window.pageYOffset;
@@ -140,7 +141,7 @@ const Home = () => {
                 };
               }
             }}
-            src={`${process.env.PUBLIC_URL}/videos/Subaru Forester e-Boxer HEV 2026.mp4`}
+            src={heroVideo}
             autoPlay
             muted
             playsInline
