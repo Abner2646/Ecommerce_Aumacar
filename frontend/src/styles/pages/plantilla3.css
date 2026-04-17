@@ -157,9 +157,6 @@
   cursor: pointer;
 }
 
-.suzuki-home-feature-item:hover {
-
-}
 
 /* Overlay gradient para CTA */
 .suzuki-home-cta-gradient {
@@ -172,7 +169,6 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .suzuki-home-feature-item:hover {
-
-  }
+  /* .suzuki-home-feature-item:hover { }
+     (empty rule removed) */
 }
