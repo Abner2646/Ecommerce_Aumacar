@@ -5,7 +5,9 @@ import { marcasApi } from '../../api/marcas.api';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
 import ClientesCercanos from '../../components/public/ClientesCercanos';
-import heroVideo from '../../assets/videos/Subaru Forester e-Boxer HEV 2026.mp4';
+
+const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/v1768957118/marcas/portada/pur51pgmgruedks7kpbx.mp4';
+
 // Scroll suave y lento a una posición Y
 function smoothScrollTo(targetY, duration = 1200) {
   const startY = window.pageYOffset;
