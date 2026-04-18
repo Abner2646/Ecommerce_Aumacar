@@ -126,7 +126,7 @@ const Home = () => {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white">
+    <div className="cns-home-wrapper bg-white">
       {/* Hero Section Premium */}
       <section className="relative min-h-screen flex items-center justify-center bg-gray-900">
         <div className="absolute inset-0 overflow-hidden">
@@ -397,7 +397,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 };
 
