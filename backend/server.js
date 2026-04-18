@@ -22,7 +22,14 @@ const PORT = process.env.PORT || 3001;
 
 // ==================== CORS ====================
 const rawAllowed = process.env.ALLOWED_ORIGINS || process.env.FRONTEND_URL || '';
-const allowedOrigins = rawAllowed.split(',').map(s => s.trim()).filter(Boolean);
+// const allowedOrigins = rawAllowed.split(',').map(s => s.trim()).filter(Boolean);
+const allowedOrigins = [
+  "http://aumacar.com.ar",
+  "https://aumacar.com.ar",
+  "http://www.aumacar.com.ar",
+  "https://www.aumacar.com.ar",
+  "http://217.196.60.81"
+]; //rawAllowed.split(',').map(s => s.trim()).filter(Boolean);
 
 if (process.env.NODE_ENV !== 'production') {
   console.log('🔓 CORS: Modo desarrollo - Aceptando todos los orígenes');
