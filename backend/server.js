@@ -77,8 +77,8 @@ app.use(helmet({
 }));
 
 // ==================== Body Parsers ====================
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // ==================== Session ====================
 app.use(session({
