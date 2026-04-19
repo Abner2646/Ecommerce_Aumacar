@@ -131,23 +131,23 @@ const Home = () => {
     const START_TIME = 21;
     const END_TIME = 28;
 
-    const tryPlay = () => {
-      video.play().catch(() => {
-        // Si falla el autoplay en mobile, el poster ya es visible — ok
-      });
-    };
-
-    // canplay se dispara cuando hay suficiente buffer para seekear sin riesgo
     const handleCanPlay = () => {
-      try {
-        video.currentTime = START_TIME;
-      } catch (e) {
-        // Si el seek falla (raro en mobile), reproduce desde el inicio
+      // Solo seekea si todavía no llegamos al punto de inicio
+      // Esto evita que canplay (que se re-dispara en cada seek) genere un loop infinito
+      if (video.currentTime < START_TIME) {
+        try {
+          video.currentTime = START_TIME;
+        } catch (e) {
+          // Si el seek falla en mobile, reproduce desde el inicio — ok
+        }
       }
-      tryPlay();
+      // Solo llama play() si está pausado (en desktop autoplay ya lo arrancó)
+      if (video.paused) {
+        video.play().catch(() => {});
+      }
     };
 
-    // Loop entre segundo 21 y 28
+    // Loop manual entre segundo 21 y 28 (sin atributo loop en el elemento)
     const handleTimeUpdate = () => {
       if (video.currentTime >= END_TIME) {
         video.currentTime = START_TIME;
@@ -161,8 +161,8 @@ const Home = () => {
     if (video.readyState >= 3) {
       handleCanPlay();
     } else {
-      // Intento anticipado en caso de que el browser soporte autoplay antes de canplay
-      tryPlay();
+      // Intento anticipado para mobile donde autoplay puede necesitar ayuda
+      video.play().catch(() => {});
     }
 
     return () => {
@@ -194,7 +194,6 @@ const Home = () => {
             autoPlay
             muted
             playsInline
-            loop
             className="absolute inset-0 w-screen h-screen object-cover object-center block brightness-[.8] contrast-[1.1] mobile-video-fix"
           />
 
