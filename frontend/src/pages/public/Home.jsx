@@ -1,4 +1,4 @@
-// /src/pages/public/Home.jsx
+// /src/pages/public/Home.jsx  //
 import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { marcasApi } from '../../api/marcas.api';
