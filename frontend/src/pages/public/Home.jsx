@@ -1,12 +1,12 @@
 // /src/pages/public/Home.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { marcasApi } from '../../api/marcas.api';
-import { Link } from 'react-router-dom';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
 import ClientesCercanos from '../../components/public/ClientesCercanos';
 
 const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/f_auto,q_auto/v1768957118/marcas/portada/pur51pgmgruedks7kpbx.mp4';
+// Imagen estática del segundo 21 — siempre visible detrás del video
 const heroPoster = 'https://res.cloudinary.com/domckqidv/video/upload/so_21,w_1920,f_jpg/v1768957118/marcas/portada/pur51pgmgruedks7kpbx.jpg';
 
 // Scroll suave y lento a una posición Y
@@ -108,12 +108,11 @@ function BrandCards() {
 
 const Home = () => {
   const { t } = useTranslation();
-  
-  // Ref para la sección de contacto
-  const contactoRef = React.useRef(null);
+  const contactoRef = useRef(null);
+  const videoRef = useRef(null);
 
   // Handler para scroll desde la navbar
-  React.useEffect(() => {
+  useEffect(() => {
     const handler = () => {
       if (contactoRef.current) {
         const y = contactoRef.current.getBoundingClientRect().top + window.pageYOffset + 70;
@@ -124,32 +123,81 @@ const Home = () => {
     return () => window.removeEventListener('scrollToContacto', handler);
   }, []);
 
+  // Lógica del video hero: seek seguro + play manual como fallback
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const START_TIME = 21;
+    const END_TIME = 28;
+
+    const tryPlay = () => {
+      video.play().catch(() => {
+        // Si falla el autoplay en mobile, el poster ya es visible — ok
+      });
+    };
+
+    // canplay se dispara cuando hay suficiente buffer para seekear sin riesgo
+    const handleCanPlay = () => {
+      try {
+        video.currentTime = START_TIME;
+      } catch (e) {
+        // Si el seek falla (raro en mobile), reproduce desde el inicio
+      }
+      tryPlay();
+    };
+
+    // Loop entre segundo 21 y 28
+    const handleTimeUpdate = () => {
+      if (video.currentTime >= END_TIME) {
+        video.currentTime = START_TIME;
+      }
+    };
+
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('timeupdate', handleTimeUpdate);
+
+    // Si el video ya estaba en caché (readyState >= 3), canplay no vuelve a dispararse
+    if (video.readyState >= 3) {
+      handleCanPlay();
+    } else {
+      // Intento anticipado en caso de que el browser soporte autoplay antes de canplay
+      tryPlay();
+    }
+
+    return () => {
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+    };
+  }, []);
+
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section Premium */}
       <section className="relative min-h-screen flex items-center justify-center bg-gray-900">
         <div className="absolute inset-0 overflow-hidden">
+
+          {/*
+            Imagen de fondo SIEMPRE visible — elimina el negro mientras el video carga.
+            El video se posiciona encima con absolute; cuando carga, tapa la imagen.
+          */}
+          <img
+            src={heroPoster}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover brightness-[.8] contrast-[1.1] mobile-poster-fix"
+          />
+
           <video
-            ref={el => {
-              if (el) {
-                el.onloadedmetadata = () => {
-                  el.currentTime = 21;
-                };
-                el.ontimeupdate = () => {
-                  if (el.currentTime >= 28) {
-                    el.currentTime = 21;
-                  }
-                };
-              }
-            }}
+            ref={videoRef}
             src={heroVideo}
-            poster={heroPoster}
-            preload="auto"
             autoPlay
             muted
             playsInline
-            className="w-screen h-screen object-cover object-center block bg-black brightness-[.8] contrast-[1.1] mobile-video-fix"
+            loop
+            className="absolute inset-0 w-screen h-screen object-cover object-center block brightness-[.8] contrast-[1.1] mobile-video-fix"
           />
+
           {/* Overlay gradiente y blur laterales mobile */}
           <div className="cns-hero-overlay pointer-events-none z-10"></div>
           <div className="pointer-events-none z-20 absolute inset-0 hidden md:block" style={{background: 'linear-gradient(90deg,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 20%,rgba(0,0,0,0) 80%,rgba(0,0,0,0.25) 100%)'}}></div>
@@ -163,6 +211,9 @@ const Home = () => {
               .mobile-video-fix {
                 object-position: center 40%!important;
                 transform: scale(0.97) scaleY(1.10);
+              }
+              .mobile-poster-fix {
+                object-position: center 40%;
               }
             }
           `}</style>
@@ -230,7 +281,6 @@ const Home = () => {
       {/* Features Section Premium */}
       <section className="cns-section bg-gradient-to-b from-white via-gray-50 to-white">
         <div className="cns-container">
-          {/* Section Header */}
           <div className="text-center mb-20">
             <span className="cns-pill-badge mb-6">{t('home.features.badge')}</span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
@@ -242,7 +292,6 @@ const Home = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 max-w-6xl mx-auto">
-            {/* Feature 1 */}
             <div className="cns-feature-card group text-center p-8 md:p-10">
               <div className="cns-icon-container mx-auto mb-8">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -257,7 +306,6 @@ const Home = () => {
               </p>
             </div>
 
-            {/* Feature 2 */}
             <div className="cns-feature-card group text-center p-8 md:p-10">
               <div className="cns-icon-container mx-auto mb-8">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -272,7 +320,6 @@ const Home = () => {
               </p>
             </div>
 
-            {/* Feature 3 */}
             <div className="cns-feature-card group text-center p-8 md:p-10">
               <div className="cns-icon-container mx-auto mb-8">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -292,14 +339,11 @@ const Home = () => {
 
       {/* CTA Section Premium */}
       <section ref={contactoRef} id="contacto" className="relative cns-section min-h-[600px] md:min-h-[700px] flex items-center overflow-hidden">
-        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"></div>
 
         <div className="cns-container relative z-10">
           <div className="max-w-5xl mx-auto">
-            {/* Content */}
             <div className="text-center mb-12 md:mb-16">
-              {/* Badge */}
               <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
                 <Users className="w-4 h-4 text-white" />
                 <span className="text-sm font-semibold text-white uppercase tracking-wider">
@@ -307,7 +351,6 @@ const Home = () => {
                 </span>
               </div>
 
-              {/* Heading */}
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
                 {t('home.cta.title')}
                 <br/>
@@ -316,7 +359,6 @@ const Home = () => {
                 </span>
               </h2>
 
-              {/* Subtitle */}
               <p className="text-lg md:text-xl lg:text-2xl text-white/80 max-w-3xl mx-auto mb-12 leading-relaxed">
                 {t('home.cta.subtitle')}
                 <br className="hidden sm:block" />
@@ -348,9 +390,7 @@ const Home = () => {
                 </a>
               </div>
 
-              {/* Contact Options */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto pt-12 border-t border-white/20">
-                {/* WhatsApp */}
                 <a 
                   href="https://wa.me/5492914277849" 
                   target="_blank"
@@ -364,7 +404,6 @@ const Home = () => {
                   </div>
                 </a>
 
-                {/* Dirección */}
                 <a 
                   href="https://www.google.com/maps?q=Alvarado+802,+B8000+Bah%C3%ADa+Blanca,+Provincia+de+Buenos+Aires" 
                   target="_blank"
@@ -378,7 +417,6 @@ const Home = () => {
                   </div>
                 </a>
 
-                {/* Email */}
                 <a 
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=ventasaumacar@gmail.com" 
                   target="_blank"
