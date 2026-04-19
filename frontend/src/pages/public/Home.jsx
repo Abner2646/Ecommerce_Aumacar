@@ -1,12 +1,14 @@
 // /src/pages/public/Home.jsx
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { marcasApi } from '../../api/marcas.api';
+import { Link } from 'react-router-dom';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
 import ClientesCercanos from '../../components/public/ClientesCercanos';
 
-const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/v1776544591/Video_hero_aumacar_d9curc.mp4';
+const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/v1768957118/marcas/portada/pur51pgmgruedks7kpbx.mp4';
 
+// Scroll suave y lento a una posición Y
 function smoothScrollTo(targetY, duration = 1200) {
   const startY = window.pageYOffset;
   const distance = targetY - startY;
@@ -22,7 +24,9 @@ function smoothScrollTo(targetY, duration = 1200) {
   }
   window.requestAnimationFrame(step);
 }
+// /src/pages/public/Home.jsx
 
+// Componente para renderizar las marcas dinámicamente
 function BrandCards() {
   const { t } = useTranslation();
   const [marcas, setMarcas] = useState([]);
@@ -34,7 +38,7 @@ function BrandCards() {
   }, []);
 
   return marcas.map(marca => (
-    
+    <a
       key={marca.id}
       href={`/marca/${marca.slug}`}
       className="lnd-brand-card w-full max-w-[95vw] h-[100px] md:max-w-[700px] md:min-h-[400px] md:aspect-[16/7] mx-auto group"
@@ -47,7 +51,9 @@ function BrandCards() {
           video.style.transform = 'scale(1.08)';
           video.style.transition = 'transform 0.5s cubic-bezier(0.4,0,0.2,1)';
         }
-        if (img) img.style.display = 'none';
+        if (img) {
+          img.style.display = 'none';
+        }
       }}
       onMouseLeave={e => {
         const video = e.currentTarget.querySelector('.brand-video');
@@ -58,7 +64,9 @@ function BrandCards() {
           video.style.display = 'none';
           video.style.transform = 'scale(1)';
         }
-        if (img) img.style.display = 'block';
+        if (img) {
+          img.style.display = 'block';
+        }
       }}
     >
       <div className="absolute inset-0 overflow-hidden rounded-2xl">
@@ -100,39 +108,13 @@ function BrandCards() {
 
 const Home = () => {
   const { t } = useTranslation();
-  const contactoRef = useRef(null);
-  const videoRef = useRef(null);
+  
+  // Ref para la sección de contacto
+  const contactoRef = React.useRef(null);
 
-  // Loop del video entre segundos 21 y 28
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleLoaded = () => {
-      video.currentTime = 21;
-      video.play().catch(() => {});
-    };
-
-    const handleTimeUpdate = () => {
-      if (video.currentTime >= 28) video.currentTime = 21;
-    };
-
-    video.addEventListener('loadedmetadata', handleLoaded);
-    video.addEventListener('timeupdate', handleTimeUpdate);
-
-    // Por si el video ya estaba cacheado y loadedmetadata no dispara
-    if (video.readyState >= 1) {
-      handleLoaded();
-    }
-
-    return () => {
-      video.removeEventListener('loadedmetadata', handleLoaded);
-      video.removeEventListener('timeupdate', handleTimeUpdate);
-    };
-  }, []);
-
-  // Scroll a contacto desde navbar
-  useEffect(() => {
+  // Handler para scroll desde la navbar
+  React.useEffect(() => {
+    // Escucha el evento personalizado 'scrollToContacto'
     const handler = () => {
       if (contactoRef.current) {
         const y = contactoRef.current.getBoundingClientRect().top + window.pageYOffset + 70;
@@ -144,18 +126,31 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="cns-home-wrapper bg-white">
-      {/* Hero Section */}
+    <main className="min-h-screen bg-white">
+      {/* Hero Section Premium */}
       <section className="relative min-h-screen flex items-center justify-center bg-gray-900">
         <div className="absolute inset-0 overflow-hidden">
           <video
-            ref={videoRef}
+            ref={el => {
+              if (el) {
+                el.onloadedmetadata = () => {
+                  el.currentTime = 21;
+                };
+                el.ontimeupdate = () => {
+                  if (el.currentTime >= 28) {
+                    el.currentTime = 21;
+                  }
+                };
+              }
+            }}
             src={heroVideo}
             autoPlay
             muted
             playsInline
             className="w-screen h-screen object-cover object-center block bg-black brightness-[.8] contrast-[1.1] mobile-video-fix"
+            style={{}}
           />
+          {/* Overlay gradiente y blur laterales mobile */}
           <div className="cns-hero-overlay pointer-events-none z-10"></div>
           <div className="pointer-events-none z-20 absolute inset-0 hidden md:block" style={{background: 'linear-gradient(90deg,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 20%,rgba(0,0,0,0) 80%,rgba(0,0,0,0.25) 100%)'}}></div>
           <div className="pointer-events-none z-20 absolute inset-0 md:hidden flex">
@@ -218,13 +213,14 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Brand Selection Section */}
+      {/* Brand Selection Section Premium */}
       <section id="marcas" className="cns-section">
         <div className="cns-container">
           <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
             {t('home.brands.title')}
           </h2>
           <div className="lnd-brand-selector grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {/* Render dinámico de marcas */}
             <BrandCards />
           </div>
         </div>
@@ -232,9 +228,10 @@ const Home = () => {
 
       <ClientesCercanos />
 
-      {/* Features Section */}
+      {/* Features Section Premium */}
       <section className="cns-section bg-gradient-to-b from-white via-gray-50 to-white">
         <div className="cns-container">
+          {/* Section Header */}
           <div className="text-center mb-20">
             <span className="cns-pill-badge mb-6">{t('home.features.badge')}</span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
@@ -246,46 +243,64 @@ const Home = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 max-w-6xl mx-auto">
+            {/* Feature 1 */}
             <div className="cns-feature-card group text-center p-8 md:p-10">
               <div className="cns-icon-container mx-auto mb-8">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5">{t('home.features.warranty.title')}</h3>
-              <p className="text-base md:text-lg text-gray-600 leading-relaxed">{t('home.features.warranty.description')}</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5">
+                {t('home.features.warranty.title')}
+              </h3>
+              <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                {t('home.features.warranty.description')}
+              </p>
             </div>
 
+            {/* Feature 2 */}
             <div className="cns-feature-card group text-center p-8 md:p-10">
               <div className="cns-icon-container mx-auto mb-8">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5">{t('home.features.financing.title')}</h3>
-              <p className="text-base md:text-lg text-gray-600 leading-relaxed">{t('home.features.financing.description')}</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5">
+                {t('home.features.financing.title')}
+              </h3>
+              <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                {t('home.features.financing.description')}
+              </p>
             </div>
 
+            {/* Feature 3 */}
             <div className="cns-feature-card group text-center p-8 md:p-10">
               <div className="cns-icon-container mx-auto mb-8">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5">{t('home.features.service.title')}</h3>
-              <p className="text-base md:text-lg text-gray-600 leading-relaxed">{t('home.features.service.description')}</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5">
+                {t('home.features.service.title')}
+              </h3>
+              <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                {t('home.features.service.description')}
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Section Premium */}
       <section ref={contactoRef} id="contacto" className="relative cns-section min-h-[600px] md:min-h-[700px] flex items-center overflow-hidden">
+        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"></div>
 
         <div className="cns-container relative z-10">
           <div className="max-w-5xl mx-auto">
+            {/* Content */}
             <div className="text-center mb-12 md:mb-16">
+              {/* Badge */}
               <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
                 <Users className="w-4 h-4 text-white" />
                 <span className="text-sm font-semibold text-white uppercase tracking-wider">
@@ -293,6 +308,7 @@ const Home = () => {
                 </span>
               </div>
 
+              {/* Heading */}
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
                 {t('home.cta.title')}
                 <br/>
@@ -301,6 +317,7 @@ const Home = () => {
                 </span>
               </h2>
 
+              {/* Subtitle */}
               <p className="text-lg md:text-xl lg:text-2xl text-white/80 max-w-3xl mx-auto mb-12 leading-relaxed">
                 {t('home.cta.subtitle')}
                 <br className="hidden sm:block" />
@@ -332,7 +349,9 @@ const Home = () => {
                 </a>
               </div>
 
+              {/* Contact Options */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto pt-12 border-t border-white/20">
+                {/* WhatsApp */}
                 <a 
                   href="https://wa.me/5492914277849" 
                   target="_blank"
@@ -346,6 +365,7 @@ const Home = () => {
                   </div>
                 </a>
 
+                {/* Dirección */}
                 <a 
                   href="https://www.google.com/maps?q=Alvarado+802,+B8000+Bah%C3%ADa+Blanca,+Provincia+de+Buenos+Aires" 
                   target="_blank"
@@ -359,6 +379,7 @@ const Home = () => {
                   </div>
                 </a>
 
+                {/* Email */}
                 <a 
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=ventasaumacar@gmail.com" 
                   target="_blank"
@@ -376,7 +397,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 
