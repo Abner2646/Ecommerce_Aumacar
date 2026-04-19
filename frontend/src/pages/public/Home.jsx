@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
 import ClientesCercanos from '../../components/public/ClientesCercanos';
 
-const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/v1776544591/Video_hero_aumacar_d9curc.mov';
+const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/v1776544591/Video_hero_aumacar_d9curc.mp4';
 
 // Scroll suave y lento a una posición Y
 function smoothScrollTo(targetY, duration = 1200) {
