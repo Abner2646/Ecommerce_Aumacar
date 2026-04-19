@@ -11,7 +11,7 @@ Thumbs.db
 .env.local
 .env.production
 # Ignorar archivos de videos
-frontend/src/assets/videos/
+# frontend/src/assets/videos/
 # Dependencies
 node_modules/
 */node_modules/
