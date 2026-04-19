@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
 import ClientesCercanos from '../../components/public/ClientesCercanos';
 
-const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/v1768957118/marcas/portada/pur51pgmgruedks7kpbx.mp4';
+const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/f_auto,q_auto/v1768957118/marcas/portada/pur51pgmgruedks7kpbx.mp4';
+const heroPoster = 'https://res.cloudinary.com/domckqidv/video/upload/so_21,w_1920,f_jpg/v1768957118/marcas/portada/pur51pgmgruedks7kpbx.jpg';
 
 // Scroll suave y lento a una posición Y
 function smoothScrollTo(targetY, duration = 1200) {
@@ -24,7 +25,6 @@ function smoothScrollTo(targetY, duration = 1200) {
   }
   window.requestAnimationFrame(step);
 }
-// /src/pages/public/Home.jsx
 
 // Componente para renderizar las marcas dinámicamente
 function BrandCards() {
@@ -114,7 +114,6 @@ const Home = () => {
 
   // Handler para scroll desde la navbar
   React.useEffect(() => {
-    // Escucha el evento personalizado 'scrollToContacto'
     const handler = () => {
       if (contactoRef.current) {
         const y = contactoRef.current.getBoundingClientRect().top + window.pageYOffset + 70;
@@ -144,11 +143,12 @@ const Home = () => {
               }
             }}
             src={heroVideo}
+            poster={heroPoster}
+            preload="auto"
             autoPlay
             muted
             playsInline
             className="w-screen h-screen object-cover object-center block bg-black brightness-[.8] contrast-[1.1] mobile-video-fix"
-            style={{}}
           />
           {/* Overlay gradiente y blur laterales mobile */}
           <div className="cns-hero-overlay pointer-events-none z-10"></div>
@@ -220,7 +220,6 @@ const Home = () => {
             {t('home.brands.title')}
           </h2>
           <div className="lnd-brand-selector grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {/* Render dinámico de marcas */}
             <BrandCards />
           </div>
         </div>
