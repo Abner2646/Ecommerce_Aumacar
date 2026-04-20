@@ -5,9 +5,9 @@ import { marcasApi } from '../../api/marcas.api';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
 import ClientesCercanos from '../../components/public/ClientesCercanos';
 
-const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/v1776660215/Video_portada_Aumacar_bhteea.mp4';
-// Imagen estática del segundo 21 — siempre visible detrás del video
-const heroPoster = 'https://res.cloudinary.com/domckqidv/video/upload/v1776660215/Video_portada_Aumacar_bhteea.jpg';
+const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/f_auto,q_auto/v1776660215/Video_portada_Aumacar_bhteea.mp4';
+// Imagen estática del primer frame — siempre visible detrás del video mientras carga
+const heroPoster = 'https://res.cloudinary.com/domckqidv/video/upload/so_0,w_1920,f_jpg/v1776660215/Video_portada_Aumacar_bhteea.jpg';
 
 // Scroll suave y lento a una posición Y
 function smoothScrollTo(targetY, duration = 1200) {
@@ -110,6 +110,7 @@ const Home = () => {
   const { t } = useTranslation();
   const contactoRef = useRef(null);
   const videoRef = useRef(null);
+  const videoVisible = useRef(false);
 
   // Handler para scroll desde la navbar
   useEffect(() => {
@@ -123,51 +124,42 @@ const Home = () => {
     return () => window.removeEventListener('scrollToContacto', handler);
   }, []);
 
-  // Lógica del video hero: seek seguro + play manual como fallback
+  // Lógica del video hero:
+  // - Arranca invisible para evitar el flash de un frame random en desktop
+  // - Se hace visible con fade solo cuando tiene frames listos para mostrar
+  // - Play manual como fallback para mobile donde autoplay puede fallar
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const START_TIME = 21;
-    const END_TIME = 28;
-
-    const handleCanPlay = () => {
-      // Solo seekea si todavía no llegamos al punto de inicio
-      // Esto evita que canplay (que se re-dispara en cada seek) genere un loop infinito
-      if (video.currentTime < START_TIME) {
-        try {
-          video.currentTime = START_TIME;
-        } catch (e) {
-          // Si el seek falla en mobile, reproduce desde el inicio — ok
-        }
-      }
-      // Solo llama play() si está pausado (en desktop autoplay ya lo arrancó)
-      if (video.paused) {
-        video.play().catch(() => {});
-      }
+    const showVideo = () => {
+      if (videoVisible.current) return;
+      videoVisible.current = true;
+      video.style.opacity = '1';
     };
 
-    // Loop manual entre segundo 21 y 28 (sin atributo loop en el elemento)
-    const handleTimeUpdate = () => {
-      if (video.currentTime >= END_TIME) {
-        video.currentTime = START_TIME;
+    const handleCanPlay = () => {
+      // Si el video ya arrancó desde el inicio (no necesita seek), lo mostramos directo
+      showVideo();
+      if (video.paused) {
+        video.play().catch(() => {
+          // Si el autoplay falla en mobile, el poster ya es visible — ok
+        });
       }
     };
 
     video.addEventListener('canplay', handleCanPlay);
-    video.addEventListener('timeupdate', handleTimeUpdate);
 
-    // Si el video ya estaba en caché (readyState >= 3), canplay no vuelve a dispararse
+    // Si el video ya estaba en caché, canplay no vuelve a dispararse
     if (video.readyState >= 3) {
       handleCanPlay();
     } else {
-      // Intento anticipado para mobile donde autoplay puede necesitar ayuda
+      // Intento anticipado para mobile
       video.play().catch(() => {});
     }
 
     return () => {
       video.removeEventListener('canplay', handleCanPlay);
-      video.removeEventListener('timeupdate', handleTimeUpdate);
     };
   }, []);
 
@@ -178,8 +170,8 @@ const Home = () => {
         <div className="absolute inset-0 overflow-hidden">
 
           {/*
-            Imagen de fondo SIEMPRE visible — elimina el negro mientras el video carga.
-            El video se posiciona encima con absolute; cuando carga, tapa la imagen.
+            Imagen de fondo SIEMPRE visible — elimina el negro y el frame random mientras el video carga.
+            El video arranca con opacity 0 y hace fade in cuando tiene frames listos.
           */}
           <img
             src={heroPoster}
@@ -194,6 +186,8 @@ const Home = () => {
             autoPlay
             muted
             playsInline
+            loop
+            style={{ opacity: 0, transition: 'opacity 0.4s ease' }}
             className="absolute inset-0 w-screen h-screen object-cover object-center block brightness-[.8] contrast-[1.1] mobile-video-fix"
           />
 
