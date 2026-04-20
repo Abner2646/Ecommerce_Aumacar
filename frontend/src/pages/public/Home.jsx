@@ -5,9 +5,9 @@ import { marcasApi } from '../../api/marcas.api';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
 import ClientesCercanos from '../../components/public/ClientesCercanos';
 
-const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/v1776628466/Nuevo_video_hero_a15hus.mp4';
+const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/v1776660215/Video_portada_Aumacar_bhteea.mp4';
 // Imagen estática del segundo 21 — siempre visible detrás del video
-const heroPoster = 'https://res.cloudinary.com/domckqidv/video/upload/v1776628466/Nuevo_video_hero_a15hus.jpg';
+const heroPoster = 'https://res.cloudinary.com/domckqidv/video/upload/v1776660215/Video_portada_Aumacar_bhteea.jpg';
 
 // Scroll suave y lento a una posición Y
 function smoothScrollTo(targetY, duration = 1200) {
