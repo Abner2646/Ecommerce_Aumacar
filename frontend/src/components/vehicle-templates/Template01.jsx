@@ -13,7 +13,7 @@ import '../../styles/pages/plantilla1.css';
 import '../../styles/pages/plantilla2.css';
 import '../../styles/pages/plantilla3.css';
 
-export default function Template02({ vehiculo, caracteristicas: caracteristicasProp, colores: coloresProp, plantillaMarca = 'plantilla1' }) {
+export default function Template01({ vehiculo, caracteristicas: caracteristicasProp, colores: coloresProp, plantillaMarca = 'plantilla1' }) {
   // ==================== TODOS LOS HOOKS PRIMERO ====================
   const navigate = useNavigate();
   const [colorSeleccionado, setColorSeleccionado] = useState(null);
@@ -133,10 +133,10 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
   
   // Combinar imágenes y videos en un solo array para el slider
   const mediaItems = [
+    ...videos.map((vid, idx) => ({ type: 'video', url: vid.urlVideo, id: `video-${idx}` })),
     ...imagenesFiltradas
       .sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0))
-      .map(img => ({ type: 'image', url: img.url, id: img.id })),
-    ...videos.slice(1).map((vid, idx) => ({ type: 'video', url: vid.urlVideo, id: `video-${idx}` }))
+      .map(img => ({ type: 'image', url: img.url, id: img.id }))
   ];
   
   const precioFormateado = Number(precio).toLocaleString('es-AR', { 
