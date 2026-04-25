@@ -394,9 +394,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
 
               {/* Botones de colores */}
               {colores.map((color) => {
-                const imageCount = contarImagenesPorColor(color.colorVehiculoId);
-                if (imageCount === 0) return null;
-
                 const isSelected = colorSeleccionado === color.colorVehiculoId;
 
                 return (
