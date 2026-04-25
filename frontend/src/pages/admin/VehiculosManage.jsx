@@ -114,8 +114,6 @@ console.log('isLoading:', isLoading);
         cilindrada: vehiculo.cilindrada || '',
         potencia: vehiculo.potencia || '',
         torque: vehiculo.torque || '',
-        descripcionCorta: vehiculo.descripcionCorta,
-        descripcionCompleta: vehiculo.descripcionCompleta,
         slug: `${vehiculo.slug}-copia-${Date.now()}`,
         metaTitle: vehiculo.metaTitle || '',
         metaDescription: vehiculo.metaDescription || ''

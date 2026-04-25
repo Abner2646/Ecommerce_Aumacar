@@ -152,13 +152,7 @@ const PreviewModal = ({ isOpen, onClose, vehiculo }) => {
               </span>
             </div>
 
-            {/* Descripción */}
-            <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Descripción</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {vehiculo.descripcionCompleta || vehiculo.descripcionCorta}
-              </p>
-            </div>
+
 
             {/* Especificaciones */}
             <div className="mb-6">

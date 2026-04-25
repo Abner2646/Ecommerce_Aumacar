@@ -72,8 +72,7 @@ const VehiculoEdit = () => {
           cilindrada: vehiculo.cilindrada || '',
           potencia: vehiculo.potencia || '',
           torque: vehiculo.torque || '',
-          descripcionCorta: vehiculo.descripcionCorta,
-          descripcionCompleta: vehiculo.descripcionCompleta,
+
           slug: vehiculo.slug
         }
       });

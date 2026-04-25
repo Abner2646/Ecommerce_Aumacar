@@ -106,10 +106,6 @@ const SuzukiHomeConAPI = () => {
                     <h3 className="szk-heading text-h2-mobile lg:text-h2-desktop text-gray-900">
                       {vehiculo.nombre}
                     </h3>
-                    
-                    <p className="szk-body text-body-mobile text-gray-600 line-clamp-2">
-                      {vehiculo.descripcionCorta || vehiculo.descripcion}
-                    </p>
 
                     <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                       <div>

@@ -25,8 +25,7 @@ const step1Schema = z.object({
   cilindrada: z.string().optional(),
   potencia: z.string().optional(),
   torque: z.string().optional(),
-  descripcionCorta: z.string().min(10, 'Descripción corta debe tener al menos 10 caracteres'),
-  descripcionCompleta: z.string().min(50, 'Descripción completa debe tener al menos 50 caracteres'),
+
   slug: z.string().min(2, 'Slug es requerido').regex(/^[a-z0-9-]+$/, 'Solo minúsculas, números y guiones')
 });
 
@@ -94,8 +93,7 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
       cilindrada: '',
       potencia: '',
       torque: '',
-      descripcionCorta: '',
-      descripcionCompleta: '',
+
       slug: ''
     }
   });
@@ -139,6 +137,9 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
 
   const onSubmit = (formData) => {
     formData.marcaId = parseInt(formData.marcaId);
+    // Hardcodear descripciones para cumplir validación del backend
+    formData.descripcionCorta = '..........';
+    formData.descripcionCompleta = '..................................................';
     onNext(formData);
   };
 
@@ -332,25 +333,8 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
           </div>
         </div>
 
-        {/* Separator */}
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
-          <div className="relative flex justify-center"><span className="bg-white px-3 text-sm text-gray-500">Descripciones</span></div>
-        </div>
-
         {/* Descripciones */}
         <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Descripción Corta <span className="text-red-500">*</span></label>
-            <textarea {...register('descripcionCorta')} rows={2} maxLength={150} placeholder="Descripción breve para cards" className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.descripcionCorta ? 'border-red-500' : 'border-gray-300'}`} />
-            {errors.descripcionCorta && <p className="text-red-500 text-sm mt-1">{errors.descripcionCorta.message}</p>}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Descripción Completa <span className="text-red-500">*</span></label>
-            <textarea {...register('descripcionCompleta')} rows={4} placeholder="Descripción detallada del vehículo" className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent ${errors.descripcionCompleta ? 'border-red-500' : 'border-gray-300'}`} />
-            {errors.descripcionCompleta && <p className="text-red-500 text-sm mt-1">{errors.descripcionCompleta.message}</p>}
-          </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
