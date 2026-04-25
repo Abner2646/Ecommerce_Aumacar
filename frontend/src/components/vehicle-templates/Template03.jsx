@@ -644,15 +644,15 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
 
                 {/* Botones de colores */}
                 {colores.map((color) => {
-                  const imageCount = contarImagenesPorColor(color.colorId);
+                  const imageCount = contarImagenesPorColor(color.colorVehiculoId);
                   if (imageCount === 0) return null;
 
-                  const isSelected = colorSeleccionado === color.colorId;
+                  const isSelected = colorSeleccionado === color.colorVehiculoId;
 
                   return (
                     <button
-                      key={color.colorId}
-                      onClick={() => setColorSeleccionado(color.colorId)}
+                      key={color.colorVehiculoId}
+                      onClick={() => setColorSeleccionado(color.colorVehiculoId)}
                       className={`color-tab flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${
                         isSelected
                           ? 'bg-white text-black shadow-2xl'
