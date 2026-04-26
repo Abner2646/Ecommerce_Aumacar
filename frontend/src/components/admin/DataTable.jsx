@@ -122,7 +122,7 @@ const DataTable = ({
                 <div className="adm-table-actions">
                   {onEdit && (
                     <button
-                      onClick={() => onEdit(row)}
+                      onClick={(e) => { e.stopPropagation(); onEdit(row); }}
                       className="adm-action-btn adm-action-btn-edit"
                       title="Editar"
                     >
@@ -132,7 +132,7 @@ const DataTable = ({
                   
                   {onDuplicate && (
                     <button
-                      onClick={() => onDuplicate(row)}
+                      onClick={(e) => { e.stopPropagation(); onDuplicate(row); }}
                       className="adm-action-btn adm-action-btn-duplicate"
                       title="Duplicar"
                     >
@@ -142,7 +142,7 @@ const DataTable = ({
                   
                   {onDelete && (
                     <button
-                      onClick={() => onDelete(row)}
+                      onClick={(e) => { e.stopPropagation(); onDelete(row); }}
                       className="adm-action-btn adm-action-btn-delete"
                       title="Eliminar"
                     >
