@@ -92,6 +92,11 @@ const VehiculoEdit = () => {
       setCurrentStep(2);
     } catch (error) {
       console.error('Error actualizando vehículo:', error);
+      let message = error.response?.data?.error || 'Error al actualizar el vehículo';
+      if (message.toLowerCase().includes('slug')) {
+        message = 'Ya existe un vehículo con este mismo nombre y versión. Por favor, cámbialos un poco para que el enlace sea único.';
+      }
+      toast.error(message);
     }
   };
 

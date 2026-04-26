@@ -338,8 +338,8 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Slug (URL) <span className="text-red-500">*</span>
-              <span className="ml-2 text-xs text-gray-400">(generado automáticamente)</span>
+              Enlace de la página (URL) <span className="text-red-500">*</span>
+              <span className="ml-2 text-xs text-gray-400">(se genera solo con el nombre y versión)</span>
             </label>
             <input 
               type="text" 
