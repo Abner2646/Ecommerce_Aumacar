@@ -25,11 +25,9 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   
-  // ✅ USAR LAS PROPS DIRECTAMENTE
   const colores = coloresProp || [];
   const caracteristicas = caracteristicasProp || [];
 
-  // DEBUG
   useEffect(() => {
     console.log('🔍 DEBUG Template02:');
     console.log('- Características recibidas:', caracteristicas);
@@ -37,10 +35,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
     console.log('- Length características:', caracteristicas?.length);
     console.log('- Length colores:', colores?.length);
   }, [caracteristicas, colores]);
-  
-  // ✅ TODOS LOS useEffect ANTES DEL RETURN CONDICIONAL
-  
-  // Intersection Observer para animaciones on-scroll
+
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
@@ -60,7 +55,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
     return () => observer.disconnect();
   }, []);
 
-  // Ocultar hint de unmute después de 3 segundos
   useEffect(() => {
     if (showUnmuteHint) {
       const timer = setTimeout(() => setShowUnmuteHint(false), 3000);
@@ -68,12 +62,10 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
     }
   }, [showUnmuteHint]);
 
-  // Reset slide cuando cambia el color
   useEffect(() => {
     setCurrentSlide(0);
   }, [colorSeleccionado]);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (mediaItems.length === 0) return;
@@ -91,7 +83,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentSlide]);
 
-  // ==================== VALIDACIÓN (DESPUÉS DE HOOKS) ====================
+  // ==================== VALIDACIÓN ====================
   if (!vehiculo) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
@@ -126,12 +118,10 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
   const videoUrl = videos?.[0]?.urlVideo || null;
   const imagenPrincipal = imagenes.sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0))[0]?.url || null;
   
-  // FILTRAR IMÁGENES Y VIDEOS SEGÚN COLOR
   const imagenesFiltradas = colorSeleccionado === null
     ? imagenes
     : imagenes.filter(img => img.colorVehiculoId === colorSeleccionado);
   
-  // Combinar imágenes y videos en un solo array para el slider
   const mediaItems = [
     ...videos.map((vid, idx) => ({ type: 'video', url: vid.urlVideo, id: `video-${idx}` })),
     ...imagenesFiltradas
@@ -147,7 +137,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
     ? Number(precioUsd).toLocaleString('en-US', { maximumFractionDigits: 0 }) 
     : null;
 
-  // Specs con iconos premium
   const specs = [
     { 
       label: 'Motor', 
@@ -208,13 +197,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
   ].filter(spec => spec.value);
 
   // ==================== FUNCIONES ====================
-  
-  // Contar imágenes por color
-  const contarImagenesPorColor = (colorId) => {
-    return imagenes.filter(img => img.colorVehiculoId === colorId).length;
-  };
 
-  // Toggle mute/unmute
   const toggleMute = () => {
     if (videoRef.current) {
       videoRef.current.muted = !videoMuted;
@@ -223,7 +206,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
     }
   };
 
-  // Navegación del slider
   const goToSlide = (index) => {
     if (isTransitioning) return;
     setIsTransitioning(true);
@@ -243,7 +225,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
     goToSlide(prev);
   };
 
-  // Touch handlers para mobile swipe
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -253,30 +234,24 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
   };
 
   const handleTouchEnd = () => {
-    if (touchStartX.current - touchEndX.current > 75) {
-      nextSlide();
-    }
-    if (touchStartX.current - touchEndX.current < -75) {
-      prevSlide();
-    }
+    if (touchStartX.current - touchEndX.current > 75) nextSlide();
+    if (touchStartX.current - touchEndX.current < -75) prevSlide();
   };
 
   // ==================== RENDER ====================
   
-  // Determinar clase raíz según plantilla
   let plantillaRootClass = '';
   if (plantillaMarca === 'plantilla1') plantillaRootClass = 'plantilla1-root';
   else if (plantillaMarca === 'plantilla2') plantillaRootClass = 'plantilla2-root';
   else if (plantillaMarca === 'plantilla3') plantillaRootClass = 'plantilla3-root';
-  else plantillaRootClass = '';
 
-  // ==================== BOTONES DE COLOR (reutilizable) ====================
+  // ==================== COMPONENTE INTERNO: BOTONES DE COLOR ====================
+  // FIX: se quitó transform del hover para que el botón no se mueva y sea fácil de clickear
   const ColorButtons = ({ mobile = false }) => (
     <>
-      {/* Botón "Todas" */}
       <button
         onClick={() => setColorSeleccionado(null)}
-        className={`color-tab flex-shrink-0 flex items-center gap-3 rounded-full backdrop-blur-md transition-all duration-300 ${
+        className={`flex-shrink-0 flex items-center gap-3 rounded-full backdrop-blur-md transition-colors duration-300 ${
           mobile ? 'px-5 py-2.5' : 'px-6 py-3'
         } ${
           colorSeleccionado === null
@@ -293,14 +268,13 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
         </span>
       </button>
 
-      {/* Botones de colores */}
       {colores.map((color) => {
         const isSelected = colorSeleccionado === color.colorVehiculoId;
         return (
           <button
             key={color.colorVehiculoId}
             onClick={() => setColorSeleccionado(color.colorVehiculoId)}
-            className={`color-tab flex-shrink-0 flex items-center gap-2 rounded-full backdrop-blur-md transition-all duration-300 ${
+            className={`flex-shrink-0 flex items-center gap-2 rounded-full backdrop-blur-md transition-colors duration-300 ${
               mobile ? 'px-5 py-2.5' : 'px-6 py-3'
             } ${
               isSelected
@@ -309,7 +283,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
             }`}
           >
             <div
-              className={`rounded-full border-2 transition-all duration-300 ${
+              className={`rounded-full border-2 flex-shrink-0 transition-all duration-300 ${
                 mobile ? 'w-5 h-5' : 'w-6 h-6'
               } ${
                 isSelected ? 'border-black scale-110' : 'border-white/40'
@@ -325,31 +299,73 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
     </>
   );
 
+  // ==================== COMPONENTE INTERNO: INFO DEL VEHÍCULO ====================
+  const VehiculoInfo = () => (
+    <div className="px-8 py-10 bg-black border-t border-white/10">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div>
+          {(año || categoria) && (
+            <div className="flex items-center gap-3 mb-3">
+              {año && (
+                <span className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
+                  {año}
+                </span>
+              )}
+              {año && categoria && <span className="text-gray-700">·</span>}
+              {categoria && (
+                <span className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
+                  {categoria}
+                </span>
+              )}
+            </div>
+          )}
+          <h1
+            className={`nombre-vehiculo text-5xl md:text-6xl lg:text-7xl font-normal text-white tracking-tight plantilla-marca-${plantillaMarca}`}
+            style={{ fontWeight: 400 }}
+          >
+            {nombre}
+          </h1>
+          {modelo && modelo !== nombre && (
+            <p className="text-xl text-gray-400 mt-2 font-light">
+              {modelo}
+            </p>
+          )}
+          {version && (
+            <p className="text-base text-gray-500 mt-1 uppercase tracking-wider font-medium">
+              {version}
+            </p>
+          )}
+        </div>
+
+        <div className="flex flex-col items-start md:items-end gap-1">
+          <span className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
+            Desde
+          </span>
+          <span className="text-4xl md:text-5xl font-bold text-white">
+            ${precioFormateado}
+          </span>
+          {precioUsdFormateado && (
+            <span className="text-lg text-gray-400 font-light">
+              USD {precioUsdFormateado}
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className={`${plantillaRootClass} template-02-tesla bg-black`}>
       <style>{`
         @keyframes pulse-ring {
-          0% {
-            transform: scale(1);
-            opacity: 0.8;
-          }
-          50% {
-            transform: scale(1.3);
-            opacity: 0;
-          }
-          100% {
-            transform: scale(1);
-            opacity: 0;
-          }
+          0% { transform: scale(1); opacity: 0.8; }
+          50% { transform: scale(1.3); opacity: 0; }
+          100% { transform: scale(1); opacity: 0; }
         }
 
         @keyframes crossFade {
-          0% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 1;
-          }
+          0% { opacity: 0; }
+          100% { opacity: 1; }
         }
 
         .fade-in-section {
@@ -383,14 +399,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
           animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
-        .color-tab {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .color-tab:hover {
-          transform: translateY(-2px);
-        }
-
         .slider-image {
           transition: opacity 600ms cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -409,24 +417,20 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
         }
 
         /* Ocultar scrollbar en selector de colores */
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
         }
       `}</style>
 
-      {/* GALERÍA FULLSCREEN CINEMATOGRÁFICA */}
+      {/* GALERÍA + COLORES + INFO MOBILE */}
       <section className="relative bg-black">
 
         {/* Desktop: selector de colores flotante sobre el slider */}
         {colores.length > 0 && (
-          <div className="hidden md:block absolute top-8 left-1/2 -translate-x-1/2 z-30 w-full px-8">
-            <div className="flex items-center justify-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
-              <ColorButtons mobile={false} />
-            </div>
+          <div className="hidden md:flex absolute top-8 left-1/2 -translate-x-1/2 z-30 w-full px-8 items-center justify-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
+            <ColorButtons mobile={false} />
           </div>
         )}
 
@@ -438,7 +442,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            {/* Slides */}
             <div className="relative w-full h-full">
               {mediaItems.map((item, index) => (
                 <div
@@ -472,7 +475,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
               ))}
             </div>
 
-            {/* Navegación - Flechas laterales */}
+            {/* Flechas laterales */}
             {mediaItems.length > 1 && (
               <>
                 <button
@@ -510,16 +513,16 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
           </div>
         )}
 
+        {/* Mobile: info del vehículo debajo de los colores */}
+        <div className="md:hidden">
+          <VehiculoInfo />
+        </div>
+
       </section>
 
-      {/* TÍTULO PRINCIPAL VEHÍCULO */}
-      <div className="w-full flex justify-center items-center pt-12 pb-4">
-        <h1
-          className={`nombre-vehiculo text-7xl md:text-8xl lg:text-9xl font-normal text-white text-center tracking-tight mb-6 plantilla-marca-${plantillaMarca}`}
-          style={{ fontWeight: 400 }}
-        >
-          {nombre}
-        </h1>
+      {/* Desktop: info del vehículo debajo del carrusel */}
+      <div className="hidden md:block">
+        <VehiculoInfo />
       </div>
 
       {/* ESPECIFICACIONES */}
@@ -595,12 +598,9 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
                   className="flex items-start gap-4 pb-6 border-b border-white/10 transition-all duration-300 hover:border-white/30"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
-                  {/* Checkmark */}
                   <svg className="flex-shrink-0 w-5 h-5 text-white mt-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  
-                  {/* Texto */}
                   <span className="text-lg text-gray-300">
                     {carac.nombre || carac}
                   </span>
