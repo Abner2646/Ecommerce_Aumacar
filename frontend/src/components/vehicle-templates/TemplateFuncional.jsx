@@ -1,4 +1,4 @@
-// /src/components/vehicle-templates/Template01.jsx
+// /src/components/vehicle-templates/Template01.jsx 
 
 import React, { useState, useRef, useEffect } from 'react';
 import GaleriaVehiculo from '../GaleriaVehiculo';

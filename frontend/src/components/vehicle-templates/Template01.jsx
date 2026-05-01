@@ -89,7 +89,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentSlide]); // Removí mediaItems.length de dependencias para evitar error
+  }, [currentSlide]);
 
   // ==================== VALIDACIÓN (DESPUÉS DE HOOKS) ====================
   if (!vehiculo) {
@@ -270,6 +270,61 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
   else if (plantillaMarca === 'plantilla3') plantillaRootClass = 'plantilla3-root';
   else plantillaRootClass = '';
 
+  // ==================== BOTONES DE COLOR (reutilizable) ====================
+  const ColorButtons = ({ mobile = false }) => (
+    <>
+      {/* Botón "Todas" */}
+      <button
+        onClick={() => setColorSeleccionado(null)}
+        className={`color-tab flex-shrink-0 flex items-center gap-3 rounded-full backdrop-blur-md transition-all duration-300 ${
+          mobile ? 'px-5 py-2.5' : 'px-6 py-3'
+        } ${
+          colorSeleccionado === null
+            ? 'bg-white text-black shadow-2xl'
+            : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
+        }`}
+      >
+        <svg className={mobile ? 'w-4 h-4' : 'w-5 h-5'} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6" />
+        </svg>
+        <span className={`font-bold uppercase tracking-wider ${mobile ? 'text-xs' : 'text-sm'}`}>
+          Todas
+        </span>
+      </button>
+
+      {/* Botones de colores */}
+      {colores.map((color) => {
+        const isSelected = colorSeleccionado === color.colorVehiculoId;
+        return (
+          <button
+            key={color.colorVehiculoId}
+            onClick={() => setColorSeleccionado(color.colorVehiculoId)}
+            className={`color-tab flex-shrink-0 flex items-center gap-2 rounded-full backdrop-blur-md transition-all duration-300 ${
+              mobile ? 'px-5 py-2.5' : 'px-6 py-3'
+            } ${
+              isSelected
+                ? 'bg-white text-black shadow-2xl'
+                : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
+            }`}
+          >
+            <div
+              className={`rounded-full border-2 transition-all duration-300 ${
+                mobile ? 'w-5 h-5' : 'w-6 h-6'
+              } ${
+                isSelected ? 'border-black scale-110' : 'border-white/40'
+              }`}
+              style={{ backgroundColor: color.codigoHex }}
+            />
+            <span className={`font-bold uppercase tracking-wider ${mobile ? 'text-xs' : 'text-sm'}`}>
+              {color.nombre}
+            </span>
+          </button>
+        );
+      })}
+    </>
+  );
+
   return (
     <div className={`${plantillaRootClass} template-02-tesla bg-black`}>
       <style>{`
@@ -344,17 +399,13 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
           animation: crossFade 600ms cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* FIX: flechas sin movimiento en hover/active */
         .slider-nav-button {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .slider-nav-button:hover {
-          transform: scale(1.1);
           background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .slider-nav-button:active {
-          transform: scale(0.95);
         }
 
         /* Ocultar scrollbar en selector de colores */
@@ -366,66 +417,23 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
           scrollbar-width: none;
         }
       `}</style>
-      {/* ...existing code... */}
 
       {/* GALERÍA FULLSCREEN CINEMATOGRÁFICA */}
       <section className="relative bg-black">
-        {/* Selector de colores - flotante sobre slider */}
+
+        {/* Desktop: selector de colores flotante sobre el slider */}
         {colores.length > 0 && (
-          <div className="absolute top-8 left-1/2 -translate-x-1/2 z-30 w-full px-8">
+          <div className="hidden md:block absolute top-8 left-1/2 -translate-x-1/2 z-30 w-full px-8">
             <div className="flex items-center justify-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
-              {/* Botón "Todas" */}
-              <button
-                onClick={() => setColorSeleccionado(null)}
-                className={`color-tab flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${
-                  colorSeleccionado === null
-                    ? 'bg-white text-black shadow-2xl'
-                    : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
-                }`}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6" />
-                </svg>
-                <span className="text-sm font-bold uppercase tracking-wider">
-                  Todas
-                </span>
-              </button>
-
-              {/* Botones de colores */}
-              {colores.map((color) => {
-                const isSelected = colorSeleccionado === color.colorVehiculoId;
-
-                return (
-                  <button
-                    key={color.colorVehiculoId}
-                    onClick={() => setColorSeleccionado(color.colorVehiculoId)}
-                    className={`color-tab flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${
-                      isSelected
-                        ? 'bg-white text-black shadow-2xl'
-                        : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
-                    }`}
-                  >
-                    <div
-                      className={`w-6 h-6 rounded-full border-2 transition-all duration-300 ${
-                        isSelected ? 'border-black scale-110' : 'border-white/40'
-                      }`}
-                      style={{ backgroundColor: color.codigoHex }}
-                    />
-                    <span className="text-sm font-bold uppercase tracking-wider">
-                      {color.nombre}
-                    </span>
-                  </button>
-                );
-              })}
+              <ColorButtons mobile={false} />
             </div>
           </div>
         )}
 
-        {/* Slider fullscreen */}
+        {/* Slider */}
         {mediaItems.length > 0 ? (
           <div 
-            className="relative w-full h-screen overflow-hidden"
+            className="relative w-full h-80 md:h-screen overflow-hidden"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -490,10 +498,18 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
             )}
           </div>
         ) : (
-          <div className="h-screen flex items-center justify-center text-white/60 text-xl">
+          <div className="h-80 md:h-screen flex items-center justify-center text-white/60 text-xl">
             No hay imágenes disponibles para este color
           </div>
         )}
+
+        {/* Mobile: selector de colores debajo del slider */}
+        {colores.length > 0 && (
+          <div className="md:hidden flex items-center gap-3 overflow-x-auto py-5 px-6 scrollbar-hide bg-black border-t border-white/10">
+            <ColorButtons mobile={true} />
+          </div>
+        )}
+
       </section>
 
       {/* TÍTULO PRINCIPAL VEHÍCULO */}
@@ -505,6 +521,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
           {nombre}
         </h1>
       </div>
+
       {/* ESPECIFICACIONES */}
       {specs.length > 0 && (
         <section className="fade-in-section py-24 md:py-32 px-8 md:px-16 lg:px-24 bg-black">
