@@ -221,7 +221,13 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
           background-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* Ocultar scrollbar */
+        /* Precio chico en desktop */
+        @media (min-width: 768px) {
+          .precio-vehiculo {
+            font-size: 0.75rem !important;
+            font-weight: 500 !important;
+          }
+        }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
@@ -296,7 +302,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
       {/* En flujo normal (no absolute) para que los clicks funcionen en PC y mobile */}
       {colores.length > 0 && (
         <div className="bg-black border-t border-white/10">
-          <div className="flex items-center gap-3 overflow-x-auto py-5 px-6 scrollbar-hide">
+          <div className="flex items-center md:justify-center gap-3 overflow-x-auto py-5 px-6 scrollbar-hide">
             {/* Botón "Todas" */}
             <button
               onClick={() => setColorSeleccionado(null)}
@@ -367,7 +373,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
         {/* Precio */}
         <div className="mt-6 flex items-baseline justify-center gap-3">
           <span className="text-sm font-semibold text-gray-500 uppercase tracking-[0.15em]">Desde</span>
-          <span className="text-2xl md:text-sm font-semibold text-white">
+          <span className="precio-vehiculo text-2xl md:text-sm font-semibold text-white">
             ${precioFormateado}
           </span>
           {precioUsdFormateado && (
