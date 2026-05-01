@@ -32,15 +32,10 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
     console.log('🔍 DEBUG Template02:');
     console.log('- Características recibidas:', caracteristicas);
     console.log('- Colores recibidos:', colores);
-    console.log('- Length características:', caracteristicas?.length);
-    console.log('- Length colores:', colores?.length);
   }, [caracteristicas, colores]);
 
   useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -100px 0px' };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('fade-in-visible');
@@ -64,14 +59,8 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (mediaItems.length === 0) return;
-      if (e.key === 'ArrowRight') {
-        const next = currentSlide === mediaItems.length - 1 ? 0 : currentSlide + 1;
-        goToSlide(next);
-      }
-      if (e.key === 'ArrowLeft') {
-        const prev = currentSlide === 0 ? mediaItems.length - 1 : currentSlide - 1;
-        goToSlide(prev);
-      }
+      if (e.key === 'ArrowRight') goToSlide(currentSlide === mediaItems.length - 1 ? 0 : currentSlide + 1);
+      if (e.key === 'ArrowLeft') goToSlide(currentSlide === 0 ? mediaItems.length - 1 : currentSlide - 1);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -109,23 +98,29 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
   } = vehiculo;
 
   // ==================== PREPARAR DATOS ====================
-  const imagenPrincipal = imagenes.sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0))[0]?.url || null;
-  
   const imagenesFiltradas = colorSeleccionado === null
     ? imagenes
     : imagenes.filter(img => img.colorVehiculoId === colorSeleccionado);
-  
+
   const mediaItems = [
     ...videos.map((vid, idx) => ({ type: 'video', url: vid.urlVideo, id: `video-${idx}` })),
     ...imagenesFiltradas
       .sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0))
       .map(img => ({ type: 'image', url: img.url, id: img.id }))
   ];
-  
+
   const precioFormateado = Number(precio).toLocaleString('es-AR', { maximumFractionDigits: 0 });
   const precioUsdFormateado = precioUsd
     ? Number(precioUsd).toLocaleString('en-US', { maximumFractionDigits: 0 })
     : null;
+
+  // Badges de metadata para el estilo Porsche
+  const badges = [
+    año && { label: año },
+    categoria && { label: categoria },
+    combustible && { label: combustible },
+    version && { label: version },
+  ].filter(Boolean);
 
   const specs = [
     { label: 'Motor', value: motor, icon: (<svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>), highlight: true },
@@ -137,14 +132,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
   ].filter(spec => spec.value);
 
   // ==================== FUNCIONES ====================
-
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoMuted;
-      setVideoMuted(!videoMuted);
-      setShowUnmuteHint(false);
-    }
-  };
 
   const goToSlide = (index) => {
     if (isTransitioning) return;
@@ -171,112 +158,11 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
   };
 
   // ==================== RENDER ====================
-  
+
   let plantillaRootClass = '';
   if (plantillaMarca === 'plantilla1') plantillaRootClass = 'plantilla1-root';
   else if (plantillaMarca === 'plantilla2') plantillaRootClass = 'plantilla2-root';
   else if (plantillaMarca === 'plantilla3') plantillaRootClass = 'plantilla3-root';
-
-  // ==================== COMPONENTE INTERNO: BOTONES DE COLOR ====================
-  // FIX: pointer-events-none en el wrapper, pointer-events-auto en cada botón
-  // Esto evita que el contenedor overflow-x-auto intercepte los clicks en el centro
-  const ColorButtons = ({ mobile = false }) => (
-    <>
-      <button
-        onClick={() => setColorSeleccionado(null)}
-        style={{ pointerEvents: 'auto' }}
-        className={`flex-shrink-0 flex items-center gap-3 rounded-full backdrop-blur-md transition-colors duration-300 cursor-pointer ${
-          mobile ? 'px-5 py-2.5' : 'px-6 py-3'
-        } ${
-          colorSeleccionado === null
-            ? 'bg-white text-black shadow-2xl'
-            : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
-        }`}
-      >
-        <svg style={{ pointerEvents: 'none' }} className={mobile ? 'w-4 h-4' : 'w-5 h-5'} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6" />
-        </svg>
-        <span style={{ pointerEvents: 'none' }} className={`font-bold uppercase tracking-wider ${mobile ? 'text-xs' : 'text-sm'}`}>
-          Todas
-        </span>
-      </button>
-
-      {colores.map((color) => {
-        const isSelected = colorSeleccionado === color.colorVehiculoId;
-        return (
-          <button
-            key={color.colorVehiculoId}
-            onClick={() => setColorSeleccionado(color.colorVehiculoId)}
-            style={{ pointerEvents: 'auto' }}
-            className={`flex-shrink-0 flex items-center gap-2 rounded-full backdrop-blur-md transition-colors duration-300 cursor-pointer ${
-              mobile ? 'px-5 py-2.5' : 'px-6 py-3'
-            } ${
-              isSelected
-                ? 'bg-white text-black shadow-2xl'
-                : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
-            }`}
-          >
-            <div
-              style={{ pointerEvents: 'none', backgroundColor: color.codigoHex }}
-              className={`rounded-full border-2 flex-shrink-0 transition-all duration-300 ${
-                mobile ? 'w-5 h-5' : 'w-6 h-6'
-              } ${
-                isSelected ? 'border-black scale-110' : 'border-white/40'
-              }`}
-            />
-            <span style={{ pointerEvents: 'none' }} className={`font-bold uppercase tracking-wider ${mobile ? 'text-xs' : 'text-sm'}`}>
-              {color.nombre}
-            </span>
-          </button>
-        );
-      })}
-    </>
-  );
-
-  // ==================== COMPONENTE INTERNO: INFO DEL VEHÍCULO ====================
-  const VehiculoInfo = () => (
-    <div className="px-8 pt-10 pb-8 bg-black border-t border-white/10">
-      <div className="max-w-7xl mx-auto">
-
-        {/* Nombre grande */}
-        <h1
-          className={`nombre-vehiculo text-6xl md:text-7xl lg:text-8xl font-normal text-white tracking-tight leading-none plantilla-marca-${plantillaMarca}`}
-          style={{ fontWeight: 400 }}
-        >
-          {nombre}
-        </h1>
-
-        {/* Modelo y versión debajo si son distintos al nombre */}
-        {modelo && modelo !== nombre && (
-          <p className="text-lg text-gray-500 mt-2 font-light">
-            {modelo}{version ? ` · ${version}` : ''}
-          </p>
-        )}
-        {!modelo && version && (
-          <p className="text-lg text-gray-500 mt-2 font-light uppercase tracking-wider">
-            {version}
-          </p>
-        )}
-
-        {/* Precio chico debajo */}
-        <div className="flex items-baseline gap-3 mt-5">
-          <span className="text-sm font-semibold text-gray-500 uppercase tracking-[0.15em]">
-            Desde
-          </span>
-          <span className="text-2xl font-semibold text-white">
-            ${precioFormateado}
-          </span>
-          {precioUsdFormateado && (
-            <span className="text-base text-gray-500 font-light">
-              · USD {precioUsdFormateado}
-            </span>
-          )}
-        </div>
-
-      </div>
-    </div>
-  );
 
   return (
     <div className={`${plantillaRootClass} template-02-tesla bg-black`}>
@@ -319,10 +205,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
           transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .pulse-ring {
-          animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
         .slider-image {
           transition: opacity 600ms cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -331,7 +213,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
           animation: crossFade 600ms cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* FIX flechas: solo cambia color de fondo, sin moverse */
+        /* FIX flechas: sin movimiento */
         .slider-nav-button {
           transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -344,20 +226,8 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* GALERÍA + COLORES + INFO MOBILE */}
+      {/* ==================== SLIDER ==================== */}
       <section className="relative bg-black">
-
-        {/* Desktop: selector de colores flotante sobre el slider */}
-        {colores.length > 0 && (
-          <div
-            className="hidden md:flex absolute top-8 left-1/2 -translate-x-1/2 z-30 w-full px-8 items-center justify-center gap-3 overflow-x-auto pb-4 scrollbar-hide"
-            style={{ pointerEvents: 'none' }} // FIX: el wrapper no intercepta clicks
-          >
-            <ColorButtons mobile={false} />
-          </div>
-        )}
-
-        {/* Slider */}
         {mediaItems.length > 0 ? (
           <div
             className="relative w-full h-80 md:h-screen overflow-hidden"
@@ -379,11 +249,10 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
                         src={item.url}
                         alt={`${modelo} - Imagen ${index + 1}`}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        style={{ objectFit: 'cover' }}
                       />
                     </div>
                   ) : (
-                    <video autoPlay loop muted playsInline className="w-full h-full object-cover" style={{ objectFit: 'cover' }}>
+                    <video autoPlay loop muted playsInline className="w-full h-full object-cover">
                       <source src={item.url} type="video/mp4" />
                     </video>
                   )}
@@ -391,25 +260,25 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
               ))}
             </div>
 
-            {/* Flechas laterales */}
+            {/* Flechas - sin efectos de movimiento */}
             {mediaItems.length > 1 && (
               <>
                 <button
                   onClick={prevSlide}
-                  className="slider-nav-button absolute left-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
+                  className="slider-nav-button absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
                   aria-label="Imagen anterior"
                 >
-                  <svg className="w-6 h-6" style={{ pointerEvents: 'none' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
 
                 <button
                   onClick={nextSlide}
-                  className="slider-nav-button absolute right-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
+                  className="slider-nav-button absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
                   aria-label="Imagen siguiente"
                 >
-                  <svg className="w-6 h-6" style={{ pointerEvents: 'none' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
@@ -421,29 +290,98 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
             No hay imágenes disponibles para este color
           </div>
         )}
+      </section>
 
-        {/* Mobile: selector de colores debajo del slider */}
-        {colores.length > 0 && (
-          <div className="md:hidden flex items-center gap-3 overflow-x-auto py-5 px-6 scrollbar-hide bg-black border-t border-white/10">
-            <ColorButtons mobile={true} />
+      {/* ==================== COLOR SELECTOR ==================== */}
+      {/* En flujo normal (no absolute) para que los clicks funcionen en PC y mobile */}
+      {colores.length > 0 && (
+        <div className="bg-black border-t border-white/10">
+          <div className="flex items-center justify-center gap-3 overflow-x-auto py-5 px-6 scrollbar-hide">
+            {/* Botón "Todas" */}
+            <button
+              onClick={() => setColorSeleccionado(null)}
+              className={`flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-md transition-colors duration-300 ${
+                colorSeleccionado === null
+                  ? 'bg-white text-black shadow-2xl'
+                  : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
+              }`}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6" />
+              </svg>
+              <span className="text-sm font-bold uppercase tracking-wider">Todas</span>
+            </button>
+
+            {colores.map((color) => {
+              const isSelected = colorSeleccionado === color.colorVehiculoId;
+              return (
+                <button
+                  key={color.colorVehiculoId}
+                  onClick={() => setColorSeleccionado(color.colorVehiculoId)}
+                  className={`flex-shrink-0 flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-md transition-colors duration-300 ${
+                    isSelected
+                      ? 'bg-white text-black shadow-2xl'
+                      : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
+                  }`}
+                >
+                  <div
+                    className={`w-6 h-6 rounded-full border-2 flex-shrink-0 transition-all duration-300 ${
+                      isSelected ? 'border-black scale-110' : 'border-white/40'
+                    }`}
+                    style={{ backgroundColor: color.codigoHex }}
+                  />
+                  <span className="text-sm font-bold uppercase tracking-wider">{color.nombre}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ==================== INFO DEL VEHÍCULO (estilo Porsche) ==================== */}
+      <div className="bg-black border-t border-white/10 py-12 md:py-16 px-6 text-center">
+
+        {/* Nombre grande, centrado */}
+        <h1
+          className={`nombre-vehiculo text-5xl md:text-7xl lg:text-8xl font-normal text-white tracking-tight leading-tight plantilla-marca-${plantillaMarca}`}
+          style={{ fontWeight: 400 }}
+        >
+          {nombre}
+        </h1>
+
+        {/* Badges de metadata */}
+        {badges.length > 0 && (
+          <div className="flex items-center justify-center gap-2 flex-wrap mt-5">
+            {badges.map((badge, i) => (
+              <span
+                key={i}
+                className="px-4 py-1.5 rounded-full text-sm font-medium text-white/80 bg-white/10 border border-white/15 tracking-wide"
+              >
+                {badge.label}
+              </span>
+            ))}
           </div>
         )}
 
-        {/* Mobile: info del vehículo debajo de los colores */}
-        <div className="md:hidden">
-          <VehiculoInfo />
+        {/* Precio */}
+        <div className="mt-6 flex items-baseline justify-center gap-3">
+          <span className="text-sm font-semibold text-gray-500 uppercase tracking-[0.15em]">Desde</span>
+          <span className="text-2xl md:text-3xl font-semibold text-white">
+            ${precioFormateado}
+          </span>
+          {precioUsdFormateado && (
+            <span className="text-base text-gray-500 font-light">
+              · USD {precioUsdFormateado}
+            </span>
+          )}
         </div>
 
-      </section>
-
-      {/* Desktop: info del vehículo debajo del carrusel */}
-      <div className="hidden md:block">
-        <VehiculoInfo />
       </div>
 
-      {/* ESPECIFICACIONES */}
+      {/* ==================== ESPECIFICACIONES ==================== */}
       {specs.length > 0 && (
-        <section className="fade-in-section py-24 md:py-32 px-8 md:px-16 lg:px-24 bg-black">
+        <section className="fade-in-section py-24 md:py-32 px-8 md:px-16 lg:px-24 bg-black border-t border-white/10">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-4">
@@ -458,7 +396,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
               {specs.map((spec, index) => (
                 <div
                   key={index}
-                  className={`spec-card relative p-6 rounded-2xl border-2 transition-all duration-400 ${
+                  className={`spec-card relative p-6 rounded-2xl border-2 ${
                     spec.highlight
                       ? 'bg-white text-black border-white shadow-2xl'
                       : 'bg-white/5 border-white/10 hover:border-white/30 hover:bg-white/10 text-white'
@@ -492,7 +430,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
         </section>
       )}
 
-      {/* CARACTERÍSTICAS */}
+      {/* ==================== CARACTERÍSTICAS ==================== */}
       {caracteristicas.length > 0 && (
         <section className="fade-in-section py-24 md:py-32 px-8 md:px-16 lg:px-24 bg-black border-t border-white/10">
           <div className="max-w-5xl mx-auto">
@@ -504,7 +442,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
                 <div
                   key={carac.id || index}
                   className="flex items-start gap-4 pb-6 border-b border-white/10 transition-all duration-300 hover:border-white/30"
-                  style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   <svg className="flex-shrink-0 w-5 h-5 text-white mt-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -517,7 +454,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
         </section>
       )}
 
-      {/* CTA FINAL */}
+      {/* ==================== CTA FINAL ==================== */}
       <section className="fade-in-section relative py-32 md:py-48 px-8 bg-black border-t border-white/10 overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
