@@ -1,4 +1,4 @@
-// /src/pages/public/plantilla3.jsx 
+// /src/pages/public/plantilla3.jsx  
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';

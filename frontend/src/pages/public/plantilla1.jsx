@@ -1,4 +1,4 @@
-// /src/pages/public/plantilla1.jsx 
+// /src/pages/public/plantilla1.jsx  
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -108,7 +108,7 @@ function Plantilla1({ marca }) {
             <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto mb-12 leading-relaxed">
               La mas alta eficiencia y gran tracción <br></br>para una confianza total.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button
                 type="button"
                 className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
@@ -124,8 +124,7 @@ function Plantilla1({ marca }) {
                   <circle cx="11" cy="11" r="8" />
                   <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
-                <div className="flex flex-col items-start">
-                  {/* ✅ Traducir labels */}
+                <div className="flex flex-col items-center">
                   <span className="text-sm font-medium">{t('brandTemplates.hero.exploreModels')}</span>
                 </div>
               </button>
@@ -136,7 +135,7 @@ function Plantilla1({ marca }) {
                 className="flex items-center gap-2 px-6 py-3 bg-[#2d2d2d] text-white rounded-lg border-2 border-white/20 hover:bg-[#3d3d3d] transition-all duration-300 text-base group"
               >
                 <MessageCircle size={24} className="group-hover:scale-130 transition-transform" />
-                <div className="flex flex-col items-start">
+                <div className="flex flex-col items-center">
                   <span className="text-sm font-medium">{t('brandTemplates.hero.whatsapp')}</span>
                   <span className="text-sm font-normal">{t('brandTemplates.hero.quickInquiry')}</span>
                 </div>
