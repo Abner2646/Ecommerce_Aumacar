@@ -296,7 +296,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
       {/* En flujo normal (no absolute) para que los clicks funcionen en PC y mobile */}
       {colores.length > 0 && (
         <div className="bg-black border-t border-white/10">
-          <div className="flex items-center justify-center gap-3 overflow-x-auto py-5 px-6 scrollbar-hide">
+          <div className="flex items-center gap-3 overflow-x-auto py-5 px-6 scrollbar-hide">
             {/* Botón "Todas" */}
             <button
               onClick={() => setColorSeleccionado(null)}
@@ -344,7 +344,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
 
         {/* Nombre grande, centrado */}
         <h1
-          className={`nombre-vehiculo text-5xl md:text-7xl lg:text-8xl font-normal text-white tracking-tight leading-tight plantilla-marca-${plantillaMarca}`}
+          className={`nombre-vehiculo text-7xl md:text-7xl lg:text-8xl font-normal text-white tracking-tight leading-tight plantilla-marca-${plantillaMarca}`}
           style={{ fontWeight: 400 }}
         >
           {nombre || modelo}
@@ -367,7 +367,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
         {/* Precio */}
         <div className="mt-6 flex items-baseline justify-center gap-3">
           <span className="text-sm font-semibold text-gray-500 uppercase tracking-[0.15em]">Desde</span>
-          <span className="text-2xl md:text-3xl font-semibold text-white">
+          <span className="text-2xl md:text-sm font-semibold text-white">
             ${precioFormateado}
           </span>
           {precioUsdFormateado && (
