@@ -41,17 +41,12 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
     };
-
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('fade-in-visible');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('fade-in-visible');
       });
     }, observerOptions);
-
     document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
-
     return () => observer.disconnect();
   }, []);
 
@@ -78,7 +73,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
         goToSlide(prev);
       }
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentSlide]);
@@ -115,7 +109,6 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
   } = vehiculo;
 
   // ==================== PREPARAR DATOS ====================
-  const videoUrl = videos?.[0]?.urlVideo || null;
   const imagenPrincipal = imagenes.sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0))[0]?.url || null;
   
   const imagenesFiltradas = colorSeleccionado === null
@@ -129,71 +122,18 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
       .map(img => ({ type: 'image', url: img.url, id: img.id }))
   ];
   
-  const precioFormateado = Number(precio).toLocaleString('es-AR', { 
-    maximumFractionDigits: 0 
-  });
-  
-  const precioUsdFormateado = precioUsd 
-    ? Number(precioUsd).toLocaleString('en-US', { maximumFractionDigits: 0 }) 
+  const precioFormateado = Number(precio).toLocaleString('es-AR', { maximumFractionDigits: 0 });
+  const precioUsdFormateado = precioUsd
+    ? Number(precioUsd).toLocaleString('en-US', { maximumFractionDigits: 0 })
     : null;
 
   const specs = [
-    { 
-      label: 'Motor', 
-      value: motor,
-      icon: (
-        <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
-      highlight: true
-    },
-    { 
-      label: 'Potencia', 
-      value: potencia,
-      icon: (
-        <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-        </svg>
-      ),
-      highlight: true
-    },
-    { 
-      label: 'Consumo', 
-      value: consumo,
-      icon: (
-        <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-        </svg>
-      )
-    },
-    { 
-      label: 'Transmisión', 
-      value: transmision,
-      icon: (
-        <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-        </svg>
-      )
-    },
-    { 
-      label: 'Combustible', 
-      value: combustible,
-      icon: (
-        <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-        </svg>
-      )
-    },
-    { 
-      label: 'Tracción', 
-      value: traccion,
-      icon: (
-        <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-        </svg>
-      )
-    }
+    { label: 'Motor', value: motor, icon: (<svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>), highlight: true },
+    { label: 'Potencia', value: potencia, icon: (<svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>), highlight: true },
+    { label: 'Consumo', value: consumo, icon: (<svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>) },
+    { label: 'Transmisión', value: transmision, icon: (<svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>) },
+    { label: 'Combustible', value: combustible, icon: (<svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" /></svg>) },
+    { label: 'Tracción', value: traccion, icon: (<svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>) },
   ].filter(spec => spec.value);
 
   // ==================== FUNCIONES ====================
@@ -215,24 +155,16 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
 
   const nextSlide = () => {
     if (mediaItems.length === 0) return;
-    const next = currentSlide === mediaItems.length - 1 ? 0 : currentSlide + 1;
-    goToSlide(next);
+    goToSlide(currentSlide === mediaItems.length - 1 ? 0 : currentSlide + 1);
   };
 
   const prevSlide = () => {
     if (mediaItems.length === 0) return;
-    const prev = currentSlide === 0 ? mediaItems.length - 1 : currentSlide - 1;
-    goToSlide(prev);
+    goToSlide(currentSlide === 0 ? mediaItems.length - 1 : currentSlide - 1);
   };
 
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
+  const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+  const handleTouchMove = (e) => { touchEndX.current = e.touches[0].clientX; };
   const handleTouchEnd = () => {
     if (touchStartX.current - touchEndX.current > 75) nextSlide();
     if (touchStartX.current - touchEndX.current < -75) prevSlide();
@@ -246,12 +178,14 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
   else if (plantillaMarca === 'plantilla3') plantillaRootClass = 'plantilla3-root';
 
   // ==================== COMPONENTE INTERNO: BOTONES DE COLOR ====================
-  // FIX: se quitó transform del hover para que el botón no se mueva y sea fácil de clickear
+  // FIX: pointer-events-none en el wrapper, pointer-events-auto en cada botón
+  // Esto evita que el contenedor overflow-x-auto intercepte los clicks en el centro
   const ColorButtons = ({ mobile = false }) => (
     <>
       <button
         onClick={() => setColorSeleccionado(null)}
-        className={`flex-shrink-0 flex items-center gap-3 rounded-full backdrop-blur-md transition-colors duration-300 ${
+        style={{ pointerEvents: 'auto' }}
+        className={`flex-shrink-0 flex items-center gap-3 rounded-full backdrop-blur-md transition-colors duration-300 cursor-pointer ${
           mobile ? 'px-5 py-2.5' : 'px-6 py-3'
         } ${
           colorSeleccionado === null
@@ -259,11 +193,11 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
             : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
         }`}
       >
-        <svg className={mobile ? 'w-4 h-4' : 'w-5 h-5'} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg style={{ pointerEvents: 'none' }} className={mobile ? 'w-4 h-4' : 'w-5 h-5'} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6" />
         </svg>
-        <span className={`font-bold uppercase tracking-wider ${mobile ? 'text-xs' : 'text-sm'}`}>
+        <span style={{ pointerEvents: 'none' }} className={`font-bold uppercase tracking-wider ${mobile ? 'text-xs' : 'text-sm'}`}>
           Todas
         </span>
       </button>
@@ -274,7 +208,8 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
           <button
             key={color.colorVehiculoId}
             onClick={() => setColorSeleccionado(color.colorVehiculoId)}
-            className={`flex-shrink-0 flex items-center gap-2 rounded-full backdrop-blur-md transition-colors duration-300 ${
+            style={{ pointerEvents: 'auto' }}
+            className={`flex-shrink-0 flex items-center gap-2 rounded-full backdrop-blur-md transition-colors duration-300 cursor-pointer ${
               mobile ? 'px-5 py-2.5' : 'px-6 py-3'
             } ${
               isSelected
@@ -283,14 +218,14 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
             }`}
           >
             <div
+              style={{ pointerEvents: 'none', backgroundColor: color.codigoHex }}
               className={`rounded-full border-2 flex-shrink-0 transition-all duration-300 ${
                 mobile ? 'w-5 h-5' : 'w-6 h-6'
               } ${
                 isSelected ? 'border-black scale-110' : 'border-white/40'
               }`}
-              style={{ backgroundColor: color.codigoHex }}
             />
-            <span className={`font-bold uppercase tracking-wider ${mobile ? 'text-xs' : 'text-sm'}`}>
+            <span style={{ pointerEvents: 'none' }} className={`font-bold uppercase tracking-wider ${mobile ? 'text-xs' : 'text-sm'}`}>
               {color.nombre}
             </span>
           </button>
@@ -301,55 +236,44 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
 
   // ==================== COMPONENTE INTERNO: INFO DEL VEHÍCULO ====================
   const VehiculoInfo = () => (
-    <div className="px-8 py-10 bg-black border-t border-white/10">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-        <div>
-          {(año || categoria) && (
-            <div className="flex items-center gap-3 mb-3">
-              {año && (
-                <span className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
-                  {año}
-                </span>
-              )}
-              {año && categoria && <span className="text-gray-700">·</span>}
-              {categoria && (
-                <span className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
-                  {categoria}
-                </span>
-              )}
-            </div>
-          )}
-          <h1
-            className={`nombre-vehiculo text-5xl md:text-6xl lg:text-7xl font-normal text-white tracking-tight plantilla-marca-${plantillaMarca}`}
-            style={{ fontWeight: 400 }}
-          >
-            {nombre}
-          </h1>
-          {modelo && modelo !== nombre && (
-            <p className="text-xl text-gray-400 mt-2 font-light">
-              {modelo}
-            </p>
-          )}
-          {version && (
-            <p className="text-base text-gray-500 mt-1 uppercase tracking-wider font-medium">
-              {version}
-            </p>
-          )}
-        </div>
+    <div className="px-8 pt-10 pb-8 bg-black border-t border-white/10">
+      <div className="max-w-7xl mx-auto">
 
-        <div className="flex flex-col items-start md:items-end gap-1">
-          <span className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
+        {/* Nombre grande */}
+        <h1
+          className={`nombre-vehiculo text-6xl md:text-7xl lg:text-8xl font-normal text-white tracking-tight leading-none plantilla-marca-${plantillaMarca}`}
+          style={{ fontWeight: 400 }}
+        >
+          {nombre}
+        </h1>
+
+        {/* Modelo y versión debajo si son distintos al nombre */}
+        {modelo && modelo !== nombre && (
+          <p className="text-lg text-gray-500 mt-2 font-light">
+            {modelo}{version ? ` · ${version}` : ''}
+          </p>
+        )}
+        {!modelo && version && (
+          <p className="text-lg text-gray-500 mt-2 font-light uppercase tracking-wider">
+            {version}
+          </p>
+        )}
+
+        {/* Precio chico debajo */}
+        <div className="flex items-baseline gap-3 mt-5">
+          <span className="text-sm font-semibold text-gray-500 uppercase tracking-[0.15em]">
             Desde
           </span>
-          <span className="text-4xl md:text-5xl font-bold text-white">
+          <span className="text-2xl font-semibold text-white">
             ${precioFormateado}
           </span>
           {precioUsdFormateado && (
-            <span className="text-lg text-gray-400 font-light">
-              USD {precioUsdFormateado}
+            <span className="text-base text-gray-500 font-light">
+              · USD {precioUsdFormateado}
             </span>
           )}
         </div>
+
       </div>
     </div>
   );
@@ -407,21 +331,17 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
           animation: crossFade 600ms cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* FIX: flechas sin movimiento en hover/active */
+        /* FIX flechas: solo cambia color de fondo, sin moverse */
         .slider-nav-button {
           transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .slider-nav-button:hover {
           background-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* Ocultar scrollbar en selector de colores */
+        /* Ocultar scrollbar */
         .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
       {/* GALERÍA + COLORES + INFO MOBILE */}
@@ -429,14 +349,17 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
 
         {/* Desktop: selector de colores flotante sobre el slider */}
         {colores.length > 0 && (
-          <div className="hidden md:flex absolute top-8 left-1/2 -translate-x-1/2 z-30 w-full px-8 items-center justify-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
+          <div
+            className="hidden md:flex absolute top-8 left-1/2 -translate-x-1/2 z-30 w-full px-8 items-center justify-center gap-3 overflow-x-auto pb-4 scrollbar-hide"
+            style={{ pointerEvents: 'none' }} // FIX: el wrapper no intercepta clicks
+          >
             <ColorButtons mobile={false} />
           </div>
         )}
 
         {/* Slider */}
         {mediaItems.length > 0 ? (
-          <div 
+          <div
             className="relative w-full h-80 md:h-screen overflow-hidden"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
@@ -460,14 +383,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
                       />
                     </div>
                   ) : (
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover"
-                      style={{ objectFit: 'cover' }}
-                    >
+                    <video autoPlay loop muted playsInline className="w-full h-full object-cover" style={{ objectFit: 'cover' }}>
                       <source src={item.url} type="video/mp4" />
                     </video>
                   )}
@@ -483,7 +399,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
                   className="slider-nav-button absolute left-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
                   aria-label="Imagen anterior"
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6" style={{ pointerEvents: 'none' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
@@ -493,7 +409,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
                   className="slider-nav-button absolute right-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
                   aria-label="Imagen siguiente"
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6" style={{ pointerEvents: 'none' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
@@ -550,27 +466,20 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className={`spec-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
-                    spec.highlight 
-                      ? 'bg-black/10 text-black' 
-                      : 'bg-white/10 text-white'
+                    spec.highlight ? 'bg-black/10 text-black' : 'bg-white/10 text-white'
                   }`}>
-                    <div className="w-6 h-6">
-                      {spec.icon}
-                    </div>
+                    <div className="w-6 h-6">{spec.icon}</div>
                   </div>
-
                   <div className={`text-xs font-semibold uppercase tracking-wider mb-2 ${
                     spec.highlight ? 'text-black/70' : 'text-white/70'
                   }`}>
                     {spec.label}
                   </div>
-
                   <div className={`text-xl md:text-2xl font-bold ${
                     spec.highlight ? 'text-black' : 'text-white'
                   }`}>
                     {spec.value}
                   </div>
-
                   {spec.highlight && (
                     <div className="absolute top-4 right-4">
                       <div className="w-2 h-2 bg-black rounded-full animate-pulse" />
@@ -590,10 +499,9 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-16 md:mb-24 text-center">
               Equipamiento
             </h3>
-
             <div className="grid md:grid-cols-2 gap-x-16 gap-y-6">
               {caracteristicas.map((carac, index) => (
-                <div 
+                <div
                   key={carac.id || index}
                   className="flex items-start gap-4 pb-6 border-b border-white/10 transition-all duration-300 hover:border-white/30"
                   style={{ animationDelay: `${index * 0.05}s` }}
@@ -601,9 +509,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
                   <svg className="flex-shrink-0 w-5 h-5 text-white mt-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-lg text-gray-300">
-                    {carac.nombre || carac}
-                  </span>
+                  <span className="text-lg text-gray-300">{carac.nombre || carac}</span>
                 </div>
               ))}
             </div>
@@ -615,40 +521,28 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
       <section className="fade-in-section relative py-32 md:py-48 px-8 bg-black border-t border-white/10 overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
-            backgroundImage: `repeating-linear-gradient(
-              0deg,
-              transparent,
-              transparent 2px,
-              white 2px,
-              white 4px
-            )`
+            backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 2px, white 2px, white 4px)`
           }} />
         </div>
-
         <div className="relative max-w-4xl mx-auto text-center">
           <h2 className="text-[2.7rem] md:text-[4.2rem] font-bold text-white mb-12 leading-tight">
             Hacé que sea tuyo
           </h2>
-          
           <p className="text-lg md:text-xl text-gray-400 font-light mb-16 max-w-2xl mx-auto">
             Comenzá el proceso de compra o contactá a nuestro equipo para una experiencia personalizada.
           </p>
-
           <div className="flex flex-col sm:flex-row gap-6 justify-center max-w-2xl mx-auto">
             <button
               onClick={() => {
                 navigate(`/comprar/${id}`);
                 setTimeout(() => {
-                  if (typeof window !== 'undefined') {
-                    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-                  }
+                  if (typeof window !== 'undefined') window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
                 }, 50);
               }}
               className="flex-1 px-12 py-6 text-base font-bold text-black bg-white hover:bg-gray-100 transition-all duration-300 tracking-wider uppercase hover:scale-105"
             >
               Comprar ahora
             </button>
-
             <a
               href={`https://wa.me/5492914277849?text=Hola%20quiero%20información%20sobre%20el%20${encodeURIComponent(modelo)}`}
               target="_blank"
@@ -664,13 +558,10 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
       {/* DEBUG */}
       {/*{process.env.NODE_ENV === 'development' && (
         <div className="fixed bottom-4 right-4 bg-white/10 backdrop-blur-md text-green-400 px-4 py-3 rounded-xl shadow-2xl text-xs font-mono z-50 border border-white/20">
-          <div className="font-bold text-green-300 mb-2 pb-2 border-b border-white/20">
-            🎨 Template02 Tesla
-          </div>
+          <div className="font-bold text-green-300 mb-2 pb-2 border-b border-white/20">🎨 Template02 Tesla</div>
           <div className="space-y-1">
             <div>Slide: <span className="text-white font-bold">{currentSlide + 1}/{mediaItems.length}</span></div>
             <div>Color: <span className="text-white font-bold">{colorSeleccionado || 'todas'}</span></div>
-            <div>Muted: <span className="text-white font-bold">{videoMuted ? 'Sí' : 'No'}</span></div>
             <div>Características: <span className="text-white font-bold">{caracteristicas.length}</span></div>
             <div>Colores: <span className="text-white font-bold">{colores.length}</span></div>
           </div>
