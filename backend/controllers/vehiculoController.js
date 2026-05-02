@@ -21,7 +21,7 @@ const obtenerVehiculos = async (req, res) => {
         {
           model: db.Marca,
           as: 'marca',
-          attributes: ['id', 'nombre', 'slug', 'logo']
+          attributes: ['id', 'nombre', 'slug', 'logo', 'plantilla']
         },
         {
           model: db.ImagenVehiculo,
@@ -59,7 +59,7 @@ const obtenerVehiculoPorId = async (req, res) => {
         {
           model: db.Marca,
           as: 'marca',
-          attributes: ['id', 'nombre', 'slug', 'logo', 'colorPrimario', 'colorSecundario']
+          attributes: ['id', 'nombre', 'slug', 'logo', 'colorPrimario', 'colorSecundario', 'plantilla']
         },
         {
           model: db.ImagenVehiculo,
@@ -151,7 +151,7 @@ const obtenerVehiculoPorSlug = async (req, res) => {
         {
           model: db.Marca,
           as: 'marca',
-          attributes: ['id', 'nombre', 'slug', 'logo', 'colorPrimario', 'colorSecundario']
+          attributes: ['id', 'nombre', 'slug', 'logo', 'colorPrimario', 'colorSecundario', 'plantilla']
         },
         {
           model: db.ImagenVehiculo,
