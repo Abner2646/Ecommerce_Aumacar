@@ -412,27 +412,27 @@ export default function Template04({ vehiculo, caracteristicas: caracteristicasP
         {/* Contenido centrado */}
         <div className="relative h-full flex flex-col items-center justify-center px-8">
           <h1
-            className={`nombre-vehiculo text-7xl md:text-8xl lg:text-9xl font-normal text-white text-center tracking-tight mb-6 plantilla-marca-${plantillaMarca}`}
+            className={`nombre-vehiculo text-5xl md:text-8xl lg:text-9xl font-normal text-white text-center tracking-tight mb-4 md:mb-6 plantilla-marca-${plantillaMarca}`}
             style={{ fontWeight: 400 }}
           >
             {modelo}
           </h1>
           
           {version && (
-            <p className="text-xl md:text-2xl text-white/80 font-light tracking-wide mb-8">
+            <p className="text-base md:text-2xl text-white/80 font-light tracking-wide mb-4 md:mb-8">
               {version}
             </p>
           )}
           
           {/* Precio */}
-          <div className="flex items-center gap-4 text-white/90">
-            <div className="text-lg md:text-xl font-light tracking-wider">
+          <div className="flex items-center gap-3 md:gap-4 text-white/90">
+            <div className="text-base md:text-xl font-light tracking-wider">
               Desde ${precioFormateado}
             </div>
             {precioUsdFormateado && (
               <>
                 <span className="text-white/40">•</span>
-                <div className="text-lg md:text-xl font-light tracking-wider">
+                <div className="text-base md:text-xl font-light tracking-wider">
                   USD ${precioUsdFormateado}
                 </div>
               </>
@@ -441,10 +441,10 @@ export default function Template04({ vehiculo, caracteristicas: caracteristicasP
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-          <div className="flex flex-col items-center gap-3">
-            <div className="text-xs text-white/70 uppercase tracking-widest">Descubrir</div>
-            <svg className="w-6 h-6 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2">
+          <div className="flex flex-col items-center gap-1 md:gap-3">
+            <div className="text-[10px] md:text-xs text-white/70 uppercase tracking-widest">Descubrir</div>
+            <svg className="w-4 h-4 md:w-6 md:h-6 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </div>
