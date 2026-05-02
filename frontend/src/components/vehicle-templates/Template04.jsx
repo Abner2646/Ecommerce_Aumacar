@@ -441,7 +441,7 @@ export default function Template04({ vehiculo, caracteristicas: caracteristicasP
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2">
+        <div className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 hidden md:block">
           <div className="flex flex-col items-center gap-1 md:gap-3">
             <div className="text-[10px] md:text-xs text-white/70 uppercase tracking-widest">Descubrir</div>
             <svg className="w-4 h-4 md:w-6 md:h-6 text-white/70 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
