@@ -5,6 +5,11 @@ import Template02 from './Template02';
 import Template03 from './Template03';
 import Template04 from './Template04';
 
+// Importar estilos de plantillas para que las tipografías de marca estén disponibles
+import '../../styles/pages/plantilla1.css';
+import '../../styles/pages/plantilla2.css';
+import '../../styles/pages/plantilla3.css';
+
 const TEMPLATES = {
   1: Template01,
   2: Template02,
