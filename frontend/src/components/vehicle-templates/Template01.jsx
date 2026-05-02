@@ -236,7 +236,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
       <section className="relative bg-black">
         {mediaItems.length > 0 ? (
           <div
-            className="relative w-full h-80 md:h-screen overflow-hidden"
+            className="relative w-full h-auto aspect-video md:h-screen overflow-hidden"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -302,7 +302,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
       {/* En flujo normal (no absolute) para que los clicks funcionen en PC y mobile */}
       {colores.length > 0 && (
         <div className="bg-black border-t border-white/10">
-          <div className="flex items-center md:justify-center gap-3 overflow-x-auto py-5 px-6 scrollbar-hide">
+          <div className="flex flex-wrap items-center justify-center gap-2 py-4 px-4">
             {/* Botón "Todas" */}
             <button
               onClick={() => setColorSeleccionado(null)}
@@ -310,13 +310,13 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
                 colorSeleccionado === null
                   ? 'bg-white text-black shadow-2xl'
                   : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
-              }`}
+              } px-4 py-2 md:px-6 md:py-3 rounded-full backdrop-blur-md transition-colors duration-300`}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6" />
               </svg>
-              <span className="text-sm font-bold uppercase tracking-wider">Todas</span>
+              <span className="text-[10px] md:text-sm font-bold uppercase tracking-wider">Todas</span>
             </button>
 
             {colores.map((color) => {
@@ -325,19 +325,19 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
                 <button
                   key={color.colorVehiculoId}
                   onClick={() => setColorSeleccionado(color.colorVehiculoId)}
-                  className={`flex-shrink-0 flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-md transition-colors duration-300 ${
+                  className={`flex-shrink-0 flex items-center gap-1.5 md:gap-2 px-4 py-2 md:px-6 md:py-3 rounded-full backdrop-blur-md transition-colors duration-300 ${
                     isSelected
                       ? 'bg-white text-black shadow-2xl'
                       : 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
                   }`}
                 >
                   <div
-                    className={`w-6 h-6 rounded-full border-2 flex-shrink-0 transition-all duration-300 ${
+                    className={`w-4 h-4 md:w-6 md:h-6 rounded-full border-2 flex-shrink-0 transition-all duration-300 ${
                       isSelected ? 'border-black scale-110' : 'border-white/40'
                     }`}
                     style={{ backgroundColor: color.codigoHex }}
                   />
-                  <span className="text-sm font-bold uppercase tracking-wider">{color.nombre}</span>
+                  <span className="text-[10px] md:text-sm font-bold uppercase tracking-wider">{color.nombre}</span>
                 </button>
               );
             })}
