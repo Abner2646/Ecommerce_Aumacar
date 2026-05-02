@@ -166,7 +166,7 @@ const Home = () => {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section Premium */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gray-900">
+      <section className="relative flex items-center justify-center bg-gray-900" style={{ minHeight: '100svh' }}>
         <div className="absolute inset-0 overflow-hidden">
 
           {/*
@@ -188,7 +188,7 @@ const Home = () => {
             playsInline
             loop
             style={{ opacity: 0, transition: 'opacity 0.4s ease' }}
-            className="absolute inset-0 w-screen h-screen object-cover object-center block brightness-[.8] contrast-[1.1] mobile-video-fix"
+            className="absolute inset-0 w-full h-full object-cover object-center block brightness-[.8] contrast-[1.1] mobile-video-fix"
           />
 
           {/* Overlay gradiente y blur laterales mobile */}
@@ -204,9 +204,11 @@ const Home = () => {
               .mobile-video-fix {
                 object-position: center 40%!important;
                 transform: scale(0.97) scaleY(1.10);
+                height: 100svh !important;
               }
               .mobile-poster-fix {
                 object-position: center 40%;
+                height: 100svh !important;
               }
             }
           `}</style>

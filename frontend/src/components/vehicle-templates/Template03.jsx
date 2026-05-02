@@ -429,7 +429,7 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                   <div className="absolute inset-0 rounded-full bg-white/30 pulse-ring" />
                 )}
                 
-                <div className="relative flex items-center gap-2 md:gap-3 px-3 py-2 md:px-5 md:py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
+                <div className="relative flex items-center gap-2 md:gap-3 p-2 md:px-5 md:py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
                   {videoMuted ? (
                     <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
@@ -441,7 +441,7 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                     </svg>
                   )}
                   
-                  <span className="text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="hidden md:inline-block text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {videoMuted ? 'Activar audio' : 'Silenciar'}
                   </span>
                 </div>
@@ -773,7 +773,7 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
       {/* SECCIÓN 5: STATEMENT SECTION */}
       {/* ============================================ */}
       {imagenesOrdenadas.length > 0 && (
-        <section className="fade-in-section relative h-auto aspect-video md:h-screen">
+        <section className="fade-in-section relative h-auto min-h-[600px] md:h-screen py-20 md:py-0">
           {/* Imagen de fondo con parallax */}
           <div 
             className="statement-parallax absolute inset-0"
@@ -792,12 +792,12 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                 {modelo}
               </div>
               
-              <h2 className="text-3xl md:text-7xl lg:text-8xl font-bold text-white leading-tight">
+              <h2 className="text-4xl md:text-7xl lg:text-8xl font-bold text-white leading-tight">
                 Aventura y <br/>
                 <span className="text-gray-300">confiabilidad</span>
               </h2>
               
-              <p className="text-base md:text-2xl text-gray-300 font-light max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg md:text-2xl text-gray-300 font-light max-w-2xl mx-auto leading-relaxed">
                 Diseñado para acompañarte en cada viaje, con la tecnología 
                 y seguridad que vos y tu familia merecen.
               </p>
@@ -807,7 +807,7 @@ export default function Template03({ vehiculo, caracteristicas: caracteristicasP
                 <div className="flex justify-center gap-6 md:gap-12 pt-4 md:pt-8">
                   {specs.slice(0, 3).map((spec, idx) => (
                     <div key={idx} className="text-center">
-                      <div className="text-xl md:text-4xl font-bold text-white mb-1">
+                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">
                         {spec.value}
                       </div>
                       <div className="text-xs text-gray-400 uppercase tracking-wider">

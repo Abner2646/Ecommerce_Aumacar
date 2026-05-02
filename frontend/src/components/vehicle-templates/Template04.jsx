@@ -486,7 +486,7 @@ export default function Template04({ vehiculo, caracteristicas: caracteristicasP
             <>
               <button
                 onClick={prevSlide}
-                className="slider-nav-button absolute left-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
+                className="slider-nav-button absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
                 aria-label="Imagen anterior"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -496,7 +496,7 @@ export default function Template04({ vehiculo, caracteristicas: caracteristicasP
 
               <button
                 onClick={nextSlide}
-                className="slider-nav-button absolute right-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
+                className="slider-nav-button absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white"
                 aria-label="Imagen siguiente"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

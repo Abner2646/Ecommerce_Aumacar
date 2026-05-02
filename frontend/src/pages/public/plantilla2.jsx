@@ -68,7 +68,7 @@ const Plantilla2 = ({ marca }) => {
     <main className="bg-white plantilla2-root">
       
       {/* ==================== HERO SECTION PREMIUM ==================== */}
-      <section className="relative min-h-screen flex items-center">
+      <section className="relative flex items-center" style={{ minHeight: '100svh' }}>
         <div className="absolute inset-0 overflow-hidden">
           <video
             src={marca?.videoPortada}
@@ -76,7 +76,7 @@ const Plantilla2 = ({ marca }) => {
             loop
             muted
             playsInline
-            className="w-full h-screen object-cover object-center block bg-black brightness-[.8] contrast-[1.1] mobile-video-fix"
+            className="w-full h-full object-cover object-center block bg-black brightness-[.8] contrast-[1.1] mobile-video-fix"
             style={{}}
           />
           {/* Overlay gradiente y blur laterales mobile */}
@@ -92,6 +92,7 @@ const Plantilla2 = ({ marca }) => {
               .mobile-video-fix {
                 object-position: center 40%!important;
                 transform: scale(0.97) scaleY(1.10);
+                height: 100svh !important;
               }
             }
           `}</style>

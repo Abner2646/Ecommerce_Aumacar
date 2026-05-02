@@ -381,7 +381,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
                   <div className="absolute inset-0 rounded-full bg-white/30 pulse-ring" />
                 )}
                 
-                <div className="relative flex items-center gap-2 md:gap-3 px-3 py-2 md:px-5 md:py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
+                <div className="relative flex items-center gap-2 md:gap-3 p-2 md:px-5 md:py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300">
                   {videoMuted ? (
                     <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
@@ -393,7 +393,7 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
                     </svg>
                   )}
                   
-                  <span className="text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="hidden md:inline-block text-sm font-bold text-white uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {videoMuted ? 'Activar audio' : 'Silenciar'}
                   </span>
                 </div>
