@@ -350,11 +350,11 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
 
         {/* Nombre grande, centrado */}
         <h1
-          className={`nombre-vehiculo text-7xl md:text-7xl lg:text-8xl font-normal text-white tracking-tight leading-tight plantilla-marca-${plantillaMarca}`}
-          style={{ fontWeight: 400 }}
+          className={`nombre-vehiculo text-7xl md:text-7xl lg:text-8xl text-white tracking-tight leading-tight plantilla-marca-${plantillaMarca}`}
         >
           {nombre || modelo}
         </h1>
+
 
         {/* Badges de metadata */}
         {badges.length > 0 && (

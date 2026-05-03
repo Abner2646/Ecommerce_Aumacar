@@ -36,14 +36,21 @@
   border-radius: 0 !important;
 }
 /* Fuente exclusiva para Plantilla 3 */
-.plantilla3-root {
-  /* Solo el h1 menos bold */
-  .plantilla3-root h1 {
-    font-family: 'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-weight: 500;
-  }
-  font-family: 'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+.plantilla3-root,
+.plantilla3-root .nombre-vehiculo {
+  font-family: 'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
 }
+
+/* Evitar que Rajdhani sea demasiado fino */
+.plantilla3-root .font-light {
+  font-weight: 400 !important;
+}
+.plantilla3-root .font-normal {
+  font-weight: 500 !important;
+}
+
 /* Permite que el ícono del botón de teléfono en el hero sí cambie de color en hover */
 .plantilla3-root .cns-container .flex.justify-center > a.group[href^="tel"]:hover .w-6,
 .plantilla3-root .cns-container .flex.justify-center > a.group[href^="tel"]:hover svg {

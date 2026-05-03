@@ -414,11 +414,11 @@ export default function Template02({ vehiculo, caracteristicas: caracteristicasP
         {/* Contenido centrado */}
         <div className="relative h-full flex flex-col items-center justify-center px-8">
           <h1
-            className={`nombre-vehiculo text-7xl md:text-8xl lg:text-9xl font-normal text-white text-center tracking-tight mb-6 plantilla-marca-${plantillaMarca}`}
-            style={{ fontWeight: 400 }}
+            className={`nombre-vehiculo text-7xl md:text-8xl lg:text-9xl text-white text-center tracking-tight mb-6 plantilla-marca-${plantillaMarca}`}
           >
             {modelo}
           </h1>
+
           
           {/* Precio chiquito */}
           <div className="flex items-center gap-4 text-white/80">

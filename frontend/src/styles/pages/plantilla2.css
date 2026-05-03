@@ -63,19 +63,32 @@
 .plantilla2-root .text-5xl,
 .plantilla2-root .text-4xl,
 .plantilla2-root .text-3xl,
-.plantilla2-root .text-2xl {
-  font-family: 'SuzukiPROBold', system-ui, -apple-system, sans-serif;
-  font-weight: 700;
+.plantilla2-root .text-2xl,
+.plantilla2-root .nombre-vehiculo {
+  font-family: 'SuzukiPROBold', system-ui, -apple-system, sans-serif !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
 }
 
 /* Texto descriptivo más ligero */
 .plantilla2-root p,
 .plantilla2-root .text-xl,
 .plantilla2-root .text-lg,
-.plantilla2-root .text-base {
-  font-family: 'SuzukiPRORegular', system-ui, -apple-system, sans-serif;
-  font-weight: 400;
+.plantilla2-root .text-base,
+.plantilla2-root .font-light,
+.plantilla2-root .font-normal {
+  font-family: 'SuzukiPRORegular', system-ui, -apple-system, sans-serif !important;
+  font-weight: 400 !important;
 }
+
+/* Forzar negritas en Suzuki */
+.plantilla2-root .font-bold,
+.plantilla2-root .font-semibold,
+.plantilla2-root .font-medium {
+  font-family: 'SuzukiPROBold', system-ui, -apple-system, sans-serif !important;
+  font-weight: 800 !important;
+}
+
 /* Permite que el ícono del botón de teléfono en el hero sí cambie de color en hover */
 .plantilla2-root .cns-container .flex.justify-center > a.group[href^="tel"]:hover .w-6,
 .plantilla2-root .cns-container .flex.justify-center > a.group[href^="tel"]:hover svg {

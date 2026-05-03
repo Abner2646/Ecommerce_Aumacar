@@ -166,7 +166,7 @@ const Home = () => {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section Premium */}
-      <section className="relative flex items-center justify-center bg-gray-900" style={{ minHeight: '100svh' }}>
+      <section className="relative flex items-center justify-center bg-gray-900 hero-section-fix" style={{ minHeight: '100svh' }}>
         <div className="absolute inset-0 overflow-hidden">
 
           {/*
@@ -201,14 +201,18 @@ const Home = () => {
           </div>
           <style>{`
             @media (max-width: 768px) {
+              .hero-section-fix {
+                min-height: 600px !important;
+                height: 600px !important;
+              }
               .mobile-video-fix {
                 object-position: center 40%!important;
                 transform: scale(0.97) scaleY(1.10);
-                height: 100svh !important;
+                height: 600px !important;
               }
               .mobile-poster-fix {
                 object-position: center 40%;
-                height: 100svh !important;
+                height: 600px !important;
               }
             }
           `}</style>

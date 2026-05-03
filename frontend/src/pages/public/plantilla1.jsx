@@ -67,7 +67,7 @@ function Plantilla1({ marca }) {
   return (
     <main className="bg-white plantilla1-root">
       {/* ==================== HERO SECTION PREMIUM ==================== */}
-      <section className="relative flex items-center" style={{ minHeight: '100svh' }}>
+      <section className="relative flex items-center hero-section-fix" style={{ minHeight: '100svh' }}>
         <div className="absolute inset-0 overflow-hidden">
           <video
             src={marca?.videoPortada}
@@ -88,10 +88,14 @@ function Plantilla1({ marca }) {
           </div>
           <style>{`
             @media (max-width: 768px) {
+              .hero-section-fix {
+                min-height: 600px !important;
+                height: 600px !important;
+              }
               .mobile-video-fix {
                 object-position: center 40%!important;
                 transform: scale(0.97) scaleY(1.10);
-                height: 100svh !important;
+                height: 600px !important;
               }
             }
           `}</style>
