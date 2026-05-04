@@ -202,19 +202,20 @@ const Home = () => {
           <style>{`
             @media (max-width: 768px) {
               .hero-section-fix {
-                min-height: 600px !important;
-                height: 600px !important;
+                min-height: 720px !important;
+                height: 720px !important;
               }
               .mobile-video-fix {
                 object-position: center 40%!important;
                 transform: scale(0.97) scaleY(1.10);
-                height: 600px !important;
+                height: 720px !important;
               }
               .mobile-poster-fix {
                 object-position: center 40%;
-                height: 600px !important;
+                height: 720px !important;
               }
             }
+
           `}</style>
           <div className="cns-hero-overlay"></div>
         </div>

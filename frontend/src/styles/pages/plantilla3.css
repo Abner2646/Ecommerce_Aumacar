@@ -37,11 +37,18 @@
 }
 /* Fuente exclusiva para Plantilla 3 */
 .plantilla3-root,
-.plantilla3-root .nombre-vehiculo {
+.plantilla3-root h1,
+.plantilla3-root h2,
+.plantilla3-root h3,
+.plantilla3-root h4,
+.plantilla3-root .nombre-vehiculo,
+.plantilla3-root .font-bold,
+.plantilla3-root .font-semibold {
   font-family: 'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
   font-weight: 700 !important;
   text-transform: uppercase;
 }
+
 
 /* Evitar que Rajdhani sea demasiado fino */
 .plantilla3-root .font-light {

@@ -362,7 +362,7 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
             {badges.map((badge, i) => (
               <span
                 key={i}
-                className="px-4 py-1.5 rounded-full text-sm font-medium text-white/80 bg-white/10 border border-white/15 tracking-wide"
+                className="px-4 py-1.5 rounded-full text-sm font-bold text-white bg-white/10 border border-white/15 tracking-wide"
               >
                 {badge.label}
               </span>
@@ -372,16 +372,17 @@ export default function Template01({ vehiculo, caracteristicas: caracteristicasP
 
         {/* Precio */}
         <div className="mt-6 flex items-baseline justify-center gap-3">
-          <span className="text-sm font-semibold text-gray-500 uppercase tracking-[0.15em]">Desde</span>
-          <span className="precio-vehiculo text-2xl md:text-sm font-semibold text-white">
+          <span className="text-sm font-bold text-gray-500 uppercase tracking-[0.15em]">Desde</span>
+          <span className="precio-vehiculo text-2xl md:text-3xl font-bold text-white">
             ${precioFormateado}
           </span>
           {precioUsdFormateado && (
-            <span className="text-base text-gray-500 font-light">
+            <span className="text-base text-gray-500 font-medium">
               · USD {precioUsdFormateado}
             </span>
           )}
         </div>
+
 
       </div>
 

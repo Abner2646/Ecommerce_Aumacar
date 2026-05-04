@@ -78,13 +78,18 @@
 /* Títulos principales con Demi/Bold */
 .plantilla1-root h1,
 .plantilla1-root h2,
+.plantilla1-root h3,
+.plantilla1-root h4,
 .plantilla1-root .text-5xl,
 .plantilla1-root .text-4xl,
 .plantilla1-root .text-3xl,
-.plantilla1-root .text-2xl {
-  font-family: 'AvenirNextLTPro-Demi', Helvetica Neue, -apple-system, 'system-ui', BlinkMacSystemFont, Arial, Helvetica, sans-serif;
-  font-weight: 600;
+.plantilla1-root .text-2xl,
+.plantilla1-root .font-bold,
+.plantilla1-root .font-semibold {
+  font-family: 'AvenirNextLTPro-Demi', Helvetica Neue, -apple-system, 'system-ui', BlinkMacSystemFont, Arial, Helvetica, sans-serif !important;
+  font-weight: 600 !important;
 }
+
 
 /* Texto descriptivo ligero */
 /* Solo el h1 menos bold */
@@ -94,14 +99,18 @@
 }
 
 .plantilla1-root h2,
+.plantilla1-root h3,
+.plantilla1-root h4,
 .plantilla1-root .text-5xl,
 .plantilla1-root .text-4xl,
 .plantilla1-root .text-3xl,
 .plantilla1-root .text-2xl,
-.plantilla1-root .nombre-vehiculo {
+.plantilla1-root .nombre-vehiculo,
+.plantilla1-root .font-bold {
   font-family: 'AvenirNextLTPro-Demi', Helvetica Neue, -apple-system, 'system-ui', BlinkMacSystemFont, Arial, Helvetica, sans-serif !important;
   font-weight: 600 !important;
 }
+
 
 .plantilla1-root .cns-container .flex.justify-center > a.group[href^="tel"]:hover .w-6,
 .plantilla1-root .cns-container .flex.justify-center > a.group[href^="tel"]:hover svg {
@@ -654,12 +663,12 @@
 /* Estabilización de altura para el Hero en Mobile */
 @media (max-width: 768px) {
   .hero-section-fix {
-    min-height: 600px !important;
-    height: 600px !important;
+    min-height: 720px !important;
+    height: 720px !important;
   }
   .hero-section-fix video,
   .hero-section-fix img,
   .hero-section-fix .absolute {
-    height: 600px !important;
+    height: 720px !important;
   }
-}
+}

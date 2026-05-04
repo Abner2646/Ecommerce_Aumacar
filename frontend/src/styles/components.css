@@ -275,18 +275,19 @@
 /* Badge Pill Superior */
 .cns-pill-badge {
   display: inline-block;
-  padding: 0.5rem 1.25rem;
+  padding: 0.6rem 1.5rem;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 800;
   color: var(--color-white);
   background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 9999px;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   margin-bottom: 1.5rem;
 }
+
 
 /* Feature Card Premium */
 .cns-feature-card {
