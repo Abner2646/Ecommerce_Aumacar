@@ -70,10 +70,11 @@
   border-radius: 2rem !important;
 }
 /* Fuente exclusiva para Plantilla 1 */
-.plantilla1-root {
+.plantilla1-root,
+.plantilla1-root * {
   font-family: 'AvenirNextLTPro-Regular', Helvetica Neue, -apple-system, 'system-ui', BlinkMacSystemFont, Arial, Helvetica, sans-serif;
-  font-weight: 400;
 }
+
 
 /* Títulos principales con Demi/Bold */
 .plantilla1-root h1,

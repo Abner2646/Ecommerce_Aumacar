@@ -79,14 +79,8 @@ const Plantilla3 = ({ marca }) => {
             className="w-full h-full object-cover object-center block bg-black brightness-[.8] contrast-[1.1] mobile-video-fix"
             style={{}}
           />
-          {/* Overlay gradiente y blur laterales mobile */}
           <div className="cns-hero-overlay pointer-events-none z-10"></div>
-          <div className="pointer-events-none z-20 absolute inset-0 hidden md:block" style={{background: 'linear-gradient(90deg,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 20%,rgba(0,0,0,0) 80%,rgba(0,0,0,0.25) 100%)'}}></div>
-          <div className="pointer-events-none z-20 absolute inset-0 md:hidden flex">
-            <div className="w-1/6 h-full bg-gradient-to-r from-black/60 via-transparent to-transparent blur-sm"></div>
-            <div className="flex-1"></div>
-            <div className="w-1/6 h-full bg-gradient-to-l from-black/60 via-transparent to-transparent blur-sm"></div>
-          </div>
+
           <style>{`
             @media (max-width: 768px) {
               .hero-section-fix {

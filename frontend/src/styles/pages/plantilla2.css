@@ -54,10 +54,11 @@
   border-radius: 0 !important;
 }
 /* Fuente exclusiva para Plantilla 2 */
-.plantilla2-root {
+.plantilla2-root,
+.plantilla2-root * {
   font-family: 'SuzukiPRORegular', system-ui, -apple-system, sans-serif;
-  font-weight: 400;
 }
+
 
 /* Títulos principales más pesados */
 .plantilla2-root h1,
@@ -91,10 +92,13 @@
 .plantilla2-root .font-semibold,
 .plantilla2-root .font-medium,
 .plantilla2-root .cns-pill-badge,
-.plantilla2-root .precio-vehiculo {
+.plantilla2-root .precio-vehiculo,
+.nombre-vehiculo.plantilla-marca-plantilla2 {
   font-family: 'SuzukiPROBold', system-ui, -apple-system, sans-serif !important;
-  font-weight: 800 !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.02em !important;
 }
+
 
 
 /* Permite que el ícono del botón de teléfono en el hero sí cambie de color en hover */
