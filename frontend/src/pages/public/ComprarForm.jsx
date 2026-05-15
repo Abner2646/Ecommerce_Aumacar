@@ -136,7 +136,7 @@ const ComprarForm = () => {
                   <div>
                     <div className="text-small text-gray-600 mb-1">{t('purchaseForm.selectedVehicle.brand')}</div>
                     <div className="text-lg font-semibold text-gray-900">
-                      {vehiculo.marca?.nombre || '-'}
+                      {vehiculo.marca?.nombre?.toUpperCase() || '-'}
                     </div>
                   </div>
                   <div>
@@ -443,7 +443,7 @@ function ModalPago({ onClose, formData, vehiculo, color }) {
     `${formData.ciudad}, ${formData.provincia}\n` +
     `CP: ${formData.codigoPostal}\n\n` +
     `*VEHÍCULO SELECCIONADO*\n` +
-    `Marca: ${vehiculo?.marca?.nombre || '-'}\n` +
+    `Marca: ${vehiculo?.marca?.nombre?.toUpperCase() || '-'}\n` +
     `Modelo: ${vehiculo?.modelo || '-'}\n` +
     `Color: ${color?.nombre || '-'}\n` +
     (vehiculo?.anio ? `Año: ${vehiculo.anio}\n` : '') +
@@ -499,7 +499,7 @@ function ModalPago({ onClose, formData, vehiculo, color }) {
               <div>
                 <span className="text-gray-600">{t('purchaseForm.modal.summary.vehicle')}</span>
                 <span className="ml-2 font-semibold text-gray-900">
-                  {vehiculo?.marca?.nombre} {vehiculo?.modelo}
+                  {vehiculo?.marca?.nombre?.toUpperCase()} {vehiculo?.modelo}
                 </span>
               </div>
               <div>

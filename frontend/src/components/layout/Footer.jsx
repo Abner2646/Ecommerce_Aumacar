@@ -58,7 +58,7 @@ const Footer = () => {
               {marcas.map(marca => (
                 <li key={marca.id}>
                   <a href={`/marca/${marca.slug}`} className="cns-footer-link">
-                    {marca.nombre}
+                    {marca.nombre?.toUpperCase()}
                   </a>
                 </li>
               ))}

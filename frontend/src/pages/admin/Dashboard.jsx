@@ -168,7 +168,7 @@ const Dashboard = () => {
                 )}
                 <div className="p-4">
                   <h3 className="font-semibold text-gray-900">
-                    {vehiculo.marca?.nombre} {vehiculo.modelo}
+                    {vehiculo.marca?.nombre?.toUpperCase()} {vehiculo.modelo}
                   </h3>
                   <p className="text-sm text-gray-600 mt-1">
                     {vehiculo.version} - {vehiculo.año}
@@ -208,11 +208,11 @@ const Dashboard = () => {
                     {marca.urlLogo && (
                       <img 
                         src={marca.urlLogo} 
-                        alt={marca.nombre}
+                        alt={marca.nombre?.toUpperCase()}
                         className="w-8 h-8 object-contain"
                       />
                     )}
-                    <span className="font-medium text-gray-900">{marca.nombre}</span>
+                    <span className="font-medium text-gray-900">{marca.nombre?.toUpperCase()}</span>
                   </div>
                   <span className="adm-badge adm-badge-gray">
                     {vehiculosMarca.length} vehículo{vehiculosMarca.length !== 1 ? 's' : ''}

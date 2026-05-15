@@ -178,7 +178,7 @@ const Navbar = () => {
                   className="cns-navbar-dropdown-item"
                   role="menuitem"
                 >
-                  {marca.nombre}
+                  {marca.nombre?.toUpperCase()}
                 </a>
               ))}
             </div>
@@ -245,7 +245,7 @@ const Navbar = () => {
                   style={{ display: 'block', width: '100%', textAlign: 'left', marginBottom: 8, fontWeight: 'bold', color: '#111', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {marca.nombre}
+                  {marca.nombre?.toUpperCase()}
                 </a>
               ))}
               <button

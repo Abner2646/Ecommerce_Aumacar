@@ -207,7 +207,7 @@ console.log('isLoading:', isLoading);
       render: (row) => (
         <div>
           <p className="font-semibold text-gray-900">
-            {row.marca?.nombre} {row.modelo}
+            {row.marca?.nombre?.toUpperCase()} {row.modelo}
           </p>
           <p className="text-sm text-gray-600">
             {row.version} ({row.año})
@@ -323,7 +323,7 @@ console.log('isLoading:', isLoading);
                 <option value="">Todas las marcas</option>
                 {marcas.map(marca => (
                   <option key={marca.id} value={marca.id}>
-                    {marca.nombre}
+                    {marca.nombre?.toUpperCase()}
                   </option>
                 ))}
               </select>
@@ -436,7 +436,7 @@ console.log('isLoading:', isLoading);
         title="¿Eliminar vehículo?"
         message={
           vehiculoToDelete
-            ? `Esto eliminará permanentemente ${vehiculoToDelete.marca?.nombre} ${vehiculoToDelete.modelo} ${vehiculoToDelete.version} y todas sus imágenes y videos de Cloudinary.`
+            ? `Esto eliminará permanentemente ${vehiculoToDelete.marca?.nombre?.toUpperCase()} ${vehiculoToDelete.modelo} ${vehiculoToDelete.version} y todas sus imágenes y videos de Cloudinary.`
             : ''
         }
         confirmText="Sí, eliminar"

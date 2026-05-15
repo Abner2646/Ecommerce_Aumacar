@@ -102,7 +102,7 @@ function Plantilla1({ marca }) {
             <span className="cns-pill-badge">{t('brandTemplates.hero.badge')}</span>
             {/* ❌ NO traducir - viene del backend */}
             <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              {marca?.nombre}
+              {marca?.nombre?.toUpperCase()}
             </h1>
             {/* ✅ Este texto sí se traduce (es hardcodeado) - pero necesitamos agregarlo al config */}
             <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto mb-12 leading-relaxed">
@@ -236,7 +236,7 @@ function Plantilla1({ marca }) {
             </h2>
             {/* ❌ marca.nombre NO se traduce, pero el texto alrededor SÍ */}
             <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed">
-              {marca?.nombre} {t('brandTemplates.parallax.subtitle')}
+              {marca?.nombre?.toUpperCase()} {t('brandTemplates.parallax.subtitle')}
             </p>
             <button
               className="cns-btn-primary px-8 py-4"
@@ -248,7 +248,7 @@ function Plantilla1({ marca }) {
                 }
               }}
             >
-              {t('brandTemplates.parallax.cta')} {marca?.nombre}
+              {t('brandTemplates.parallax.cta')} {marca?.nombre?.toUpperCase()}
             </button>
           </div>
         </div>
@@ -259,7 +259,7 @@ function Plantilla1({ marca }) {
         <div className="cns-container">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              {t('brandTemplates.technology.title')} {marca?.nombre}
+              {t('brandTemplates.technology.title')} {marca?.nombre?.toUpperCase()}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
               {t('brandTemplates.technology.subtitle')}
@@ -295,10 +295,10 @@ function Plantilla1({ marca }) {
         <div className="cns-container">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              {t('brandTemplates.fullLine.title')} {marca?.nombre}
+              {t('brandTemplates.fullLine.title')} {marca?.nombre?.toUpperCase()}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-              {t('brandTemplates.fullLine.subtitle')} {marca?.nombre} {t('brandTemplates.fullLine.subtitleEnd')}
+              {t('brandTemplates.fullLine.subtitle')} {marca?.nombre?.toUpperCase()} {t('brandTemplates.fullLine.subtitleEnd')}
             </p>
           </div>
 
@@ -437,7 +437,7 @@ function Plantilla1({ marca }) {
                 {t('brandTemplates.testDrive.title')}
               </h2>
               <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto">
-                {t('brandTemplates.testDrive.subtitle')} {marca?.nombre}{t('brandTemplates.testDrive.subtitleEnd')}
+                {t('brandTemplates.testDrive.subtitle')} {marca?.nombre?.toUpperCase()}{t('brandTemplates.testDrive.subtitleEnd')}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">

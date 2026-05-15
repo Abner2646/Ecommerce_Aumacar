@@ -31,8 +31,8 @@ const MarcasManage = () => {
 
   const handleDelete = async (marca) => {
     const confirmMessage = marca.vehiculos && marca.vehiculos.length > 0
-      ? `La marca "${marca.nombre}" tiene ${marca.vehiculos.length} vehículo(s) asociado(s). ¿Estás seguro de eliminarla?`
-      : `¿Estás seguro de eliminar la marca "${marca.nombre}"?`;
+      ? `La marca "${marca.nombre?.toUpperCase()}" tiene ${marca.vehiculos.length} vehículo(s) asociado(s). ¿Estás seguro de eliminarla?`
+      : `¿Estás seguro de eliminar la marca "${marca.nombre?.toUpperCase()}"?`;
 
     if (window.confirm(confirmMessage)) {
       try {
@@ -130,7 +130,7 @@ const MarcasManage = () => {
                 {marca.logo ? (
                   <img 
                     src={marca.logo} 
-                    alt={marca.nombre}
+                    alt={marca.nombre?.toUpperCase()}
                     className="adm-marca-logo"
                   />
                 ) : (
@@ -146,7 +146,7 @@ const MarcasManage = () => {
 
               {/* Información */}
               <div className="adm-marca-card-body">
-                <h3 className="adm-marca-card-title">{marca.nombre}</h3>
+                <h3 className="adm-marca-card-title">{marca.nombre?.toUpperCase()}</h3>
                 <p className="adm-marca-card-slug">/{marca.slug}</p>
                 
                 {marca.descripcion && (

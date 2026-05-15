@@ -102,7 +102,7 @@ const Plantilla3 = ({ marca }) => {
           <div className="text-center max-w-4xl mx-auto">
             <span className="cns-pill-badge">{t('brandTemplates.hero.badge')}</span>
             <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              {marca?.nombre}
+              {marca?.nombre?.toUpperCase()}
             </h1>
             <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto mb-12 leading-relaxed">
               Innovación japonesa que se adapta a tu estilo de vida
@@ -231,7 +231,7 @@ const Plantilla3 = ({ marca }) => {
               {t('brandTemplates.parallax.titleBreak')}
             </h2>
             <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed">
-                {marca?.nombre} {t('brandTemplates.parallax.subtitle')}
+                {marca?.nombre?.toUpperCase()} {t('brandTemplates.parallax.subtitle')}
             </p>
             <button className="cns-btn-primary px-8 py-4" onClick={() => {
               if (tecnologiaRef.current) {
@@ -239,7 +239,7 @@ const Plantilla3 = ({ marca }) => {
                 smoothScrollTo(targetY);
               }
             }}>
-              {t('brandTemplates.parallax.cta')} {marca?.nombre}
+              {t('brandTemplates.parallax.cta')} {marca?.nombre?.toUpperCase()}
             </button>
           </div>
         </div>
@@ -250,7 +250,7 @@ const Plantilla3 = ({ marca }) => {
         <div className="cns-container">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              {t('brandTemplates.technology.title')} {marca?.nombre}
+              {t('brandTemplates.technology.title')} {marca?.nombre?.toUpperCase()}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
               {t('brandTemplates.technology.subtitle')}
@@ -285,10 +285,10 @@ const Plantilla3 = ({ marca }) => {
         <div className="cns-container">
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              {t('brandTemplates.fullLine.title')} {marca?.nombre}
+              {t('brandTemplates.fullLine.title')} {marca?.nombre?.toUpperCase()}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-              {t('brandTemplates.fullLine.subtitle')} {marca?.nombre} {t('brandTemplates.fullLine.subtitleEnd')}
+              {t('brandTemplates.fullLine.subtitle')} {marca?.nombre?.toUpperCase()} {t('brandTemplates.fullLine.subtitleEnd')}
             </p>
           </div>
 
@@ -427,7 +427,7 @@ const Plantilla3 = ({ marca }) => {
                 {t('brandTemplates.testDrive.title')}
               </h2>
               <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto">
-                {t('brandTemplates.testDrive.subtitle')} {marca?.nombre}{t('brandTemplates.testDrive.subtitleEnd')}
+                {t('brandTemplates.testDrive.subtitle')} {marca?.nombre?.toUpperCase()}{t('brandTemplates.testDrive.subtitleEnd')}
               </p>
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <circle cx="11" cy="11" r="8" />

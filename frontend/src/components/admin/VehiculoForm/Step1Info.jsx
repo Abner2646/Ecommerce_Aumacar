@@ -173,7 +173,7 @@ const Step1Info = ({ data, onNext, onCancel, isSubmitting = false }) => {
             >
               <option value="">Selecciona una marca</option>
               {marcas.map(marca => (
-                <option key={marca.id} value={marca.id}>{marca.nombre}</option>
+                <option key={marca.id} value={marca.id}>{marca.nombre?.toUpperCase()}</option>
               ))}
             </select>
             {errors.marcaId && <p className="text-red-500 text-sm mt-1">{errors.marcaId.message}</p>}

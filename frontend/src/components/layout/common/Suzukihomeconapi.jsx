@@ -40,13 +40,13 @@ const SuzukiHomeConAPI = () => {
           {marca?.imagenHero ? (
             <img 
               src={marca.imagenHero}
-              alt={`${marca.nombre} Hero`}
+              alt={`${marca?.nombre?.toUpperCase()} Hero`}
               className="w-full h-full object-cover"
             />
           ) : (
             <img 
               src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1920&h=1080&fit=crop"
-              alt="Suzuki Hero"
+              alt="SUZUKI Hero"
               className="w-full h-full object-cover"
             />
           )}
@@ -57,7 +57,7 @@ const SuzukiHomeConAPI = () => {
         <div className="absolute inset-0 flex items-center justify-center z-10">
           <div className="text-center px-6">
             <h1 className="szk-hero-title text-hero-mobile lg:text-hero-desktop text-white mb-6">
-              {marca?.nombre || 'Suzuki'}
+              {marca?.nombre?.toUpperCase() || 'SUZUKI'}
             </h1>
             <p className="szk-body text-body-mobile lg:text-body-desktop text-white/90 mb-8 max-w-2xl mx-auto">
               {marca?.descripcion || 'Innovación, confiabilidad y diseño que se adapta a tu estilo de vida'}
@@ -78,7 +78,7 @@ const SuzukiHomeConAPI = () => {
               Nuestros Modelos
             </h2>
             <p className="szk-body text-body-mobile lg:text-body-desktop text-gray-600 max-w-2xl mx-auto">
-              Descubre la gama completa de vehículos Suzuki diseñados para cada aventura
+              Descubre la gama completa de vehículos SUZUKI diseñados para cada aventura
             </p>
           </div>
 
@@ -150,7 +150,7 @@ const SuzukiHomeConAPI = () => {
             <div className="order-2 lg:order-1">
               <img 
                 src={marca?.imagenTecnologia || 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&h=600&fit=crop'}
-                alt="Tecnología Suzuki"
+                alt="Tecnología SUZUKI"
                 className="w-full h-96 object-cover rounded-lg"
               />
             </div>
@@ -162,7 +162,7 @@ const SuzukiHomeConAPI = () => {
               </h2>
               
               <p className="szk-body text-body-mobile lg:text-body-desktop text-gray-600">
-                Cada Suzuki está equipado con tecnología de vanguardia diseñada para brindarte 
+                Cada SUZUKI está equipado con tecnología de vanguardia diseñada para brindarte 
                 la mejor experiencia de conducción, seguridad y eficiencia.
               </p>
 
@@ -199,7 +199,7 @@ const SuzukiHomeConAPI = () => {
           </h2>
           
           <p className="szk-body text-body-mobile lg:text-body-desktop text-white/80 mb-10 max-w-2xl mx-auto">
-            Experimenta la diferencia Suzuki. Reserva tu prueba de manejo hoy y descubre 
+            Experimenta la diferencia SUZUKI. Reserva tu prueba de manejo hoy y descubre 
             por qué millones confían en nosotros.
           </p>
 

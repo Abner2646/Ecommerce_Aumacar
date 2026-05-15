@@ -392,7 +392,7 @@ const MarcaForm = ({ marca, onSuccess }) => {
           {...register('nombre')}
           onChange={handleNombreChange}
           className={`adm-form-input ${errors.nombre ? 'adm-form-input-error' : ''}`}
-          placeholder="Ej: Toyota, Subaru"
+          placeholder="Ej: Toyota, SUBARU"
         />
         {errors.nombre && (
           <p className="adm-form-error">{String(errors.nombre.message)}</p>
@@ -435,8 +435,8 @@ const MarcaForm = ({ marca, onSuccess }) => {
       <div>
         <label className="adm-form-label">Plantilla</label>
         <select {...register('plantilla', { valueAsNumber: true })} className="adm-form-input">
-          <option value={1}>Plantilla 1 (Subaru)</option>
-          <option value={2}>Plantilla 2 (Suzuki)</option>
+          <option value={1}>Plantilla 1 (SUBARU)</option>
+          <option value={2}>Plantilla 2 (SUZUKI)</option>
           <option value={3}>Plantilla 3 (Estándar) </option>
         </select>
         <p className="text-xs text-gray-500 mt-2">Elige el diseño que prefieras para la marca</p>

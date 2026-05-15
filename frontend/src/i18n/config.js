@@ -42,8 +42,8 @@ const resources = {
       home: {
         hero: {
           badge: "Performance & Excelencia",
-          title: "Bienvenido a Aumacar",
-          subtitle: "Concesionaria oficial Subaru y Suzuki. Descubre la excelencia automotriz con las mejores marcas del mercado.",
+          title: "Bienvenido a aumacar",
+          subtitle: "Concesionaria oficial SUBARU y SUZUKI. Descubre la excelencia automotriz con las mejores marcas del mercado.",
           btnExploreBrands: "Explorar Marcas",
           btnWhatsApp: "WhatsApp",
           btnWhatsAppSubtitle: "Consulta rápida",
@@ -394,8 +394,8 @@ const resources = {
       home: {
         hero: {
           badge: "Performance & Excellence",
-          title: "Welcome to Aumacar",
-          subtitle: "Official Subaru and Suzuki dealership. Discover automotive excellence with the best brands in the market.",
+          title: "Welcome to aumacar",
+          subtitle: "Official SUBARU and SUZUKI dealership. Discover automotive excellence with the best brands in the market.",
           btnExploreBrands: "Explore Brands",
           btnWhatsApp: "WhatsApp",
           btnWhatsAppSubtitle: "Quick inquiry",
