@@ -88,11 +88,47 @@ const VehiculoCreate = () => {
     }
   };
 
+  // Comprimir imagen usando Canvas antes de subir (evita el límite de 10MB de Cloudinary)
+  const compressImage = (file, maxSizeMB = 7) => {
+    return new Promise((resolve) => {
+      const maxBytes = maxSizeMB * 1024 * 1024;
+      if (file.size <= maxBytes) { resolve(file); return; }
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const canvas = document.createElement('canvas');
+        let { width, height } = img;
+        const maxDim = 2560;
+        if (width > maxDim || height > maxDim) {
+          const ratio = Math.min(maxDim / width, maxDim / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        const tryCompress = (quality) => {
+          canvas.toBlob((blob) => {
+            if (!blob) { resolve(file); return; }
+            if (blob.size <= maxBytes || quality <= 0.3) {
+              resolve(new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() }));
+            } else {
+              tryCompress(quality - 0.1);
+            }
+          }, 'image/jpeg', quality);
+        };
+        tryCompress(0.85);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+      img.src = url;
+    });
+  };
+
   // Step 3: Subir imágenes
   const handleStep3Next = async (data) => {
     try {
       if (data.images?.length > 0 && createdVehiculoId) {
-        // Agrupar imágenes por colorVehiculoId
         const imagesByColor = data.images.reduce((acc, img) => {
           const key = img.colorVehiculoId || 'generic';
           if (!acc[key]) acc[key] = [];
@@ -100,21 +136,21 @@ const VehiculoCreate = () => {
           return acc;
         }, {});
 
-        // Subir cada grupo
         for (const [colorKey, images] of Object.entries(imagesByColor)) {
-          const files = images.map(img => img.file);
+          // Comprimir cada imagen antes de subir
+          const compressedFiles = await Promise.all(
+            images.map(img => compressImage(img.file))
+          );
           const options = {
             esPrincipal: images.some(img => img.esPrincipal),
             orden: 0
           };
-          
           if (colorKey !== 'generic') {
             options.colorVehiculoId = colorKey;
           }
-
           await addImages.mutateAsync({
             vehiculoId: createdVehiculoId,
-            images: files,
+            images: compressedFiles,
             options
           });
         }
@@ -123,6 +159,7 @@ const VehiculoCreate = () => {
       setCurrentStep(4);
     } catch (error) {
       console.error('Error subiendo imágenes:', error);
+      toast.error('Error al subir las imágenes. Intenta con fotos más pequeñas.');
     }
   };
 
