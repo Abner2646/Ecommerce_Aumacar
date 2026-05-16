@@ -51,10 +51,7 @@ const subirImagen = (fileBuffer, folder = 'vehiculos') => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder: folder,
-        resource_type: 'image',
-        transformation: [
-          { width: 1920, height: 1080, crop: 'limit', quality: 'auto' }
-        ]
+        resource_type: 'image'
       },
       (error, result) => {
         if (error) reject(error);
