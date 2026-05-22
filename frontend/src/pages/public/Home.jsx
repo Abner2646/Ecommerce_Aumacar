@@ -5,6 +5,11 @@ import { marcasApi } from '../../api/marcas.api';
 import { ArrowRight, Phone, MessageCircle, MapPin, Mail, Users } from 'lucide-react';
 import ClientesCercanos from '../../components/public/ClientesCercanos';
 
+// Importamos los estilos de las plantillas para tener las fuentes disponibles
+import '../../styles/pages/plantilla1.css';
+import '../../styles/pages/plantilla2.css';
+import '../../styles/pages/plantilla3.css';
+
 const heroVideo = 'https://res.cloudinary.com/domckqidv/video/upload/f_auto,q_auto/v1776660215/Video_portada_Aumacar_bhteea.mp4';
 // Imagen estática del primer frame — siempre visible detrás del video mientras carga
 const heroPoster = 'https://res.cloudinary.com/domckqidv/video/upload/so_0,w_1920,f_jpg/v1776660215/Video_portada_Aumacar_bhteea.jpg';
@@ -41,7 +46,7 @@ function BrandCards() {
     <a
       key={marca.id}
       href={`/marca/${marca.slug}`}
-      className="lnd-brand-card w-full max-w-[95vw] h-[100px] md:max-w-[700px] md:min-h-[400px] md:aspect-[16/7] mx-auto group"
+      className={`lnd-brand-card w-full max-w-[95vw] h-[100px] md:max-w-[700px] md:min-h-[400px] md:aspect-[16/7] mx-auto group plantilla${marca.plantilla || 1}-root`}
       onMouseEnter={e => {
         const video = e.currentTarget.querySelector('.brand-video');
         const img = e.currentTarget.querySelector('.brand-img');
