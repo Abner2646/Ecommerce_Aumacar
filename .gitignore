@@ -1,3 +1,6 @@
+#Seeder de usuarios:
+backend/seeders/20240101000001-admin-usuario.js
+
 # Ignorar archivos pesados y carpetas de dependencias/build
 node_modules/
 **/node_modules/
