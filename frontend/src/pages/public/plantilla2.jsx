@@ -194,6 +194,24 @@ const Plantilla2 = ({ marca }) => {
                     <div className="cns-badge">
                       {modelo.categoria}
                     </div>
+                    {modelo.destacado && (
+                      <span style={{
+                        position: 'absolute',
+                        top: '12px',
+                        left: '12px',
+                        backgroundColor: '#1a1a1a',
+                        color: '#ffffff',
+                        fontSize: '11px',
+                        fontWeight: '600',
+                        letterSpacing: '0.05em',
+                        padding: '4px 10px',
+                        borderRadius: '4px',
+                        textTransform: 'uppercase',
+                        zIndex: 10,
+                      }}>
+                        Más vendidos
+                      </span>
+                    )}
                   </div>
                   <div className="p-6">
                     <h3 className="font-bold text-gray-900 mb-3" style={{ fontSize: '30px' }}>
